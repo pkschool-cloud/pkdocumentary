@@ -1,69 +1,204 @@
-const LINE_TOKEN = "ใส่_LINE_TOKEN_ของคุณตรงนี้"; 
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบสารบรรณอิเล็กทรอนิกส์</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a365d; 
+            --secondary-color: #2b6cb0;
+            --bg-color: #f4f7f6;
+            --sidebar-bg: #ffffff;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --border-color: #e2e8f0;
+            --accent-orange: #ed8936;
+            --accent-red: #e53e3e;
+            --transition-speed: 0.3s;
+        }
 
-function doGet() {
-  return HtmlService.createHtmlOutputFromFile('Index')
-    .setTitle('ระบบ CMU e-Document')
-    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
-}
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-dark); height: 100vh; overflow: hidden; }
 
-// === ระบบ Login ===
-function checkLogin(username, password) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Users");
-  var data = sheet.getDataRange().getValues();
-  
-  // วนลูปหา Username และ Password ใน Sheet: Users
-  for (var i = 1; i < data.length; i++) {
-    if (data[i][0] == username && data[i][1] == password) {
-      return { 
-        success: true, 
-        name: data[i][0], 
-        role: data[i][2] 
-      }; 
-    }
-  }
-  return { success: false }; // ถ้าไม่ตรงเลย
-}
+        /* === ส่วนหน้า Login === */
+        #login-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+        .login-box {
+            background: white; padding: 40px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 350px; text-align: center;
+        }
+        .login-box h2 { color: var(--primary-color); margin-bottom: 20px; }
+        .login-box input {
+            width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem;
+        }
+        .btn-login {
+            width: 100%; background: var(--secondary-color); color: white; border: none; padding: 12px;
+            border-radius: 6px; font-size: 1rem; cursor: pointer; margin-top: 10px; transition: 0.2s;
+        }
+        .btn-login:hover { background: #235a96; }
+        #error-msg { color: var(--accent-red); margin-top: 10px; font-size: 0.9rem; display: none; }
 
-// === ระบบดึงเอกสาร ===
-function getDocuments() {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Documents");
-  var data = sheet.getDataRange().getValues();
-  var headers = data[0];
-  var docs = [];
-  
-  for (var i = 1; i < data.length; i++) {
-    var row = data[i];
-    var doc = {};
-    for (var j = 0; j < headers.length; j++) {
-      doc[headers[j]] = row[j];
-    }
-    doc.rowIndex = i + 1; 
-    docs.push(doc);
-  }
-  return docs.reverse();
-}
+        /* === ส่วนหน้า Dashboard (ซ่อนไว้ก่อน) === */
+        #dashboard-section { display: none; flex-direction: column; height: 100vh; }
+        
+        .navbar {
+            background-color: var(--primary-color); color: white; padding: 0 20px; height: 60px;
+            display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 10;
+        }
+        .nav-brand { font-size: 1.2rem; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .user-profile {
+            display: flex; align-items: center; gap: 10px; font-size: 0.9rem; background: rgba(255,255,255,0.1);
+            padding: 5px 15px; border-radius: 20px; cursor: pointer;
+        }
+        .main-container { display: flex; flex: 1; overflow: hidden; }
+        .sidebar { width: 250px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color); padding: 20px 0; overflow-y: auto; }
+        .menu-item {
+            padding: 12px 20px; display: flex; align-items: center; gap: 15px; color: var(--text-dark); text-decoration: none; cursor: pointer; border-left: 4px solid transparent;
+        }
+        .menu-item:hover, .menu-item.active { background-color: #ebf4ff; color: var(--secondary-color); border-left-color: var(--secondary-color); }
+        .content { flex: 1; padding: 30px; overflow-y: auto; animation: fadeIn 0.5s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--border-color); }
+        .btn-create { background-color: var(--secondary-color); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 1rem; }
+        
+        .table-container { background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid var(--border-color); }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 15px; border-bottom: 1px solid var(--border-color); }
+        th { background-color: #f8fafc; color: var(--text-light); font-weight: 600; font-size: 0.9rem; }
+        tr:hover { background-color: #f1f5f9; }
+    </style>
+</head>
+<body>
 
-// === ระบบรับทราบเอกสาร + แจ้ง LINE ===
-function acknowledgeDocument(rowIndex, docSubject, userName) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Documents");
-  
-  var timestamp = Utilities.formatDate(new Date(), "GMT+7", "dd/MM/yyyy HH:mm");
-  var recordText = userName + " (รับทราบเมื่อ " + timestamp + ")";
-  sheet.getRange(rowIndex, 8).setValue(recordText); // คอลัมน์ H
-  
-  var message = "\n✅ อัปเดตสถานะเอกสาร\nเรื่อง: " + docSubject + "\nผู้รับทราบ: " + userName + "\nเวลา: " + timestamp;
-  sendLineNotify(message);
-  
-  return true; 
-}
+    <div id="login-section">
+        <div class="login-box">
+            <h2>🏫 เข้าสู่ระบบ e-Document</h2>
+            <input type="text" id="username" placeholder="ชื่อผู้ใช้งาน">
+            <input type="password" id="password" placeholder="รหัสผ่าน">
+            <button class="btn-login" id="loginBtn" onclick="processLogin()">เข้าสู่ระบบ</button>
+            <div id="error-msg">ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง!</div>
+        </div>
+    </div>
 
-function sendLineNotify(message) {
-  if (LINE_TOKEN === "ใส่_LINE_TOKEN_ของคุณตรงนี้") return; 
-  
-  var options = {
-    "method": "post",
-    "payload": { "message": message },
-    "headers": { "Authorization": "Bearer " + LINE_TOKEN }
-  };
-  UrlFetchApp.fetch("https://notify-api.line.me/api/notify", options);
-}
+    <div id="dashboard-section">
+        <header class="navbar">
+            <div class="nav-brand">🏫 ระบบ e-Document</div>
+            <div class="user-profile" onclick="location.reload()">
+                <span id="display-name">👤 กำลังโหลด...</span> (คลิกเพื่อออก)
+            </div>
+        </header>
+
+        <div class="main-container">
+            <aside class="sidebar">
+                <a class="menu-item active">📥 เอกสารเข้า</a>
+                <a class="menu-item">📢 เอกสารเผยแพร่</a>
+                <a class="menu-item">📤 เอกสารส่ง</a>
+            </aside>
+
+            <main class="content">
+                <div class="page-header">
+                    <h2>รายการเอกสารเข้า</h2>
+                    <button class="btn-create" onclick="alert('ฟังก์ชันสร้างหนังสือใหม่กำลังพัฒนา')">+ สร้างหนังสือ</button>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th width="12%">การจัดการ</th>
+                                <th width="15%">เลขที่หนังสือ</th>
+                                <th width="35%">เรื่อง</th>
+                                <th width="15%">ผู้ส่ง</th>
+                                <th width="10%">วันที่ส่ง</th>
+                                <th width="13%">ผู้รับทราบ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="documentTableBody">
+                            </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = ""; // ตัวแปรเก็บชื่อคนที่ล็อกอิน
+
+        // 1. ฟังก์ชันกดปุ่มเข้าสู่ระบบ
+        function processLogin() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            const btn = document.getElementById('loginBtn');
+            const errorMsg = document.getElementById('error-msg');
+
+            if(!u || !p) return alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+
+            // เปลี่ยนปุ่มเป็นสถานะโหลด
+            btn.innerText = "กำลังตรวจสอบ...";
+            btn.disabled = true;
+            errorMsg.style.display = 'none';
+
+            // ส่งไปเช็คที่ Google Apps Script
+            google.script.run.withSuccessHandler(function(result) {
+                if(result.success) {
+                    // ล็อกอินผ่าน
+                    currentUser = result.name;
+                    document.getElementById('display-name').innerText = "👤 " + result.name + " (" + result.role + ")";
+                    
+                    // สลับหน้าจอ
+                    document.getElementById('login-section').style.display = 'none';
+                    document.getElementById('dashboard-section').style.display = 'flex';
+                    
+                    // สั่งให้เริ่มดึงข้อมูลตาราง
+                    loadDocuments();
+                } else {
+                    // ล็อกอินผิดพลาด
+                    errorMsg.style.display = 'block';
+                    btn.innerText = "เข้าสู่ระบบ";
+                    btn.disabled = false;
+                }
+            }).checkLogin(u, p);
+        }
+
+        // 2. ฟังก์ชันดึงข้อมูลจาก Google Sheets (Documents)
+        function loadDocuments() {
+            const tbody = document.getElementById('documentTableBody');
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 30px;">กำลังโหลดข้อมูล...</td></tr>';
+
+            google.script.run.withSuccessHandler(renderTable).getDocuments();
+        }
+
+        // 3. ฟังก์ชันสร้างตาราง
+        function renderTable(docs) {
+            const tbody = document.getElementById('documentTableBody');
+            tbody.innerHTML = '';
+
+            if (docs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">ไม่มีข้อมูลเอกสารในระบบ</td></tr>';
+                return;
+            }
+
+            docs.forEach(doc => {
+                const isRead = doc.ReadBy && doc.ReadBy.trim() !== "";
+                const actionBtn = isRead 
+                    ? `<span style="color:green; font-size:0.85rem;">✅ ทราบแล้ว</span>` 
+                    : `<button onclick="markAsRead(${doc.rowIndex}, '${doc.Subject}')" style="background:var(--secondary-color); color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-size: 0.85rem;">คลิกรับทราบ</button>`;
+
+                const row = `
+                    <tr>
+                        <td>${actionBtn}</td>
+                        <td>${doc.DocNumber}<br><span style="font-size: 0.8rem; color: gray;">${doc.Status}</span></td>
+                        <td>
+                            <a href="#" style="color:var(--secondary-color); text-decoration:none; font-weight:500;">✉ ${doc.Subject}</a>
+                            <br><span style="font-size: 0.8rem; color: gray;">${doc.Purpose}</span>
+                        </td>
+                        <td>${doc.Sender}</td>
+                        <td>${doc.Date}</td>
