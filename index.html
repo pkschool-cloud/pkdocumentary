@@ -1,58 +1,69 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <base target="_top">
-  <style>
-    /* ส่วนนี้คือ CSS ใช้ตกแต่งหน้าตาเว็บให้ดูสะอาดตา */
-    body { font-family: 'Sarabun', sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-    .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 300px; text-align: center; }
-    input { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; }
-    button { background-color: #0056b3; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px;}
-    button:hover { background-color: #004494; }
-    #dashboard { display: none; } /* ซ่อนหน้าทำงานไว้ก่อน จนกว่าจะล็อกอินผ่าน */
-  </style>
-</head>
-<body>
+const LINE_TOKEN = "ใส่_LINE_TOKEN_ของคุณตรงนี้"; 
 
-  <div id="loginPage" class="container">
-    <h2>เข้าสู่ระบบสารบรรณ</h2>
-    <input type="text" id="user" placeholder="ชื่อผู้ใช้งาน (เช่น admin)">
-    <input type="password" id="pass" placeholder="รหัสผ่าน (เช่น 1234)">
-    <button onclick="doLogin()">เข้าสู่ระบบ</button>
-    <p id="errorMsg" style="color:red; display:none;">รหัสผ่านไม่ถูกต้อง!</p>
-  </div>
+function doGet() {
+  return HtmlService.createHtmlOutputFromFile('Index')
+    .setTitle('ระบบ CMU e-Document')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
 
-  <div id="dashboard" class="container" style="width: 600px;">
-    <h2 id="welcomeText">ยินดีต้อนรับ</h2>
-    <hr>
-    <h3>รายการหนังสือเข้า (จำลอง)</h3>
-    <div style="text-align: left; background: #eef; padding: 10px; border-radius: 5px;">
-      <p><b>เลขที่:</b> ศธ 0401/123</p>
-      <p><b>เรื่อง:</b> ขอเชิญเข้าร่วมประชุมสัมมนา</p>
-      <button onclick="alert('ระบบบันทึกการรับทราบแล้ว และแจ้งเตือนผ่าน LINE ทันที!')" style="width: auto;">กดรับทราบ</button>
-    </div>
-    <br>
-    <button onclick="location.reload()" style="background: #dc3545; width: auto;">ออกจากระบบ</button>
-  </div>
-
-  <script>
-    function doLogin() {
-      var u = document.getElementById('user').value;
-      var p = document.getElementById('pass').value;
-      
-      // สั่งให้หน้าเว็บ ส่งข้อมูลไปเช็คที่โค้ดหลังบ้าน (Code.gs)
-      google.script.run.withSuccessHandler(function(result) {
-        if(result.success) {
-          // ถ้าถูก ซ่อนหน้าล็อกอิน โชว์หน้าทำงาน
-          document.getElementById('loginPage').style.display = 'none';
-          document.getElementById('dashboard').style.display = 'block';
-          document.getElementById('welcomeText').innerText = 'ยินดีต้อนรับ ' + result.name + ' (' + result.role + ')';
-        } else {
-          // ถ้าผิด โชว์ข้อความแจ้งเตือน
-          document.getElementById('errorMsg').style.display = 'block';
-        }
-      }).checkLogin(u, p);
+// === ระบบ Login ===
+function checkLogin(username, password) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Users");
+  var data = sheet.getDataRange().getValues();
+  
+  // วนลูปหา Username และ Password ใน Sheet: Users
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][0] == username && data[i][1] == password) {
+      return { 
+        success: true, 
+        name: data[i][0], 
+        role: data[i][2] 
+      }; 
     }
-  </script>
-</body>
-</html>
+  }
+  return { success: false }; // ถ้าไม่ตรงเลย
+}
+
+// === ระบบดึงเอกสาร ===
+function getDocuments() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Documents");
+  var data = sheet.getDataRange().getValues();
+  var headers = data[0];
+  var docs = [];
+  
+  for (var i = 1; i < data.length; i++) {
+    var row = data[i];
+    var doc = {};
+    for (var j = 0; j < headers.length; j++) {
+      doc[headers[j]] = row[j];
+    }
+    doc.rowIndex = i + 1; 
+    docs.push(doc);
+  }
+  return docs.reverse();
+}
+
+// === ระบบรับทราบเอกสาร + แจ้ง LINE ===
+function acknowledgeDocument(rowIndex, docSubject, userName) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Documents");
+  
+  var timestamp = Utilities.formatDate(new Date(), "GMT+7", "dd/MM/yyyy HH:mm");
+  var recordText = userName + " (รับทราบเมื่อ " + timestamp + ")";
+  sheet.getRange(rowIndex, 8).setValue(recordText); // คอลัมน์ H
+  
+  var message = "\n✅ อัปเดตสถานะเอกสาร\nเรื่อง: " + docSubject + "\nผู้รับทราบ: " + userName + "\nเวลา: " + timestamp;
+  sendLineNotify(message);
+  
+  return true; 
+}
+
+function sendLineNotify(message) {
+  if (LINE_TOKEN === "ใส่_LINE_TOKEN_ของคุณตรงนี้") return; 
+  
+  var options = {
+    "method": "post",
+    "payload": { "message": message },
+    "headers": { "Authorization": "Bearer " + LINE_TOKEN }
+  };
+  UrlFetchApp.fetch("https://notify-api.line.me/api/notify", options);
+}
