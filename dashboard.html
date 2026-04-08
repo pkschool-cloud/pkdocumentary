@@ -17,8 +17,8 @@
 <script type="text/babel">
 const { useState, useEffect, useCallback, useRef } = React;
 
-// ลิงก์ API 
-const API = "https://script.google.com/macros/s/AKfycbzKxQPLztVQcDmAfj19Pp18KcqUngqtdzYIcaYYt6fcBMZ5SRgB17C8OUZQ5Vfpui59Ag/exec";
+// ลิงก์ API ล่าสุด
+const API = "https://script.google.com/macros/s/AKfycbylh5bD6BkZvMgKx2UvEmHYeZzmbuG0pFMWnRUZ9by79LJ4A9z6mX7S0CdYuq3r_QDQJA/exec";
 
 async function apiCall(params) {
   try {
@@ -50,7 +50,6 @@ const I = {
   back:<svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
   check:<svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>,
   clock:<svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-  trash:<svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>,
   bold:<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/></svg>,
   italic:<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4z"/></svg>,
   underline:<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17c3.31 0 6-2.69 6-6V3h-2.5v8c0 1.93-1.57 3.5-3.5 3.5S8.5 12.93 8.5 11V3H6v8c0 3.31 2.69 6 6 6zm-7 2v2h14v-2H5z"/></svg>,
@@ -202,42 +201,12 @@ table.dt tbody tr:hover{background:#f8fafc;}
    COMPONENTS
 ================================================================= */
 
-// ★★★ 1. SIDEBAR COMPONENT (จัดการเมนูตามสิทธิ์) ★★★
-function SB({pg, nav, user, onLogout, cnt, canManageDocs, isSysAdmin}){
-  return(<>
-    <div className="sbn">
-      <div className="sbt">เมนูหลัก</div>
-      <div className={`sbi ${pg==="inbox"?"on":""}`} onClick={()=>nav("inbox")}>
-        {I.inbox} เอกสารเข้า {cnt>0&&<span className="sbbg">{cnt}</span>}
-      </div>
-      <div className={`sbi ${pg==="outbox"?"on":""}`} onClick={()=>nav("outbox")}>{I.send} เอกสารส่งออก</div>
-      <div className={`sbi ${pg==="folder"?"on":""}`} onClick={()=>nav("folder")}>{I.folder} แฟ้มส่วนตัว</div>
-      
-      {/* โชว์เมนู 'สร้างหนังสือ' เฉพาะ ผู้ดูแลระบบ หรือ สารบัญ */}
-      {canManageDocs && (
-        <div className={`sbi ${pg==="create"?"on":""}`} onClick={()=>nav("create")}>{I.plus} สร้างหนังสือ</div>
-      )}
-      
-      <div className="sbt" style={{marginTop:20}}>ระบบงาน</div>
-      <div className={`sbi ${pg==="search"?"on":""}`} onClick={()=>nav("search")}>{I.search} ค้นหาเอกสาร</div>
-      
-      {/* โชว์เมนู 'สถิติ' เฉพาะ ผู้ดูแลระบบ หรือ สารบัญ */}
-      {canManageDocs && (
-        <div className={`sbi ${pg==="stats"?"on":""}`} onClick={()=>nav("stats")}>{I.chart} สถิติ</div>
-      )}
-
-      {/* โชว์เมนู 'ตั้งค่า' เฉพาะ ผู้ดูแลระบบคนเดียว */}
-      {isSysAdmin && (
-        <div className={`sbi ${pg==="settings"?"on":""}`} onClick={()=>alert("สำหรับผู้ดูแลระบบเท่านั้น")}>{I.settings} ตั้งค่าระบบ</div>
-      )}
-    </div>
-  </>);
-}
-
+// แก้บั๊กเคอร์เซอร์เด้งไปหน้าสุด
 function RichEditor({value, onChange, placeholder}) {
   const editorRef = useRef(null);
 
   useEffect(() => {
+    // อัปเดตเฉพาะตอนโหลดข้อมูลครั้งแรก หรือเมื่อข้อมูลถูกเปลี่ยนจากภายนอก
     if (editorRef.current && value !== editorRef.current.innerHTML) {
       editorRef.current.innerHTML = value || "";
     }
@@ -275,21 +244,30 @@ function RichEditor({value, onChange, placeholder}) {
   );
 }
 
+// ค้นหาผู้รับ โดยใช้ทั้งชื่อและตำแหน่ง
 function RecipientInput({users,selected,onAdd,onRemove}){
   const[q,sQ]=useState("");const[show,sShow]=useState(false);
-  const filtered=(users||[]).filter(u=>u.Username?.toLowerCase().includes(q.toLowerCase())&&!selected.includes(u.Username));
+  
+  const filtered=(users||[]).filter(u=>{
+    const searchStr = `${u.FullName || u.Username} ${u.Position || ''}`.toLowerCase();
+    return searchStr.includes(q.toLowerCase()) && !selected.includes(u.FullName || u.Username);
+  });
   
   return(<div className="recip-wrap">
     <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:selected.length?10:0}}>
       {selected.map(s=><span key={s} className="recip-tag">{s}<button onClick={()=>onRemove(s)}>×</button></span>)}
     </div>
-    <input className="fi" style={{marginBottom:0}} placeholder="พิมพ์ชื่อผู้รับเพื่อค้นหา..." value={q} onChange={e=>{sQ(e.target.value);sShow(true)}} onFocus={()=>sShow(true)} onBlur={()=>setTimeout(()=>sShow(false),250)}/>
+    <input className="fi" style={{marginBottom:0}} placeholder="พิมพ์ชื่อผู้รับ หรือ ตำแหน่ง เพื่อค้นหา..." value={q} onChange={e=>{sQ(e.target.value);sShow(true)}} onFocus={()=>sShow(true)} onBlur={()=>setTimeout(()=>sShow(false),250)}/>
     {show&&q&&filtered.length>0&&<div className="recip-dd">
-      {filtered.map(u=><div key={u.Username} className="recip-opt" onMouseDown={e=>{e.preventDefault();onAdd(u.Username);sQ("");sShow(false)}}>
-        <div style={{width:32,height:32,borderRadius:'50%',background:"var(--ps)",display:"flex",alignItems:"center",justifyContent:"center",color:"var(--p)",fontWeight:700}}>{u.Username[0].toUpperCase()}</div>
+      {filtered.map(u=><div key={u.Username} className="recip-opt" onMouseDown={e=>{e.preventDefault();onAdd(u.FullName || u.Username);sQ("");sShow(false)}}>
+        <div style={{width:32,height:32,borderRadius:'50%',background:"var(--ps)",display:"flex",alignItems:"center",justifyContent:"center",color:"var(--p)",fontWeight:700}}>
+          {(u.FullName || u.Username)[0].toUpperCase()}
+        </div>
         <div>
-           <div style={{fontWeight:600}}>{u.Username}</div>
-           <div style={{fontSize:12,color:"var(--t3)"}}>{u.Role} {u.Email ? `• ${u.Email}` : ''}</div>
+           <div style={{fontWeight:600}}>{u.FullName || u.Username}</div>
+           <div style={{fontSize:12,color:"var(--t3)"}}>
+             {u.Position || u.Role} {u.Email ? `• ${u.Email}` : ''}
+           </div>
         </div>
       </div>)}
     </div>}
@@ -432,6 +410,7 @@ function App(){
     return s?JSON.parse(s):null;
   });
 
+  // ถ้าไม่มี user ให้เด้งกลับหน้า index.html
   useEffect(() => {
       if(!cu) {
           window.location.href = "index.html"; 
@@ -467,7 +446,7 @@ function App(){
 
   if(!cu) return null; 
 
-  // ★★★ 2. ตรวจสอบสิทธิ์การใช้งานของยูสเซอร์ที่ล็อกอินอยู่ ★★★
+  // กำหนดสิทธิ์
   const canManageDocs = cu.role === "ผู้ดูแลระบบ" || cu.role === "สารบัญ";
   const isSysAdmin = cu.role === "ผู้ดูแลระบบ";
 
@@ -486,12 +465,29 @@ function App(){
       </div>
     </header>
     <div className="main-body">
-      
-      {/* ★★★ ส่งค่าสิทธิ์ไปให้ Component Sidebar ทำงาน ★★★ */}
       <aside className="sb">
-         <SB pg={pg} nav={(p)=>{sPg(p);sSel(null)}} user={cu} cnt={ic} canManageDocs={canManageDocs} isSysAdmin={isSysAdmin} />
-      </aside>
+        <div className="sbn">
+          <div className="sbt">เมนูหลัก</div>
+          <div className={`sbi ${pg==="inbox"&&!sel?"on":""}`} onClick={()=>{sPg("inbox");sSel(null)}}>{I.inbox} เอกสารเข้า {ic>0&&<span className="badge">{ic}</span>}</div>
+          <div className={`sbi ${pg==="outbox"&&!sel?"on":""}`} onClick={()=>{sPg("outbox");sSel(null)}}>{I.send} เอกสารส่งออก</div>
+          <div className={`sbi ${pg==="folder"&&!sel?"on":""}`} onClick={()=>{sPg("folder");sSel(null)}}>{I.folder} แฟ้มส่วนตัว</div>
+          
+          {canManageDocs && (
+             <div className={`sbi ${pg==="create"&&!sel?"on":""}`} onClick={()=>{sPg("create");sSel(null)}}>{I.plus} สร้างหนังสือ</div>
+          )}
 
+          <div className="sbt" style={{marginTop:20}}>ระบบงาน</div>
+          <div className={`sbi ${pg==="search"&&!sel?"on":""}`} onClick={()=>{sPg("search");sSel(null)}}>{I.search} ค้นหาเอกสาร</div>
+          
+          {canManageDocs && (
+             <div className={`sbi ${pg==="stats"&&!sel?"on":""}`} onClick={()=>{sPg("stats");sSel(null)}}>{I.chart} สถิติ</div>
+          )}
+          
+          {isSysAdmin && (
+             <div className={`sbi ${pg==="settings"&&!sel?"on":""}`} onClick={()=>{sPg("settings");sSel(null)}}>{I.settings} ตั้งค่าระบบผู้ใช้งาน</div>
+          )}
+        </div>
+      </aside>
       <main className="mn">
         {sel?<div className="det"><div className="deth"><button className="detbk" onClick={()=>sSel(null)}>{I.back}</button><div><h2 style={{fontSize:22,color:'var(--p)'}}>{sel.Subject}</h2><div style={{color:'var(--t2)',fontSize:14}}>เลขที่: {sel.DocNumber||"-"}</div></div></div>
         <div className="detc"><div style={{display:'flex',gap:10,marginBottom:20}}><span className="badge-status" style={{background:'var(--ps)',color:'var(--p)',margin:0}}>{sel.Status}</span></div><div className="detg"><div><div className="detfl">ผู้ส่ง</div><div className="detfp">{sel.Sender}</div></div><div><div className="detfl">ลงวันที่</div><div className="detfp">{sel.Date}</div></div><div><div className="detfl">วัตถุประสงค์</div><div className="detfp">{sel.Purpose||"-"}</div></div><div><div className="detfl">สถานะรับทราบ</div><div className="detfp" style={{color:sel.ReadBy?'var(--ok)':'var(--t2)'}}>{sel.ReadBy||'ยังไม่ได้อ่าน'}</div></div></div>
@@ -500,23 +496,16 @@ function App(){
         
         :pg==="create" && canManageDocs?<CreateWizard user={cu} users={users} onClose={()=>sPg("inbox")} onCreated={()=>{sPg("inbox");fetchD()}} showToast={tt}/>
         
-        :pg==="inbox"?<div>
-          
-          <div className="page-head">
-            <div><h2>รายการเอกสารเข้า</h2><p>คลิกเพื่อดูรายละเอียด หรือกดรับทราบเพื่อยืนยัน</p></div>
-            {/* ★★★ 3. ซ่อนปุ่มสร้างหนังสือ ถ้าเป็นสิทธิ์ครูทั่วไป ★★★ */}
-            {canManageDocs && (
-               <button className="bn" onClick={()=>sPg("create")}>{I.plus} สร้างหนังสือใหม่</button>
-            )}
-          </div>
-          
+        :pg==="inbox"?<div><div className="page-head"><div><h2>รายการเอกสารเข้า</h2><p>คลิกเพื่อดูรายละเอียด หรือกดรับทราบเพื่อยืนยัน</p></div>
+        {canManageDocs && <button className="bn" onClick={()=>sPg("create")}>{I.plus} สร้างหนังสือใหม่</button>}
+        </div>
         <div className="tc"><div className="tch"><div className="tct">รายการทั้งหมด</div><div className="sbx">{I.search}<input placeholder="ค้นหาเรื่อง, เลขที่..." value={sq} onChange={e=>sSq(e.target.value)}/></div></div>
         {ld?<div className="ldr"><div className="ldrs"/>กำลังโหลด...</div>:fD.length>0?<table className="dt"><thead><tr><th style={{width:'15%'}}>การจัดการ</th><th style={{width:'20%'}}>เลขที่</th><th style={{width:'45%'}}>เรื่อง</th><th style={{width:'20%'}}>ผู้ส่ง</th></tr></thead>
         <tbody>{fD.map((d,i)=>{const isR=d.ReadBy&&d.ReadBy.trim()!=="";return <tr key={i} onClick={()=>sSel(d)}><td onClick={e=>e.stopPropagation()}>{isR?<div className="status-success">{I.check} รับทราบแล้ว</div>:<button className="btn-outline-action" onClick={(e)=>ack(e,d)}>กดรับ<br/>ทราบ</button>}</td><td><div className="dn">{d.DocNumber||"-"}</div><span className="badge-status">{d.Status}</span></td><td><div className="ds">{d.Subject}</div><div className="dm"><span>{I.clock} วันที่: {d.Date}</span><span style={{color:'var(--dn)'}}>{I.pin} {d.Purpose}</span></div></td><td><div style={{fontWeight:500}}>{d.Sender?d.Sender.split('(')[0]:'-'}</div><div style={{fontSize:12,color:'var(--t2)'}}>{d.Sender&&d.Sender.includes('(')?'('+d.Sender.split('(')[1]:''}</div></td></tr>})}</tbody></table>:<div className="emp"><div className="emp-i">📭</div><div className="emp-t">ไม่มีเอกสารเข้าใหม่</div></div>}</div></div>
         
         :pg==="outbox"?<div className="tc"><div className="tch"><div className="tct">เอกสารส่งออก</div>
-          {canManageDocs && <button className="bn" onClick={()=>sPg("create")}>{I.plus} สร้างใหม่</button>}
-          </div>
+        {canManageDocs && <button className="bn" onClick={()=>sPg("create")}>{I.plus} สร้างใหม่</button>}
+        </div>
         {docs.filter(d=>d.Sender===cu.username).length>0?<table className="dt"><thead><tr><th>เลขที่</th><th>เรื่อง</th><th>วันที่</th><th>สถานะ</th></tr></thead><tbody>{docs.filter(d=>d.Sender===cu.username).map((d,i)=><tr key={i} onClick={()=>sSel(d)}><td><span className="dn">{d.DocNumber||"-"}</span></td><td><div className="ds">{d.Subject}</div></td><td>{d.Date}</td><td><span className="badge-status">{d.Status}</span></td></tr>)}</tbody></table>:<div className="emp"><div className="emp-i">📤</div><div className="emp-t">ยังไม่มีประวัติการส่ง</div></div>}</div>
         
         :pg==="search"?<div className="tc"><div style={{padding:20}}><div className="sbx" style={{background:'#fff',border:'1px solid var(--bd)'}}>{I.search}<input placeholder="พิมพ์คำค้นหา..." value={sq} onChange={e=>sSq(e.target.value)} style={{fontSize:15}}/></div></div>
