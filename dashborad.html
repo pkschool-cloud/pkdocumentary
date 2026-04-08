@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบสารบรรณอิเล็กทรอนิกส์</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* === ตัวแปรสีและค่าพื้นฐาน (ปรับแก้สีตรงนี้ได้เลย) === */
+        :root {
+            --primary-color: #1a365d; /* สีน้ำเงินเข้มแบบมหาวิทยาลัย */
+            --secondary-color: #2b6cb0;
+            --bg-color: #f4f7f6;
+            --sidebar-bg: #ffffff;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --border-color: #e2e8f0;
+            --accent-orange: #ed8936;
+            --accent-red: #e53e3e;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* === 1. Navbar (แถบด้านบน) === */
+        .navbar {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0 20px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .nav-brand {
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            background: rgba(255,255,255,0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+        }
+
+        .user-profile:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* === โครงสร้างหลัก (Sidebar + Content) === */
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* === 2. Sidebar (แถบเมนูด้านข้าง) === */
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 20px 0;
+            overflow-y: auto;
+            transition: transform var(--transition-speed) ease;
+        }
+
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: all var(--transition-speed);
+            cursor: pointer;
+            border-left: 4px solid transparent;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background-color: #ebf4ff;
+            color: var(--secondary-color);
+            border-left-color: var(--secondary-color);
+        }
+
+        .menu-item span.badge {
+            background-color: var(--accent-red);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+
+        /* === 3. Content Area (พื้นที่ตรงกลาง) === */
+        .content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            /* แอนิเมชันตอนเปิดหน้าเว็บ */
+            animation: fadeIn 0.5s ease forwards; 
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .btn-create {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .btn-create:hover {
+            background-color: #235a96;
+            transform: translateY(-2px);
+        }
+
+        /* === 4. Table (ตารางแสดงเอกสาร) === */
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        tr {
+            transition: background-color 0.2s;
+        }
+
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        .status-badge {
+            font-size: 0.85rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background-color: #fffaf0;
+            color: var(--accent-orange);
+            border: 1px solid #feebc8;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .subject-link {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .subject-link:hover { text-decoration: underline; }
+
+        .tag-urgent {
+            background-color: var(--accent-red);
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+
+        .meta-text {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-brand">
+            🏫 ระบบ e-Document (จำลอง)
+        </div>
+        <div class="user-profile">
+            👤 นายเธียรวิชญ์ พิชญนันท์กุล ▼
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <a class="menu-item active">📥 เอกสารเข้า <span class="badge">168</span></a>
+            <a class="menu-item">📢 เอกสารเผยแพร่</a>
+            <a class="menu-item">📝 เอกสารร่าง</a>
+            <a class="menu-item">📤 เอกสารส่ง</a>
+            <a class="menu-item">🔍 ค้นหา</a>
+            <a class="menu-item">📂 เอกสารในแฟ้ม</a>
+            <hr style="border:0; border-top:1px solid #e2e8f0; margin: 10px 0;">
+            <a class="menu-item">📊 ออกรายงาน</a>
+        </aside>
+
+        <main class="content">
+            <div class="page-header">
+                <h2>รายการเอกสารเข้า</h2>
+                <button class="btn-create" onclick="createNewDoc()">+ สร้างหนังสือ</button>
+            </div>
+
+            <div style="margin-bottom: 20px; display: flex; gap: 15px;">
+                <select style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                    <option>เดือน เมษายน 2569</option>
+                </select>
+                <select style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                    <option>รายการที่ยังไม่ทราบ</option>
+                </select>
+                <button style="padding: 8px 15px; border-radius: 4px; border: 1px solid #ccc; cursor:pointer;">แสดงผล</button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="5%">เลือก</th>
+                            <th width="10%">สถานะ</th>
+                            <th width="15%">เลขที่หนังสือ/ประเภท</th>
+                            <th width="35%">เรื่อง</th>
+                            <th width="15%">ผู้ส่ง</th>
+                            <th width="10%">วันที่ส่ง</th>
+                            <th width="10%">วัตถุประสงค์</th>
+                        </tr>
+                    </thead>
+                    <tbody id="documentTableBody">
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td><span class="status-badge">↪ ส่งต่อ</span></td>
+                            <td>อว 8392(14)595<br><span class="meta-text">หนังสือภายใน</span></td>
+                            <td>
+                                <span class="meta-text">รหัสอ้างอิง: 852098-BFA</span><br>
+                                <a href="#" class="subject-link">✉ ขอความอนุเคราะห์บริจาคช่วยไฟป่า ↗</a>
+                            </td>
+                            <td>นางสาวรุ้งสินี เชียงงาม<br><span class="meta-text">(สำนักหอสมุด)</span></td>
+                            <td>08 เม.ย. 2569<br><span class="meta-text">13:14</span></td>
+                            <td>เพื่อทราบ</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td><span class="status-badge">↪ ส่งต่อ</span></td>
+                            <td>อว 8392(2).E/ว229<br><span class="meta-text">หนังสือภายใน</span></td>
+                            <td>
+                                <span class="meta-text">รหัสอ้างอิง: 2BF6D8-46F</span><br>
+                                <a href="#" class="subject-link">✉ ขอประชาสัมพันธ์ให้บุคลากรในสังกัด...</a>
+                                <span class="tag-urgent">ด่วนที่สุด</span>
+                            </td>
+                            <td>นางสาวฐิติรัตน์ ตันติวัฒน์<br><span class="meta-text">(สำนักหอสมุด)</span></td>
+                            <td>08 เม.ย. 2569<br><span class="meta-text">08:08</span></td>
+                            <td>เพื่อทราบ</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // เพิ่มลูกเล่น Effect ให้ปุ่มเมนูด้านข้าง
+        const menuItems = document.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // เอา class active ออกจากทุกตัว
+                menuItems.forEach(m => m.classList.remove('active'));
+                // ใส่ class active ให้ตัวที่ถูกคลิก
+                this.classList.add('active');
+            });
+        });
+
+        // จำลองฟังก์ชันกดสร้างหนังสือ
+        function createNewDoc() {
+            // ทำให้หน้าจอมีการตอบสนองว่ารับคำสั่งแล้ว
+            const btn = document.querySelector('.btn-create');
+            btn.innerHTML = "กำลังโหลด...";
+            btn.style.opacity = "0.8";
+            
+            setTimeout(() => {
+                alert("ระบบกำลังจะพาท่านไปหน้า 'สร้างหนังสือ' ครับ");
+                btn.innerHTML = "+ สร้างหนังสือ";
+                btn.style.opacity = "1";
+            }, 500);
+        }
+    </script>
+</body>
+</html>
