@@ -17,7 +17,7 @@
 <script type="text/babel">
 const { useState, useEffect, useCallback, useRef } = React;
 
-const API = "https://script.google.com/macros/s/AKfycbylh5bD6BkZvMgKx2UvEmHYeZzmbuG0pFMWnRUZ9by79LJ4A9z6mX7S0CdYuq3r_QDQJA/exec";
+const API = "hhttps://script.google.com/macros/s/AKfycbws4srbuR78gxskQJoTzWnnDQMDqjYVA3vz3Lt-6AVEU0yocqitiwlprCwu49lEOrc/exec";
 
 async function apiCall(params) {
   try {
@@ -140,8 +140,6 @@ table.dt tbody tr:hover{background:#f8fafc;}
 .emp{text-align:center;padding:60px 20px;color:var(--t2);}
 .emp-i{font-size:48px;margin-bottom:15px;opacity:.5;}
 .emp-t{font-size:16px;font-weight:600;}
-.ldr{display:flex;align-items:center;justify-content:center;padding:50px;gap:10px;color:var(--t2);font-weight:500;}
-.ldrs{width:22px;height:22px;border:3px solid var(--bd);border-top-color:var(--p);border-radius:50%;animation:spin .8s linear infinite;}
 
 /* DETAIL PAGE */
 .det{animation:slideL .3s;}
@@ -158,6 +156,11 @@ table.dt tbody tr:hover{background:#f8fafc;}
 .btn-ack{background:var(--ok);color:white;} .btn-ack:hover{background:#146c2e;}
 .btn-fwd{background:var(--p);color:white;} .btn-fwd:hover{background:var(--ph);}
 .btn-rep{background:#64748b;color:white;} .btn-rep:hover{background:#475569;}
+
+/* Routing History Styles */
+.rt-box { background: #fff; border: 1px solid var(--bd); border-radius: 8px; margin-top: 12px; overflow: hidden; }
+.rt-head { background: #f8fafc; padding: 12px 16px; border-bottom: 1px solid var(--bd); font-size: 13px; color: var(--t2); display: flex; align-items: center; gap: 8px; flex-wrap: wrap;}
+.rt-body { padding: 16px; font-size: 14px; line-height: 1.6; }
 
 /* WIZARD */
 .wiz{animation:fadeUp .3s;}
@@ -200,7 +203,7 @@ table.dt tbody tr:hover{background:#f8fafc;}
 `;
 
 /* =================================================================
-   JSON PURPOSE PARSER (แกะข้อมูลวัตถุประสงค์รายบุคคล)
+   JSON PURPOSE PARSER
 ================================================================= */
 const getMyPurpose = (purposeStr, me) => {
   if(!purposeStr) return "-";
@@ -208,7 +211,7 @@ const getMyPurpose = (purposeStr, me) => {
     const pObj = JSON.parse(purposeStr);
     return pObj[me] || "เพื่อทราบ";
   } catch {
-    return purposeStr; // กรณีเป็นข้อมูลเก่าที่ไม่ได้บันทึกแบบ JSON
+    return purposeStr; 
   }
 };
 
@@ -222,11 +225,28 @@ const getAllPurposes = (purposeStr) => {
   }
 };
 
+// ฟังก์ชันแกะประวัติการส่งต่อ/เกษียณหนังสือ
+const renderRoutingHistory = (histStr) => {
+  if (!histStr || histStr === "[]") return <div style={{color:'var(--t3)', marginTop: 10, fontSize: 13}}>ยังไม่มีประวัติการส่งต่อหรือเกษียณหนังสือ</div>;
+  try {
+      const hist = JSON.parse(histStr);
+      return hist.map((h, i) => (
+          <div className="rt-box" key={i}>
+              <div className="rt-head">
+                  <span style={{background: '#f59e0b', color: '#fff', padding: '2px 6px', borderRadius: 10, fontSize: 11, fontWeight: 700}}>FW</span>
+                  จาก <b>{h.from}</b> ถึง <b>{(h.to || "").split(',').join(', ')}</b> 
+                  <span style={{marginLeft: 'auto'}}>{I.clock} {h.date}</span>
+              </div>
+              <div className="rt-body" dangerouslySetInnerHTML={{__html: h.comment || '<span style="color:var(--t3)">ไม่มีข้อความเกษียณเพิ่มเติม</span>'}} />
+          </div>
+      ));
+  } catch(e) { return <div style={{color:'var(--t3)'}}>ไม่สามารถอ่านประวัติได้</div>; }
+};
+
 /* =================================================================
    COMPONENTS
 ================================================================= */
 
-// SIDEBAR: นำปุ่ม "สร้างหนังสือ" ออกจากเมนูด้านซ้ายแล้ว
 function SB({pg, nav, user, onLogout, cnt, canManageDocs, isSysAdmin}){
   return(<>
     <div className="sbn">
@@ -321,19 +341,88 @@ function RecipientInput({users,selected,onAdd,onRemove}){
   </div>);
 }
 
-function CreateWizard({user,users,onClose,onCreated,showToast, initialData=null}){
+// 🌟 Component สำหรับการ "ส่งต่อ/เกษียณหนังสือ" เฉพาะ
+function ForwardWizard({user, users, doc, onClose, onForwarded, showToast, isReply}) {
+  const [form, setForm] = useState({
+      recipients: isReply ? [doc.Sender] : [],
+      purposes: isReply ? {[doc.Sender]: "เพื่อทราบ"} : {},
+      comment: ""
+  });
+  const [saving, setSaving] = useState(false);
+  const upd = (k,v) => setForm(f => ({...f, [k]: v}));
+
+  const handleSave = async () => {
+      setSaving(true);
+      try {
+          await apiCall({
+              action: "forwardDocument", 
+              rowIndex: doc.rowIndex, 
+              subject: doc.Subject, 
+              sender: user.name || user.username, 
+              to: form.recipients.join(","), 
+              purpose: JSON.stringify(form.purposes), 
+              comment: form.comment
+          });
+          showToast("เกษียณและส่งต่อเอกสารสำเร็จ");
+          onForwarded();
+      } catch { showToast("เกิดข้อผิดพลาดในการส่งต่อ", "err"); }
+      setSaving(false);
+  };
+
+  return (
+      <div className="wiz-card" style={{marginTop: 20}}>
+          <div className="wiz-title">{isReply ? "ตอบกลับเอกสาร" : "เกษียณและส่งต่อเอกสาร"}</div>
+          <div className="wiz-row">
+              <div className="fg full">
+                  <label>1. เลือกผู้รับ (ส่งต่อถึง)</label>
+                  <RecipientInput users={users} selected={form.recipients} 
+                      onAdd={u=>{
+                          if(!form.recipients.includes(u)){
+                              upd("recipients",[...form.recipients,u]);
+                              upd("purposes",{...form.purposes, [u]:"เพื่อทราบ"});
+                          }
+                      }} 
+                      onRemove={u=>{
+                          const nR = form.recipients.filter(x=>x!==u);
+                          const nP = {...form.purposes}; delete nP[u];
+                          upd("recipients",nR); upd("purposes",nP);
+                      }}
+                  />
+              </div>
+              <div className="fg full">
+                  <label>2. กำหนดวัตถุประสงค์</label>
+                  {form.recipients.length === 0 ? 
+                      <div style={{fontSize:14, color:'var(--t3)', padding:'15px', background:'#f8fafc', borderRadius:8, border:'1px dashed var(--bd)', textAlign:'center'}}>กรุณาเลือกผู้รับด้านบนก่อน</div> 
+                  : 
+                      form.recipients.map(r => (
+                          <div key={r} style={{display:'flex', alignItems:'center', gap:15, marginBottom:10, padding:'10px 15px', background:'#f8fafc', border:'1px solid var(--bd)', borderRadius:8}}>
+                              <div style={{flex:1, fontWeight:600, fontSize:14}}>{r}</div>
+                              <select className="fi" style={{width:220, marginBottom:0, padding:'8px 12px'}} value={form.purposes[r] || "เพื่อทราบ"} onChange={e => upd("purposes", {...form.purposes, [r]: e.target.value})}>
+                                  <option>เพื่อทราบ</option><option>เพื่อทราบและถือปฏิบัติ</option><option>เพื่อพิจารณา</option><option>เพื่อพิจารณาเสนอ</option><option>เพื่ออนุมัติ</option><option>เพื่ออนุญาต</option><option>เพื่อดำเนินการต่อ</option><option>เพื่อพิจารณาและส่งต่อ</option>
+                              </select>
+                          </div>
+                      ))
+                  }
+              </div>
+              <div className="fg full">
+                  <label>3. ข้อความเกษียณหนังสือ (Comment)</label>
+                  <RichEditor value={form.comment} onChange={v=>upd("comment",v)} placeholder="พิมพ์ความเห็น หรือคำสั่งการที่นี่..."/>
+              </div>
+          </div>
+          <div className="wiz-foot">
+              <button className="ba" onClick={onClose}>ยกเลิก</button>
+              <button className="bn" onClick={handleSave} disabled={saving||form.recipients.length===0}>{saving?"กำลังบันทึก...":"ส่งเอกสาร"}</button>
+          </div>
+      </div>
+  );
+}
+
+
+function CreateWizard({user,users,onClose,onCreated,showToast}){
   const[step,setStep]=useState(0);
   
   const[form,setForm]=useState({
-    docTypes: initialData ? initialData.docTypes : ["หนังสือภายใน"],
-    urgency: initialData ? initialData.urgency : "ปกติ",
-    confidentiality: "ปกติ",
-    docNumber: initialData ? initialData.docNumber : "",
-    subject: initialData ? initialData.subject : "",
-    to: "",
-    content: initialData ? initialData.content : "",
-    recipients: [], 
-    purposes: {} // เก็บข้อมูลวัตถุประสงค์แยกรายบุคคล { 'นาย A': 'เพื่อทราบ', ... }
+    docTypes: ["หนังสือภายใน"], urgency: "ปกติ", confidentiality: "ปกติ", docNumber: "", subject: "", to: "", content: "", recipients: [], purposes: {} 
   });
   
   const[saving,setSaving]=useState(false);
@@ -350,7 +439,7 @@ function CreateWizard({user,users,onClose,onCreated,showToast, initialData=null}
       await apiCall({
         action:"createDocument", id:Date.now(), status:"ส่งต่อ", docNumber:form.docNumber,
         subject:form.subject, sender:user.name || user.username, date:thDate, 
-        purpose: JSON.stringify(form.purposes), // บันทึกเป็น JSON ลง Google Sheets
+        purpose: JSON.stringify(form.purposes), 
         to:form.recipients.join(","), content:form.content, type:form.docTypes.join(",")
       });
       showToast("ส่งหนังสือสำเร็จ การแจ้งเตือนถูกส่งผ่าน Email แล้ว");
@@ -361,7 +450,7 @@ function CreateWizard({user,users,onClose,onCreated,showToast, initialData=null}
 
   return(<div className="wiz">
     <div className="page-head" style={{marginBottom:15}}>
-      <div><h2 style={{fontSize:22}}>สร้างหนังสือ/ส่งต่อเอกสาร</h2><p>ระบบจัดการหนังสือราชการอิเล็กทรอนิกส์</p></div>
+      <div><h2 style={{fontSize:22}}>สร้างหนังสือใหม่</h2><p>ระบบสร้างและส่งหนังสือราชการอิเล็กทรอนิกส์</p></div>
     </div>
     
     <div className="wiz-steps">
@@ -369,7 +458,7 @@ function CreateWizard({user,users,onClose,onCreated,showToast, initialData=null}
         <div className={`wiz-step ${i===step?"active":""} ${i<step?"done":""}`} onClick={()=>{if(i<step)setStep(i)}}>
           <div className="wiz-step-num">{i<step?"✓":i+1}</div>{s}
         </div>
-        {i<steps.length-1&&<span style={{color:'var(--bd)'}}>{I.chevR}</span>}
+        {i<steps.length-1&&<span style={{color:'var(--bd)'}} key={i+'_arr'}>{I.chevR}</span>}
       </React.Fragment>)}
     </div>
 
@@ -508,7 +597,7 @@ function App(){
   const[toast,sToast]=useState(null);
   const[sq,sSq]=useState("");
   
-  const[fwdData, setFwdData] = useState(null);
+  const [fwdMode, setFwdMode] = useState(null); // "forward" หรือ "reply"
 
   const tt=(m,t="ok")=>{sToast({m,t});setTimeout(()=>sToast(null),3000)};
 
@@ -531,6 +620,10 @@ function App(){
   };
 
   const ack=async(d, callback)=>{
+    if(isDocRead(d)) {
+      if(callback) callback();
+      return;
+    }
     try{
       await apiCall({action:"acknowledge",rowIndex:d.rowIndex,subject:d.Subject,userName:cu.name || cu.username});
       tt("รับทราบแล้ว");
@@ -543,36 +636,11 @@ function App(){
     }catch{tt("เกิดข้อผิดพลาด","err")}
   };
 
-  const handleForward = (d) => {
-    ack(d, () => {
-      setFwdData({
-        subject: "Fwd: " + d.Subject,
-        docNumber: d.DocNumber,
-        docTypes: [d.Type || "หนังสือภายใน"],
-        urgency: "ปกติ",
-        content: `<br><hr><p><b>ข้อความเดิมจาก ${d.Sender}:</b></p>${d.Content || ''}`
-      });
-      sSel(null);
-      sPg("create");
-    });
-  };
-
-  const handleReply = (d) => {
-    ack(d, () => {
-      setFwdData({
-        subject: "Re: " + d.Subject,
-        docNumber: d.DocNumber,
-        docTypes: [d.Type || "หนังสือภายใน"],
-        urgency: "ปกติ",
-        content: `<br><hr><p><b>ตอบกลับถึง ${d.Sender}:</b></p>${d.Content || ''}`
-      });
-      sSel(null);
-      sPg("create");
-    });
-  };
+  const handleForward = (d) => { ack(d, () => setFwdMode("forward")); };
+  const handleReply = (d) => { ack(d, () => setFwdMode("reply")); };
 
   const handleOpenCreate = () => {
-    setFwdData(null); 
+    setFwdMode(null); 
     sSel(null);
     sPg("create");
   };
@@ -582,7 +650,6 @@ function App(){
   const canManageDocs = cu.role === "ผู้ดูแลระบบ" || cu.role === "สารบัญ";
   const isSysAdmin = cu.role === "ผู้ดูแลระบบ";
 
-  // Inbox กรองให้ตรงกับ To ของตัวเอง
   const myInbox = docs.filter(d => {
     if(!d.To) return false;
     const toStr = String(d.To);
@@ -599,7 +666,7 @@ function App(){
 
   return(<div className="app"><style>{CSS}</style>
     <header className="top">
-      <div className="top-l" style={{cursor:'pointer'}} onClick={()=>{sPg("inbox");sSel(null)}}>
+      <div className="top-l" style={{cursor:'pointer'}} onClick={()=>{sPg("inbox");sSel(null);setFwdMode(null);}}>
         <img src="school logo.jpg" className="logo-sm" onError={e=>e.target.style.display='none'}/>
         <div>
            <div className="top-title">ระบบจัดการเอกสารอิเล็กทรอนิกส์</div>
@@ -613,11 +680,13 @@ function App(){
     </header>
     <div className="main-body">
       <aside className="sb">
-         <SB pg={pg} nav={(p)=>{sPg(p);sSel(null)}} user={cu} cnt={ic} canManageDocs={canManageDocs} isSysAdmin={isSysAdmin} />
+         <SB pg={pg} nav={(p)=>{sPg(p);sSel(null);setFwdMode(null);}} user={cu} cnt={ic} canManageDocs={canManageDocs} isSysAdmin={isSysAdmin} />
       </aside>
 
       <main className="mn">
-        {sel?<div className="det">
+        {fwdMode && sel ? <ForwardWizard user={cu} users={users} doc={sel} isReply={fwdMode==="reply"} onClose={()=>setFwdMode(null)} onForwarded={()=>{setFwdMode(null); sSel(null); fetchD();}} showToast={tt}/>
+        
+        :sel?<div className="det">
           <div className="deth"><button className="detbk" onClick={()=>sSel(null)}>{I.back}</button><div><h2 style={{fontSize:22,color:'var(--p)'}}>{sel.Subject}</h2><div style={{color:'var(--t2)',fontSize:14}}>เลขที่: {sel.DocNumber||"-"}</div></div></div>
           <div className="detc">
             <div style={{display:'flex',gap:10,marginBottom:20}}>
@@ -629,7 +698,6 @@ function App(){
               <div>
                  <div className="detfl">วัตถุประสงค์</div>
                  <div className="detfp" style={{color:'var(--dn)'}}>
-                    {/* โชว์วัตถุประสงค์ของทุกคน (ดึงจาก JSON) */}
                     {getAllPurposes(sel.Purpose)}
                  </div>
               </div>
@@ -640,22 +708,30 @@ function App(){
             </div>
             
             <div style={{marginTop:25,paddingTop:20,borderTop:'1px solid var(--bd)'}}>
-              <div className="detfl">เนื้อหา / ข้อความเพิ่มเติม</div>
+              <div className="detfl">เนื้อหา / ข้อความ</div>
               <div className="detcn" dangerouslySetInnerHTML={{__html: sel.Content||'<span style="color:var(--t3)">ไม่มีเนื้อหา</span>'}} />
             </div>
             
+            {/* 🌟 เพิ่มส่วนแสดงประวัติการส่งต่อ/เกษียณหนังสือตรงนี้ 🌟 */}
+            <div style={{marginTop:25, paddingTop:20, borderTop:'1px solid var(--bd)'}}>
+              <div className="detfl" style={{fontSize: 14, color: 'var(--p)', marginBottom: 8}}>{I.forward} ลำดับการรับ-ส่ง / เกษียณหนังสือ</div>
+              <div className="routing-history">
+                 {renderRoutingHistory(sel.RoutingHistory)}
+              </div>
+            </div>
+
             {sel.FileLink&&<div style={{marginTop:20}}><a href={sel.FileLink} target="_blank" className="ba bl" style={{width:'fit-content',textDecoration:'none'}}>{I.file} เปิดดูไฟล์แนบ</a></div>}
             
             <div className="action-bar">
                {!selIsRead && <button className="bn btn-ack" onClick={()=>ack(sel)}>{I.check} รับทราบ</button>}
-               <button className="bn btn-fwd" onClick={()=>handleForward(sel)}>{I.forward} {selIsRead?'ส่งต่อ':'รับทราบและส่งต่อ'}</button>
+               <button className="bn btn-fwd" onClick={()=>handleForward(sel)}>{I.forward} {selIsRead?'ส่งต่อเอกสาร':'รับทราบและส่งต่อ'}</button>
                <button className="bn btn-rep" onClick={()=>handleReply(sel)}>{I.reply} {selIsRead?'ตอบกลับ':'รับทราบและตอบกลับ'}</button>
             </div>
 
           </div>
         </div>
         
-        :pg==="create" && canManageDocs?<CreateWizard user={cu} users={users} onClose={()=>sPg("inbox")} onCreated={()=>{sPg("inbox");fetchD()}} showToast={tt} initialData={fwdData}/>
+        :pg==="create" && canManageDocs?<CreateWizard user={cu} users={users} onClose={()=>sPg("inbox")} onCreated={()=>{sPg("inbox");fetchD()}} showToast={tt}/>
         
         :pg==="inbox"?<div>
           <div className="page-head">
@@ -675,7 +751,6 @@ function App(){
                    <div className="ds">{d.Subject}</div>
                    <div className="dm">
                       <span>{I.clock} {d.Date}</span>
-                      {/* ใน Inbox โชว์เฉพาะวัตถุประสงค์ของตัวเองที่ส่งมา */}
                       <span style={{color:'var(--dn)'}}>{I.pin} {getMyPurpose(d.Purpose, cu.name || cu.username)}</span>
                    </div>
                 </td>
