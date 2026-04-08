@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>เข้าสู่ระบบ — CMU e-Document</title>
+<title>เข้าสู่ระบบ — ระบบจัดการเอกสารอิเล็กทรอนิกส์</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏫</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -64,10 +64,10 @@ body::after{content:'';position:absolute;bottom:-30%;left:-10%;width:500px;heigh
     </div>
     <div>
       <h1>CMU e-Document</h1>
-      <p>ระบบสารบรรณอิเล็กทรอนิกส์</p>
+      <p>โรงเรียนป่าก้าง</p>
     </div>
   </div>
-  <div class="subtitle">เข้าสู่ระบบเพื่อจัดการเอกสาร</div>
+  <div class="subtitle">ระบบจัดการเอกสารอิเล็กทรอนิกส์</div>
 
   <form id="loginForm" onsubmit="return handleLogin(event)">
     <div class="field">
@@ -101,10 +101,9 @@ body::after{content:'';position:absolute;bottom:-30%;left:-10%;width:500px;heigh
 </div>
 
 <script>
-// ลิงก์ API ล่าสุดของคุณ
+// ★ อัปเดตลิงก์ API ล่าสุดแล้ว ★
 const API = "https://script.google.com/macros/s/AKfycbylh5bD6BkZvMgKx2UvEmHYeZzmbuG0pFMWnRUZ9by79LJ4A9z6mX7S0CdYuq3r_QDQJA/exec";
 
-// ถ้าเคยล็อกอินไว้แล้ว ให้ข้ามไปหน้า Dashboard เลย
 if (sessionStorage.getItem("edoc_user")) {
   window.location.href = "dashboard.html";
 }
@@ -168,9 +167,8 @@ async function handleLogin(e) {
     if (res && res.success) {
       sessionStorage.setItem("edoc_user", JSON.stringify({
         username: res.name || res.username || user,
-        role: res.role || "เจ้าหน้าที่"
+        role: res.role || "ครูทั่วไป"
       }));
-      // ล็อกอินผ่าน สั่งไปหน้า dashboard
       window.location.href = "dashboard.html";
     } else {
       showError(res?.error || "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
