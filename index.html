@@ -3,122 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบสารบรรณอิเล็กทรอนิกส์</title>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>CMU e-Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* === โทนสีและตัวแปรหลัก (อิงจากภาพอ้างอิง) === */
         :root {
-            --primary-color: #1a365d; 
-            --secondary-color: #2b6cb0;
-            --bg-color: #f4f7f6;
-            --sidebar-bg: #ffffff;
-            --text-dark: #2d3748;
-            --text-light: #718096;
-            --border-color: #e2e8f0;
-            --accent-orange: #ed8936;
-            --accent-red: #e53e3e;
-            --transition-speed: 0.3s;
+            --primary: #1c3b82;       /* สีน้ำเงินเข้มตามปุ่มและโลโก้ */
+            --bg-body: #f5f6f8;       /* สีพื้นหลังภาพรวม */
+            --bg-sidebar: #ffffff;    
+            --bg-card: #ffffff;
+            --text-dark: #202124;
+            --text-gray: #5f6368;
+            --border-light: #e8eaed;
+            --hover-blue: #e8f0fe;    /* สีฟ้าอ่อนเวลาชี้เมนู */
+            --btn-gray: #f1f3f4;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-dark); height: 100vh; overflow: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Sarabun', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-dark); height: 100vh; overflow: hidden; }
 
-        /* === ส่วนหน้า Login === */
+        /* ==========================================
+           1. หน้า Login (ซ่อนไว้ก่อนเมื่อล็อกอินผ่าน)
+           ========================================== */
         #login-section {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex; justify-content: center; align-items: center; height: 100vh;
+            background: linear-gradient(135deg, #1c3b82 0%, #4285f4 100%);
         }
-        .login-box {
-            background: white; padding: 40px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            width: 350px; text-align: center;
+        .login-card {
+            background: rgba(255, 255, 255, 0.95); padding: 40px; border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 380px; text-align: center;
         }
-        .login-box h2 { color: var(--primary-color); margin-bottom: 20px; }
-        .login-box input {
-            width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem;
+        .circular-logo-login {
+            width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
+            margin: 0 auto 20px auto; display: block; border: 3px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .login-card h2 { color: var(--primary); margin-bottom: 20px; font-weight: 700; }
+        .login-card input {
+            width: 100%; padding: 12px 15px; margin-bottom: 15px; border: 1px solid #ccc;
+            border-radius: 8px; font-size: 1rem; background: #f8f9fa;
         }
         .btn-login {
-            width: 100%; background: var(--secondary-color); color: white; border: none; padding: 12px;
-            border-radius: 6px; font-size: 1rem; cursor: pointer; margin-top: 10px; transition: 0.2s;
+            width: 100%; background: var(--primary); color: white; border: none; padding: 12px;
+            border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.2s;
         }
-        .btn-login:hover { background: #235a96; }
-        #error-msg { color: var(--accent-red); margin-top: 10px; font-size: 0.9rem; display: none; }
+        .btn-login:hover { background: #152d65; }
+        .error-msg { color: #d93025; font-size: 0.85rem; margin-top: 10px; display: none; }
 
-        /* === ส่วนหน้า Dashboard (ซ่อนไว้ก่อน) === */
+        /* ==========================================
+           2. หน้า Dashboard (ดีไซน์ใหม่ตามภาพ)
+           ========================================== */
         #dashboard-section { display: none; flex-direction: column; height: 100vh; }
         
+        /* --- Navbar ด้านบน --- */
         .navbar {
-            background-color: var(--primary-color); color: white; padding: 0 20px; height: 60px;
-            display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 10;
+            background: var(--bg-card); height: 70px; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 30px; border-bottom: 1px solid var(--border-light); z-index: 10;
         }
-        .nav-brand { font-size: 1.2rem; font-weight: 600; display: flex; align-items: center; gap: 10px; }
-        .user-profile {
-            display: flex; align-items: center; gap: 10px; font-size: 0.9rem; background: rgba(255,255,255,0.1);
-            padding: 5px 15px; border-radius: 20px; cursor: pointer;
+        .nav-left { display: flex; align-items: center; gap: 15px; }
+        .nav-logo { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-light); }
+        .nav-title { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
+        
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+        .user-info { text-align: right; line-height: 1.2; }
+        .user-name { font-weight: 600; font-size: 0.95rem; color: var(--primary); }
+        .user-role { font-size: 0.8rem; color: var(--text-gray); }
+        .btn-logout { 
+            background: var(--btn-gray); border: none; padding: 8px 16px; border-radius: 20px; 
+            color: var(--text-gray); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: 0.2s; 
         }
-        .main-container { display: flex; flex: 1; overflow: hidden; }
-        .sidebar { width: 250px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color); padding: 20px 0; overflow-y: auto; }
+        .btn-logout:hover { background: #e0e0e0; color: var(--text-dark); }
+
+        /* --- โครงสร้างหลัก (แบ่งซ้าย-ขวา) --- */
+        .main-wrapper { display: flex; flex: 1; overflow: hidden; }
+        
+        /* --- Sidebar ด้านซ้าย --- */
+        .sidebar { width: 250px; background: var(--bg-sidebar); border-right: 1px solid var(--border-light); padding: 25px 20px; overflow-y: auto; }
+        .menu-group { margin-bottom: 25px; }
+        .menu-title { font-size: 0.8rem; color: var(--text-gray); font-weight: 500; margin-bottom: 10px; padding-left: 10px; }
         .menu-item {
-            padding: 12px 20px; display: flex; align-items: center; gap: 15px; color: var(--text-dark); text-decoration: none; cursor: pointer; border-left: 4px solid transparent;
+            display: flex; align-items: center; gap: 12px; padding: 10px 15px; margin-bottom: 5px;
+            border-radius: 8px; color: var(--text-dark); text-decoration: none; cursor: pointer; font-weight: 500; transition: 0.2s;
         }
-        .menu-item:hover, .menu-item.active { background-color: #ebf4ff; color: var(--secondary-color); border-left-color: var(--secondary-color); }
-        .content { flex: 1; padding: 30px; overflow-y: auto; animation: fadeIn 0.5s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .menu-item:hover { background: var(--hover-blue); }
+        .menu-item.active { background: var(--hover-blue); color: var(--primary); }
         
-        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--border-color); }
-        .btn-create { background-color: var(--secondary-color); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 1rem; }
+        /* --- Content พื้นที่ตรงกลาง --- */
+        .content { flex: 1; padding: 40px; overflow-y: auto; background: var(--bg-body); }
         
-        .table-container { background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid var(--border-color); }
+        .content-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; }
+        .content-header h2 { font-size: 1.6rem; font-weight: 700; color: var(--text-dark); margin-bottom: 5px; }
+        .content-header p { color: var(--text-gray); font-size: 0.9rem; }
+        
+        .btn-primary-action {
+            background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px;
+            font-weight: 600; cursor: pointer; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* --- Table ตารางข้อมูล --- */
+        .table-container { background: var(--bg-card); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
-        th, td { padding: 15px; border-bottom: 1px solid var(--border-color); }
-        th { background-color: #f8fafc; color: var(--text-light); font-weight: 600; font-size: 0.9rem; }
-        tr:hover { background-color: #f1f5f9; }
+        th { padding: 16px 20px; font-size: 0.85rem; font-weight: 500; color: var(--text-gray); border-bottom: 1px solid var(--border-light); }
+        td { padding: 20px; border-bottom: 1px solid var(--border-light); vertical-align: top; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* ปุ่มกดรับทราบ (แบบเส้นขอบ) */
+        .btn-outline-action {
+            background: transparent; border: 1px solid var(--primary); color: var(--primary); 
+            padding: 6px 12px; border-radius: 6px; font-size: 0.9rem; font-weight: 500; cursor: pointer; width: 80px; text-align: center;
+        }
+        .btn-outline-action:hover { background: var(--hover-blue); }
+        
+        /* สไตล์ข้อความในตาราง */
+        .doc-no { font-weight: 600; color: var(--text-dark); font-size: 1rem; }
+        .badge-status { 
+            display: inline-block; background: #f1f3f4; color: var(--text-gray); 
+            padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-top: 6px; 
+        }
+        
+        .doc-subject { font-weight: 600; color: var(--primary); font-size: 1.05rem; text-decoration: none; display: block; margin-bottom: 6px; }
+        .doc-meta { font-size: 0.85rem; color: var(--text-gray); display: flex; gap: 15px; align-items: center; }
+        
+        .sender-name { font-weight: 500; color: var(--text-dark); font-size: 0.95rem; }
+        
+        .status-success { color: #188038; font-weight: 500; font-size: 0.9rem; }
+        .loading-row { text-align: center; padding: 40px; color: var(--text-gray); }
     </style>
 </head>
 <body>
 
     <div id="login-section">
-        <div class="login-box">
-            <h2>🏫 เข้าสู่ระบบ e-Document</h2>
-            <input type="text" id="username" placeholder="ชื่อผู้ใช้งาน">
+        <div class="login-card">
+            <img src="school logo.jpg" alt="Logo" class="circular-logo-login" onerror="this.src='https://via.placeholder.com/100?text=Logo'">
+            <h2>CMU e-Document</h2>
+            <input type="text" id="username" placeholder="ชื่อผู้ใช้งาน" autocomplete="off">
             <input type="password" id="password" placeholder="รหัสผ่าน">
             <button class="btn-login" id="loginBtn" onclick="processLogin()">เข้าสู่ระบบ</button>
-            <div id="error-msg">ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง!</div>
+            <div id="error-msg" class="error-msg">ข้อมูลไม่ถูกต้อง หรือตรวจสอบลิงก์ API</div>
         </div>
     </div>
 
     <div id="dashboard-section">
+        
         <header class="navbar">
-            <div class="nav-brand">🏫 ระบบ e-Document</div>
-            <div class="user-profile" onclick="location.reload()">
-                <span id="display-name">👤 กำลังโหลด...</span> (คลิกเพื่อออก)
+            <div class="nav-left">
+                <img src="school logo.jpg" alt="Logo" class="nav-logo" onerror="this.src='https://via.placeholder.com/45?text=Logo'">
+                <div class="nav-title">CMU e-Document</div>
+            </div>
+            <div class="nav-right">
+                <div class="user-info">
+                    <div class="user-name" id="display-name">admin</div>
+                    <div class="user-role" id="display-role">สารบัญ</div>
+                </div>
+                <button class="btn-logout" onclick="location.reload()">ออกจากระบบ</button>
             </div>
         </header>
 
-        <div class="main-container">
+        <div class="main-wrapper">
             <aside class="sidebar">
-                <a class="menu-item active">📥 เอกสารเข้า</a>
-                <a class="menu-item">📢 เอกสารเผยแพร่</a>
-                <a class="menu-item">📤 เอกสารส่ง</a>
+                <div class="menu-group">
+                    <div class="menu-title">เมนูหลัก</div>
+                    <a class="menu-item active">📥 เอกสารเข้าใหม่</a>
+                    <a class="menu-item" onclick="alert('ฟังก์ชันกำลังพัฒนา')">📤 เอกสารส่งออก</a>
+                    <a class="menu-item" onclick="alert('ฟังก์ชันกำลังพัฒนา')">📁 แฟ้มเอกสารส่วนตัว</a>
+                </div>
+                <div class="menu-group">
+                    <div class="menu-title">ระบบงาน</div>
+                    <a class="menu-item" onclick="alert('ฟังก์ชันกำลังพัฒนา')">🔍 ค้นหาเอกสาร</a>
+                    <a class="menu-item" onclick="alert('ฟังก์ชันกำลังพัฒนา')">📊 รายงานสถิติ</a>
+                </div>
             </aside>
 
             <main class="content">
-                <div class="page-header">
-                    <h2>รายการเอกสารเข้า</h2>
-                    <button class="btn-create" onclick="alert('ฟังก์ชันสร้างหนังสือใหม่กำลังพัฒนา')">+ สร้างหนังสือ</button>
+                <div class="content-header">
+                    <div>
+                        <h2>รายการเอกสารเข้า</h2>
+                        <p>คลิกที่ชื่อเรื่องเพื่อดูรายละเอียด หรือกดรับทราบเพื่อยืนยัน</p>
+                    </div>
+                    <button class="btn-primary-action" onclick="alert('ฟังก์ชันสำหรับสร้างหนังสือใหม่')">+ สร้างหนังสือใหม่</button>
                 </div>
 
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th width="12%">การจัดการ</th>
-                                <th width="15%">เลขที่หนังสือ</th>
-                                <th width="35%">เรื่อง</th>
-                                <th width="15%">ผู้ส่ง</th>
-                                <th width="10%">วันที่ส่ง</th>
-                                <th width="13%">ผู้รับทราบ</th>
+                                <th width="15%">การดำเนินการ</th>
+                                <th width="20%">เลขที่เอกสาร</th>
+                                <th width="45%">เรื่อง / รายละเอียด</th>
+                                <th width="20%">ผู้ส่ง</th>
                             </tr>
                         </thead>
                         <tbody id="documentTableBody">
@@ -130,75 +201,133 @@
     </div>
 
     <script>
-        let currentUser = ""; // ตัวแปรเก็บชื่อคนที่ล็อกอิน
+        // 1. ใส่ API URL ตรงนี้
+        const API_URL = "https://script.google.com/macros/s/AKfycbzKxQPLztVQcDmAfj19Pp18KcqUngqtdzYIcaYYt6fcBMZ5SRgB17C8OUZQ5Vfpui59Ag/exec"; 
 
-        // 1. ฟังก์ชันกดปุ่มเข้าสู่ระบบ
-        function processLogin() {
+        let currentUser = "";
+        let currentRole = "";
+
+        // ฟังก์ชันกลางยิง API
+        async function callAPI(payload) {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+                return await response.json();
+            } catch (error) {
+                console.error("API Error:", error);
+                return { success: false };
+            }
+        }
+
+        // ระบบ Login
+        async function processLogin() {
             const u = document.getElementById('username').value;
             const p = document.getElementById('password').value;
             const btn = document.getElementById('loginBtn');
             const errorMsg = document.getElementById('error-msg');
 
-            if(!u || !p) return alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+            if(!u || !p) return alert('กรุณากรอกข้อมูล');
 
-            // เปลี่ยนปุ่มเป็นสถานะโหลด
-            btn.innerText = "กำลังตรวจสอบ...";
-            btn.disabled = true;
-            errorMsg.style.display = 'none';
+            btn.innerText = "กำลังตรวจสอบ..."; btn.disabled = true; errorMsg.style.display = 'none';
 
-            // ส่งไปเช็คที่ Google Apps Script
-            google.script.run.withSuccessHandler(function(result) {
-                if(result.success) {
-                    // ล็อกอินผ่าน
-                    currentUser = result.name;
-                    document.getElementById('display-name').innerText = "👤 " + result.name + " (" + result.role + ")";
-                    
-                    // สลับหน้าจอ
-                    document.getElementById('login-section').style.display = 'none';
-                    document.getElementById('dashboard-section').style.display = 'flex';
-                    
-                    // สั่งให้เริ่มดึงข้อมูลตาราง
-                    loadDocuments();
-                } else {
-                    // ล็อกอินผิดพลาด
-                    errorMsg.style.display = 'block';
-                    btn.innerText = "เข้าสู่ระบบ";
-                    btn.disabled = false;
-                }
-            }).checkLogin(u, p);
+            const result = await callAPI({ action: 'login', username: u, password: p });
+
+            if(result && result.success) {
+                currentUser = result.name;
+                currentRole = result.role;
+                
+                document.getElementById('display-name').innerText = currentUser;
+                document.getElementById('display-role').innerText = currentRole;
+                
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('dashboard-section').style.display = 'flex';
+                
+                loadDocuments();
+            } else {
+                errorMsg.style.display = 'block';
+                btn.innerText = "เข้าสู่ระบบ"; btn.disabled = false;
+            }
         }
 
-        // 2. ฟังก์ชันดึงข้อมูลจาก Google Sheets (Documents)
-        function loadDocuments() {
+        document.getElementById('password').addEventListener("keyup", e => { if (e.key === "Enter") processLogin(); });
+
+        // ระบบดึงข้อมูล
+        async function loadDocuments() {
             const tbody = document.getElementById('documentTableBody');
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 30px;">กำลังโหลดข้อมูล...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="4" class="loading-row">⏳ กำลังโหลดข้อมูล...</td></tr>';
 
-            google.script.run.withSuccessHandler(renderTable).getDocuments();
+            const result = await callAPI({ action: 'getDocuments' });
+
+            if (result && result.success) {
+                renderTable(result.data);
+            } else {
+                tbody.innerHTML = '<tr><td colspan="4" class="loading-row" style="color:red;">❌ โหลดข้อมูลล้มเหลว</td></tr>';
+            }
         }
 
-        // 3. ฟังก์ชันสร้างตาราง
+        // ฟังก์ชันสร้างตารางให้เหมือนในภาพ
         function renderTable(docs) {
             const tbody = document.getElementById('documentTableBody');
             tbody.innerHTML = '';
 
-            if (docs.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">ไม่มีข้อมูลเอกสารในระบบ</td></tr>';
+            if (!docs || docs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="loading-row">ไม่มีรายการเอกสารเข้า</td></tr>';
                 return;
             }
 
             docs.forEach(doc => {
                 const isRead = doc.ReadBy && doc.ReadBy.trim() !== "";
-                const actionBtn = isRead 
-                    ? `<span style="color:green; font-size:0.85rem;">✅ ทราบแล้ว</span>` 
-                    : `<button onclick="markAsRead(${doc.rowIndex}, '${doc.Subject}')" style="background:var(--secondary-color); color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-size: 0.85rem;">คลิกรับทราบ</button>`;
+                
+                // รูปแบบปุ่ม Action ตามในรูปเป๊ะๆ (ปุ่มใส ขอบน้ำเงิน)
+                const actionUI = isRead 
+                    ? `<div class="status-success">✓ รับทราบแล้ว</div>` 
+                    : `<button class="btn-outline-action" onclick="markAsRead(${doc.rowIndex}, '${doc.Subject}')">กดรับ<br>ทราบ</button>`;
 
                 const row = `
                     <tr>
-                        <td>${actionBtn}</td>
-                        <td>${doc.DocNumber}<br><span style="font-size: 0.8rem; color: gray;">${doc.Status}</span></td>
+                        <td>${actionUI}</td>
                         <td>
-                            <a href="#" style="color:var(--secondary-color); text-decoration:none; font-weight:500;">✉ ${doc.Subject}</a>
-                            <br><span style="font-size: 0.8rem; color: gray;">${doc.Purpose}</span>
+                            <div class="doc-no">${doc.DocNumber || '-'}</div>
+                            <div class="badge-status">${doc.Status || '-'}</div>
                         </td>
-                        <td>${doc.Sender}</td>
-                        <td>${doc.Date}</td>
+                        <td>
+                            <a href="${doc.FileLink || '#'}" target="${doc.FileLink ? '_blank' : '_self'}" class="doc-subject">${doc.Subject || '-'}</a>
+                            <div class="doc-meta">
+                                <span>📅 ลงวันที่: ${doc.Date || '-'}</span>
+                                <span style="color:#d93025;">📌 วัตถุประสงค์: ${doc.Purpose || '-'}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="sender-name">${doc.Sender || '-'}</div>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // ระบบกดรับทราบ
+        async function markAsRead(rowIndex, subject) {
+            const tbody = document.getElementById('documentTableBody');
+            tbody.innerHTML = '<tr><td colspan="4" class="loading-row">กำลังบันทึกข้อมูล...</td></tr>';
+            
+            const result = await callAPI({ 
+                action: 'acknowledge', 
+                rowIndex: rowIndex, 
+                subject: subject, 
+                userName: currentUser 
+            });
+
+            if (result && result.success) {
+                loadDocuments();
+            } else {
+                alert("ไม่สามารถบันทึกข้อมูลได้");
+                loadDocuments();
+            }
+        }
+    </script>
+</body>
+</html>
