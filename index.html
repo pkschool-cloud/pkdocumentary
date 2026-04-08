@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    /* ส่วนนี้คือ CSS ใช้ตกแต่งหน้าตาเว็บให้ดูสะอาดตา */
+    body { font-family: 'Sarabun', sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+    .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 300px; text-align: center; }
+    input { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; }
+    button { background-color: #0056b3; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px;}
+    button:hover { background-color: #004494; }
+    #dashboard { display: none; } /* ซ่อนหน้าทำงานไว้ก่อน จนกว่าจะล็อกอินผ่าน */
+  </style>
+</head>
+<body>
+
+  <div id="loginPage" class="container">
+    <h2>เข้าสู่ระบบสารบรรณ</h2>
+    <input type="text" id="user" placeholder="ชื่อผู้ใช้งาน (เช่น admin)">
+    <input type="password" id="pass" placeholder="รหัสผ่าน (เช่น 1234)">
+    <button onclick="doLogin()">เข้าสู่ระบบ</button>
+    <p id="errorMsg" style="color:red; display:none;">รหัสผ่านไม่ถูกต้อง!</p>
+  </div>
+
+  <div id="dashboard" class="container" style="width: 600px;">
+    <h2 id="welcomeText">ยินดีต้อนรับ</h2>
+    <hr>
+    <h3>รายการหนังสือเข้า (จำลอง)</h3>
+    <div style="text-align: left; background: #eef; padding: 10px; border-radius: 5px;">
+      <p><b>เลขที่:</b> ศธ 0401/123</p>
+      <p><b>เรื่อง:</b> ขอเชิญเข้าร่วมประชุมสัมมนา</p>
+      <button onclick="alert('ระบบบันทึกการรับทราบแล้ว และแจ้งเตือนผ่าน LINE ทันที!')" style="width: auto;">กดรับทราบ</button>
+    </div>
+    <br>
+    <button onclick="location.reload()" style="background: #dc3545; width: auto;">ออกจากระบบ</button>
+  </div>
+
+  <script>
+    function doLogin() {
+      var u = document.getElementById('user').value;
+      var p = document.getElementById('pass').value;
+      
+      // สั่งให้หน้าเว็บ ส่งข้อมูลไปเช็คที่โค้ดหลังบ้าน (Code.gs)
+      google.script.run.withSuccessHandler(function(result) {
+        if(result.success) {
+          // ถ้าถูก ซ่อนหน้าล็อกอิน โชว์หน้าทำงาน
+          document.getElementById('loginPage').style.display = 'none';
+          document.getElementById('dashboard').style.display = 'block';
+          document.getElementById('welcomeText').innerText = 'ยินดีต้อนรับ ' + result.name + ' (' + result.role + ')';
+        } else {
+          // ถ้าผิด โชว์ข้อความแจ้งเตือน
+          document.getElementById('errorMsg').style.display = 'block';
+        }
+      }).checkLogin(u, p);
+    }
+  </script>
+</body>
+</html>
