@@ -17,7 +17,7 @@
 <script type="text/babel">
 const { useState, useEffect, useCallback, useRef } = React;
 
-const API = "hhttps://script.google.com/macros/s/AKfycbws4srbuR78gxskQJoTzWnnDQMDqjYVA3vz3Lt-6AVEU0yocqitiwlprCwu49lEOrc/exec";
+const API = "https://script.google.com/macros/s/AKfycbws4srbuR78gxskQJoTzWnnDQMDqjYVA3vz3Lt-6AVEU0yocqitiwlprCwu49lEOrc/exec";
 
 async function apiCall(params) {
   try {
@@ -55,7 +55,13 @@ const I = {
   pin: <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>,
   forward: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg>,
   reply: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>,
-  settings: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+  settings: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>,
+  recall: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>,
+  x: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+  warn: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+  users: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+  eye: <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+  stamp: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M5 21h14"/><path d="M12 17V12"/><path d="M8 12h8l1-4H7l1 4z"/><circle cx="12" cy="5" r="2"/></svg>,
 };
 
 const CSS = `
@@ -75,6 +81,9 @@ body,html,#root{height:100%;font-family:var(--f);background:var(--bg);color:var(
 @keyframes slideL{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.92)}to{opacity:1;transform:scale(1)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 
 .fi{width:100%;padding:12px 14px;border:1px solid var(--bd);border-radius:8px;font-size:15px;font-family:var(--f);background:#f8f9fa;transition:0.2s;margin-bottom:15px;outline:none;}
 .fi:focus{border-color:var(--p);background:#fff;box-shadow:0 0 0 3px rgba(28,59,130,.1);}
@@ -115,6 +124,9 @@ body,html,#root{height:100%;font-family:var(--f);background:var(--bg);color:var(
 .bn:hover{background:var(--ph);transform:translateY(-1px);}
 .bn:disabled{opacity:.6;cursor:wait;transform:none;}
 
+.ba{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:#f1f3f4;color:var(--t2);border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--f);}
+.ba:hover{background:#e0e0e0;color:var(--t);}
+
 /* TABLE CARD */
 .tc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rl);overflow:hidden;animation:fadeUp .4s backwards;}
 .tch{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--bd);background:#fff;}
@@ -136,6 +148,7 @@ table.dt tbody tr:hover{background:#f8fafc;}
 
 .status-success{color:var(--ok);font-weight:600;font-size:14px;display:flex;align-items:center;gap:6px;background:var(--os);padding:6px 12px;border-radius:20px;width:fit-content;}
 .status-wait{color:#d97706;font-weight:600;font-size:14px;display:flex;align-items:center;gap:6px;background:#fffbeb;padding:6px 12px;border-radius:20px;width:fit-content;}
+.status-recalled{color:var(--dn);font-weight:600;font-size:14px;display:flex;align-items:center;gap:6px;background:var(--ds);padding:6px 12px;border-radius:20px;width:fit-content;}
 
 .emp{text-align:center;padding:60px 20px;color:var(--t2);}
 .emp-i{font-size:48px;margin-bottom:15px;opacity:.5;}
@@ -156,6 +169,7 @@ table.dt tbody tr:hover{background:#f8fafc;}
 .btn-ack{background:var(--ok);color:white;} .btn-ack:hover{background:#146c2e;}
 .btn-fwd{background:var(--p);color:white;} .btn-fwd:hover{background:var(--ph);}
 .btn-rep{background:#64748b;color:white;} .btn-rep:hover{background:#475569;}
+.btn-recall{background:var(--dn);color:white;} .btn-recall:hover{background:#b71c1c;}
 
 /* Routing History Styles */
 .rt-box { background: #fff; border: 1px solid var(--bd); border-radius: 8px; margin-top: 12px; overflow: hidden; }
@@ -199,7 +213,64 @@ table.dt tbody tr:hover{background:#f8fafc;}
 
 /* TOAST */
 .toast{position:fixed;bottom:30px;right:30px;padding:14px 24px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:9999;animation:slideUp .3s;display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:#fff;}
-.toast-ok{background:var(--ok);} .toast-err{background:var(--dn);}
+.toast-ok{background:var(--ok);} .toast-err{background:var(--dn);} .toast-warn{background:var(--ac);}
+
+/* MODAL OVERLAY */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:9998;animation:fadeIn .2s;backdrop-filter:blur(2px);}
+.modal-box{background:#fff;border-radius:var(--rx);padding:0;width:95%;max-width:520px;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:scaleIn .25s;}
+.modal-head{padding:24px 28px 0;display:flex;align-items:flex-start;gap:16px;}
+.modal-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.modal-icon.danger{background:var(--ds);color:var(--dn);}
+.modal-icon.info{background:var(--ps);color:var(--p);}
+.modal-icon.success{background:var(--os);color:var(--ok);}
+.modal-body{padding:20px 28px;}
+.modal-body p{font-size:15px;color:var(--t2);line-height:1.6;}
+.modal-foot{padding:16px 28px 24px;display:flex;justify-content:flex-end;gap:10px;}
+
+/* FORWARD CARD ENHANCED */
+.fwd-recipient-card{
+  display:flex;align-items:center;gap:15px;padding:14px 18px;
+  background:#f8fafc;border:1px solid var(--bd);border-radius:10px;
+  margin-bottom:10px;transition:all .2s;
+}
+.fwd-recipient-card:hover{border-color:var(--p);background:var(--ps);}
+.fwd-avatar{
+  width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:16px;flex-shrink:0;
+}
+.fwd-name{font-weight:600;font-size:14px;color:var(--t);}
+.fwd-pos{font-size:12px;color:var(--t3);margin-top:2px;}
+.fwd-purpose-select{
+  margin-left:auto;padding:8px 14px;border:1px solid var(--bd);
+  border-radius:8px;font-size:14px;font-family:var(--f);
+  background:#fff;cursor:pointer;outline:none;
+  transition:0.2s;min-width:200px;
+}
+.fwd-purpose-select:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(28,59,130,.1);}
+
+/* Summary card before sending */
+.summary-card{
+  background:linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
+  border:1px solid #c8d6f0;border-radius:12px;padding:24px;margin-top:16px;
+}
+.summary-title{font-size:16px;font-weight:700;color:var(--p);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.summary-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(200,214,240,.5);}
+.summary-item:last-child{border-bottom:none;}
+.summary-badge{
+  display:inline-block;padding:4px 12px;border-radius:20px;
+  font-size:12px;font-weight:600;white-space:nowrap;
+}
+
+/* Recall history */
+.recall-banner{
+  background:linear-gradient(135deg,#fce8e6,#fdd);border:1px solid #f5c6c2;
+  border-radius:10px;padding:16px 20px;margin-bottom:20px;
+  display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dn);font-weight:500;
+}
+
+.ldr{display:flex;align-items:center;justify-content:center;gap:10px;padding:40px;color:var(--t2);font-size:14px;}
+.ldrs{width:24px;height:24px;border:3px solid var(--bd);border-top-color:var(--p);border-radius:50%;animation:spin .8s linear infinite;}
 `;
 
 /* =================================================================
@@ -225,7 +296,6 @@ const getAllPurposes = (purposeStr) => {
   }
 };
 
-// ฟังก์ชันแกะประวัติการส่งต่อ/เกษียณหนังสือ
 const renderRoutingHistory = (histStr) => {
   if (!histStr || histStr === "[]") return <div style={{color:'var(--t3)', marginTop: 10, fontSize: 13}}>ยังไม่มีประวัติการส่งต่อหรือเกษียณหนังสือ</div>;
   try {
@@ -233,21 +303,48 @@ const renderRoutingHistory = (histStr) => {
       return hist.map((h, i) => (
           <div className="rt-box" key={i}>
               <div className="rt-head">
-                  <span style={{background: '#f59e0b', color: '#fff', padding: '2px 6px', borderRadius: 10, fontSize: 11, fontWeight: 700}}>FW</span>
-                  จาก <b>{h.from}</b> ถึง <b>{(h.to || "").split(',').join(', ')}</b> 
+                  <span style={{background: h.type === 'recall' ? '#d93025' : '#f59e0b', color: '#fff', padding: '2px 6px', borderRadius: 10, fontSize: 11, fontWeight: 700}}>
+                    {h.type === 'recall' ? 'ดึงคืน' : 'FW'}
+                  </span>
+                  {h.type === 'recall' 
+                    ? <><b>{h.from}</b> ดึงหนังสือคืนจาก <b>{(h.to || "").split(',').join(', ')}</b></>
+                    : <>จาก <b>{h.from}</b> ถึง <b>{(h.to || "").split(',').join(', ')}</b></>
+                  }
                   <span style={{marginLeft: 'auto'}}>{I.clock} {h.date}</span>
               </div>
-              <div className="rt-body" dangerouslySetInnerHTML={{__html: h.comment || '<span style="color:var(--t3)">ไม่มีข้อความเกษียณเพิ่มเติม</span>'}} />
+              <div className="rt-body" dangerouslySetInnerHTML={{__html: h.comment || '<span style="color:var(--t3)">ไม่มีข้อความเพิ่มเติม</span>'}} />
           </div>
       ));
   } catch(e) { return <div style={{color:'var(--t3)'}}>ไม่สามารถอ่านประวัติได้</div>; }
+};
+
+const PURPOSE_OPTIONS = [
+  "เพื่อทราบ",
+  "เพื่อทราบและถือปฏิบัติ",
+  "เพื่อพิจารณา",
+  "เพื่อพิจารณาเสนอ",
+  "เพื่ออนุมัติ",
+  "เพื่ออนุญาต",
+  "เพื่อดำเนินการต่อ",
+  "เพื่อพิจารณาและส่งต่อ"
+];
+
+const PURPOSE_COLORS = {
+  "เพื่อทราบ": {bg:"#e8f0fe",color:"#1c3b82"},
+  "เพื่อทราบและถือปฏิบัติ": {bg:"#e0f2fe",color:"#0369a1"},
+  "เพื่อพิจารณา": {bg:"#fef3c7",color:"#92400e"},
+  "เพื่อพิจารณาเสนอ": {bg:"#fed7aa",color:"#9a3412"},
+  "เพื่ออนุมัติ": {bg:"#fce8e6",color:"#d93025"},
+  "เพื่ออนุญาต": {bg:"#fde2e4",color:"#be123c"},
+  "เพื่อดำเนินการต่อ": {bg:"#ceead6",color:"#188038"},
+  "เพื่อพิจารณาและส่งต่อ": {bg:"#f3e8ff",color:"#7c3aed"},
 };
 
 /* =================================================================
    COMPONENTS
 ================================================================= */
 
-function SB({pg, nav, user, onLogout, cnt, canManageDocs, isSysAdmin}){
+function SB({pg, nav, user, cnt, canManageDocs, isSysAdmin}){
   return(<>
     <div className="sbn">
       <div className="sbt">เมนูหลัก</div>
@@ -341,15 +438,51 @@ function RecipientInput({users,selected,onAdd,onRemove}){
   </div>);
 }
 
-// 🌟 Component สำหรับการ "ส่งต่อ/เกษียณหนังสือ" เฉพาะ
+
+/* =================================================================
+   MODAL - Confirmation Dialog
+================================================================= */
+function ConfirmModal({open, onClose, onConfirm, title, message, icon, iconType, confirmText, confirmStyle, loading}) {
+  if(!open) return null;
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-box" onClick={e=>e.stopPropagation()}>
+        <div className="modal-head">
+          <div className={`modal-icon ${iconType||'info'}`}>{icon}</div>
+          <div>
+            <div style={{fontSize:18,fontWeight:700,color:'var(--t)'}}>{title}</div>
+          </div>
+        </div>
+        <div className="modal-body"><p>{message}</p></div>
+        <div className="modal-foot">
+          <button className="ba" onClick={onClose} disabled={loading}>ยกเลิก</button>
+          <button className="bn" style={confirmStyle} onClick={onConfirm} disabled={loading}>
+            {loading ? "กำลังดำเนินการ..." : confirmText}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+/* =================================================================
+   ENHANCED FORWARD WIZARD - ส่งต่อเอกสารแบบสมบูรณ์
+================================================================= */
 function ForwardWizard({user, users, doc, onClose, onForwarded, showToast, isReply}) {
+  const [step, setStep] = useState(0); // 0=เลือกผู้รับ, 1=กำหนดวัตถุประสงค์, 2=ยืนยันส่ง
   const [form, setForm] = useState({
       recipients: isReply ? [doc.Sender] : [],
       purposes: isReply ? {[doc.Sender]: "เพื่อทราบ"} : {},
       comment: ""
   });
   const [saving, setSaving] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const upd = (k,v) => setForm(f => ({...f, [k]: v}));
+
+  const steps = isReply 
+    ? ["เลือกผู้รับ", "วัตถุประสงค์และข้อความ", "ตรวจสอบและส่ง"]
+    : ["เลือกผู้รับ", "กำหนดวัตถุประสงค์", "ข้อความเกษียณ + ยืนยัน"];
 
   const handleSave = async () => {
       setSaving(true);
@@ -367,57 +500,183 @@ function ForwardWizard({user, users, doc, onClose, onForwarded, showToast, isRep
           onForwarded();
       } catch { showToast("เกิดข้อผิดพลาดในการส่งต่อ", "err"); }
       setSaving(false);
+      setShowConfirm(false);
+  };
+
+  const getUserInfo = (name) => {
+    const u = (users||[]).find(u => (u.FullName||u.Username) === name);
+    return u || {FullName: name, Position: '', Username: name};
   };
 
   return (
-      <div className="wiz-card" style={{marginTop: 20}}>
-          <div className="wiz-title">{isReply ? "ตอบกลับเอกสาร" : "เกษียณและส่งต่อเอกสาร"}</div>
-          <div className="wiz-row">
-              <div className="fg full">
-                  <label>1. เลือกผู้รับ (ส่งต่อถึง)</label>
-                  <RecipientInput users={users} selected={form.recipients} 
-                      onAdd={u=>{
-                          if(!form.recipients.includes(u)){
-                              upd("recipients",[...form.recipients,u]);
-                              upd("purposes",{...form.purposes, [u]:"เพื่อทราบ"});
-                          }
-                      }} 
-                      onRemove={u=>{
-                          const nR = form.recipients.filter(x=>x!==u);
-                          const nP = {...form.purposes}; delete nP[u];
-                          upd("recipients",nR); upd("purposes",nP);
-                      }}
-                  />
-              </div>
-              <div className="fg full">
-                  <label>2. กำหนดวัตถุประสงค์</label>
-                  {form.recipients.length === 0 ? 
-                      <div style={{fontSize:14, color:'var(--t3)', padding:'15px', background:'#f8fafc', borderRadius:8, border:'1px dashed var(--bd)', textAlign:'center'}}>กรุณาเลือกผู้รับด้านบนก่อน</div> 
-                  : 
-                      form.recipients.map(r => (
-                          <div key={r} style={{display:'flex', alignItems:'center', gap:15, marginBottom:10, padding:'10px 15px', background:'#f8fafc', border:'1px solid var(--bd)', borderRadius:8}}>
-                              <div style={{flex:1, fontWeight:600, fontSize:14}}>{r}</div>
-                              <select className="fi" style={{width:220, marginBottom:0, padding:'8px 12px'}} value={form.purposes[r] || "เพื่อทราบ"} onChange={e => upd("purposes", {...form.purposes, [r]: e.target.value})}>
-                                  <option>เพื่อทราบ</option><option>เพื่อทราบและถือปฏิบัติ</option><option>เพื่อพิจารณา</option><option>เพื่อพิจารณาเสนอ</option><option>เพื่ออนุมัติ</option><option>เพื่ออนุญาต</option><option>เพื่อดำเนินการต่อ</option><option>เพื่อพิจารณาและส่งต่อ</option>
-                              </select>
-                          </div>
-                      ))
-                  }
-              </div>
-              <div className="fg full">
-                  <label>3. ข้อความเกษียณหนังสือ (Comment)</label>
-                  <RichEditor value={form.comment} onChange={v=>upd("comment",v)} placeholder="พิมพ์ความเห็น หรือคำสั่งการที่นี่..."/>
-              </div>
-          </div>
-          <div className="wiz-foot">
-              <button className="ba" onClick={onClose}>ยกเลิก</button>
-              <button className="bn" onClick={handleSave} disabled={saving||form.recipients.length===0}>{saving?"กำลังบันทึก...":"ส่งเอกสาร"}</button>
-          </div>
+    <div className="wiz">
+      <div className="page-head" style={{marginBottom:15}}>
+        <div>
+          <h2 style={{fontSize:22}}>{isReply ? "ตอบกลับเอกสาร" : "เกษียณและส่งต่อเอกสาร"}</h2>
+          <p>เรื่อง: {doc.Subject} | เลขที่: {doc.DocNumber || '-'}</p>
+        </div>
       </div>
+
+      <div className="wiz-steps">
+        {steps.map((s,i)=><React.Fragment key={i}>
+          <div className={`wiz-step ${i===step?"active":""} ${i<step?"done":""}`} onClick={()=>{if(i<step)setStep(i)}}>
+            <div className="wiz-step-num">{i<step?"✓":i+1}</div>{s}
+          </div>
+          {i<steps.length-1&&<span style={{color:'var(--bd)'}} key={i+'_arr'}>{I.chevR}</span>}
+        </React.Fragment>)}
+      </div>
+
+      {/* STEP 0: เลือกผู้รับ */}
+      {step===0 && <div className="wiz-card">
+        <div className="wiz-title" style={{display:'flex',alignItems:'center',gap:10}}>
+          {I.users} เลือกผู้รับเอกสาร
+        </div>
+        <div className="fg full">
+          <label>ค้นหาและเลือกรายชื่อผู้รับ (เลือกได้หลายท่าน)</label>
+          <RecipientInput users={users} selected={form.recipients} 
+            onAdd={u=>{
+              if(!form.recipients.includes(u)){
+                upd("recipients",[...form.recipients,u]);
+                upd("purposes",{...form.purposes, [u]:"เพื่อทราบ"});
+              }
+            }} 
+            onRemove={u=>{
+              const nR = form.recipients.filter(x=>x!==u);
+              const nP = {...form.purposes}; delete nP[u];
+              upd("recipients",nR); upd("purposes",nP);
+            }}
+          />
+        </div>
+        {form.recipients.length > 0 && (
+          <div style={{background:'var(--os)',borderRadius:8,padding:14,fontSize:14,color:'var(--ok)',fontWeight:500,marginTop:10}}>
+            ✓ เลือกผู้รับแล้ว {form.recipients.length} ท่าน
+          </div>
+        )}
+      </div>}
+
+      {/* STEP 1: กำหนดวัตถุประสงค์ */}
+      {step===1 && <div className="wiz-card">
+        <div className="wiz-title" style={{display:'flex',alignItems:'center',gap:10}}>
+          {I.stamp} กำหนดวัตถุประสงค์รายบุคคล
+        </div>
+        <p style={{color:'var(--t2)',fontSize:14,marginBottom:20}}>
+          กำหนดวัตถุประสงค์ให้แต่ละท่าน — เช่น เพื่อทราบ, เพื่อพิจารณา, เพื่ออนุมัติ ฯลฯ จากนั้นกดถัดไป
+        </p>
+
+        {form.recipients.map(r => {
+          const uInfo = getUserInfo(r);
+          const purp = form.purposes[r] || "เพื่อทราบ";
+          const pc = PURPOSE_COLORS[purp] || {bg:'#f1f3f4',color:'var(--t2)'};
+          return (
+            <div className="fwd-recipient-card" key={r}>
+              <div className="fwd-avatar" style={{background:pc.bg,color:pc.color}}>
+                {r[0].toUpperCase()}
+              </div>
+              <div>
+                <div className="fwd-name">{r}</div>
+                <div className="fwd-pos">{uInfo.Position || uInfo.Role || ''}</div>
+              </div>
+              <select className="fwd-purpose-select" value={purp} onChange={e => upd("purposes", {...form.purposes, [r]: e.target.value})}>
+                {PURPOSE_OPTIONS.map(p => <option key={p} value={p}>{p}</option>)}
+              </select>
+            </div>
+          );
+        })}
+
+        {!isReply && (
+          <div className="fg full" style={{marginTop:20}}>
+            <label>ข้อความเกษียณหนังสือ (ถ้ามี)</label>
+            <RichEditor value={form.comment} onChange={v=>upd("comment",v)} placeholder="พิมพ์ความเห็น คำสั่งการ หรือข้อเสนอแนะที่นี่..."/>
+          </div>
+        )}
+
+        {isReply && (
+          <div className="fg full" style={{marginTop:20}}>
+            <label>ข้อความตอบกลับ</label>
+            <RichEditor value={form.comment} onChange={v=>upd("comment",v)} placeholder="พิมพ์ข้อความตอบกลับที่นี่..."/>
+          </div>
+        )}
+      </div>}
+
+      {/* STEP 2: ยืนยันก่อนส่ง */}
+      {step===2 && <div className="wiz-card">
+        <div className="wiz-title" style={{display:'flex',alignItems:'center',gap:10}}>
+          {I.eye} ตรวจสอบรายละเอียดก่อนส่ง
+        </div>
+
+        <div className="summary-card">
+          <div className="summary-title">{I.forward} สรุปการส่งต่อเอกสาร</div>
+          
+          <div style={{marginBottom:12}}>
+            <div style={{fontSize:13,color:'var(--t2)',marginBottom:4}}>เรื่อง</div>
+            <div style={{fontSize:16,fontWeight:700,color:'var(--p)'}}>{doc.Subject}</div>
+          </div>
+
+          <div style={{fontSize:13,color:'var(--t2)',marginBottom:8,marginTop:16}}>ผู้รับ และ วัตถุประสงค์</div>
+          {form.recipients.map(r => {
+            const purp = form.purposes[r] || "เพื่อทราบ";
+            const pc = PURPOSE_COLORS[purp] || {bg:'#f1f3f4',color:'var(--t2)'};
+            return (
+              <div className="summary-item" key={r}>
+                <div style={{width:32,height:32,borderRadius:'50%',background:pc.bg,color:pc.color,display:'flex',alignItems:'center',justifyContent:'center',fontWeight:700,fontSize:14,flexShrink:0}}>
+                  {r[0].toUpperCase()}
+                </div>
+                <div style={{flex:1,fontWeight:600,fontSize:14}}>{r}</div>
+                <span className="summary-badge" style={{background:pc.bg,color:pc.color}}>{purp}</span>
+              </div>
+            );
+          })}
+
+          {form.comment && (
+            <div style={{marginTop:16}}>
+              <div style={{fontSize:13,color:'var(--t2)',marginBottom:6}}>ข้อความเกษียณ</div>
+              <div style={{background:'#fff',borderRadius:8,padding:12,fontSize:14,lineHeight:1.6,border:'1px solid rgba(200,214,240,.5)'}} dangerouslySetInnerHTML={{__html:form.comment}} />
+            </div>
+          )}
+        </div>
+
+        <div style={{background:'var(--as)',borderRadius:8,padding:14,fontSize:14,color:'#92400e',marginTop:16,fontWeight:500,display:'flex',alignItems:'center',gap:8}}>
+          {I.warn} กรุณาตรวจสอบรายชื่อผู้รับและวัตถุประสงค์ให้ถูกต้องก่อนกดส่ง — ระบบจะแจ้งเตือนผ่าน Email อัตโนมัติ
+        </div>
+      </div>}
+
+      <div className="wiz-foot">
+        <div style={{display:'flex',gap:10}}>
+          {step>0&&<button className="ba" onClick={()=>setStep(step-1)}>{I.back} ย้อนกลับ</button>}
+        </div>
+        <div style={{display:"flex",gap:10}}>
+          <button className="ba" onClick={onClose}>ยกเลิก</button>
+          {step<2
+            ? <button className="bn" onClick={()=>setStep(step+1)} disabled={form.recipients.length===0}>
+                ขั้นตอนถัดไป {I.chevR}
+              </button>
+            : <button className="bn btn-ack" onClick={()=>setShowConfirm(true)} disabled={saving||form.recipients.length===0}>
+                {I.send} ยืนยันส่งเอกสาร ({form.recipients.length} ท่าน)
+              </button>
+          }
+        </div>
+      </div>
+
+      <ConfirmModal
+        open={showConfirm}
+        onClose={()=>setShowConfirm(false)}
+        onConfirm={handleSave}
+        title="ยืนยันการส่งเอกสาร"
+        message={`คุณต้องการส่งเอกสาร "${doc.Subject}" ไปยังผู้รับจำนวน ${form.recipients.length} ท่านใช่หรือไม่? ระบบจะส่งการแจ้งเตือนทาง Email ไปยังทุกท่านอัตโนมัติ`}
+        icon={I.send}
+        iconType="success"
+        confirmText="ส่งเอกสาร"
+        confirmStyle={{background:'var(--ok)'}}
+        loading={saving}
+      />
+    </div>
   );
 }
 
 
+/* =================================================================
+   CREATE WIZARD
+================================================================= */
 function CreateWizard({user,users,onClose,onCreated,showToast}){
   const[step,setStep]=useState(0);
   
@@ -426,10 +685,11 @@ function CreateWizard({user,users,onClose,onCreated,showToast}){
   });
   
   const[saving,setSaving]=useState(false);
+  const[showConfirm,setShowConfirm]=useState(false);
   const upd=(k,v)=>setForm(f=>({...f,[k]:v}));
   const toggleType=(t)=>upd("docTypes",form.docTypes.includes(t)?form.docTypes.filter(x=>x!==t):[...form.docTypes,t]);
 
-  const steps=["ตั้งค่าหนังสือ","รายละเอียด","ส่งถึงผู้รับ"];
+  const steps=["ตั้งค่าหนังสือ","รายละเอียด","เลือกผู้รับ","ตรวจสอบ + ส่ง"];
 
   const handleSave=async()=>{
     setSaving(true);
@@ -446,6 +706,7 @@ function CreateWizard({user,users,onClose,onCreated,showToast}){
       onCreated();
     }catch{showToast("เกิดข้อผิดพลาด","err")}
     setSaving(false);
+    setShowConfirm(false);
   };
 
   return(<div className="wiz">
@@ -509,9 +770,10 @@ function CreateWizard({user,users,onClose,onCreated,showToast}){
     </div>}
 
     {step===2&&<div className="wiz-card">
-      <div className="wiz-title">ส่งถึงผู้รับ (ในระบบ)</div>
+      <div className="wiz-title" style={{display:'flex',alignItems:'center',gap:10}}>
+        {I.users} เลือกผู้รับและกำหนดวัตถุประสงค์
+      </div>
       <div className="wiz-row">
-        
         <div className="fg full">
           <label>1. ค้นหาและเลือกรายชื่อผู้รับ</label>
           <RecipientInput users={users} selected={form.recipients} 
@@ -538,28 +800,68 @@ function CreateWizard({user,users,onClose,onCreated,showToast}){
               กรุณาเลือกผู้รับด้านบนก่อน
             </div> 
           : 
-            form.recipients.map(r => (
-              <div key={r} style={{display:'flex', alignItems:'center', gap:15, marginBottom:10, padding:'10px 15px', background:'#f8fafc', border:'1px solid var(--bd)', borderRadius:8}}>
-                <div style={{flex:1, fontWeight:600, fontSize:14}}>{r}</div>
-                <select className="fi" style={{width:220, marginBottom:0, padding:'8px 12px'}} 
-                  value={form.purposes[r] || "เพื่อทราบ"} 
-                  onChange={e => upd("purposes", {...form.purposes, [r]: e.target.value})}>
-                    <option>เพื่อทราบ</option>
-                    <option>เพื่อทราบและถือปฏิบัติ</option>
-                    <option>เพื่อพิจารณา</option>
-                    <option>เพื่อพิจารณาเสนอ</option>
-                    <option>เพื่ออนุมัติ</option>
-                    <option>เพื่ออนุญาต</option>
-                    <option>เพื่อดำเนินการต่อ</option>
-                    <option>เพื่อพิจารณาและส่งต่อ</option>
-                </select>
-              </div>
-            ))
+            form.recipients.map(r => {
+              const purp = form.purposes[r] || "เพื่อทราบ";
+              const pc = PURPOSE_COLORS[purp] || {bg:'#f1f3f4',color:'var(--t2)'};
+              return (
+                <div className="fwd-recipient-card" key={r}>
+                  <div className="fwd-avatar" style={{background:pc.bg,color:pc.color}}>
+                    {r[0].toUpperCase()}
+                  </div>
+                  <div>
+                    <div className="fwd-name">{r}</div>
+                  </div>
+                  <select className="fwd-purpose-select" value={purp} onChange={e => upd("purposes", {...form.purposes, [r]: e.target.value})}>
+                    {PURPOSE_OPTIONS.map(p => <option key={p} value={p}>{p}</option>)}
+                  </select>
+                </div>
+              );
+            })
           }
         </div>
-
       </div>
-      <div style={{background:"var(--os)",borderRadius:8,padding:14,fontSize:14,color:"var(--ok)",marginTop:15,fontWeight:500}}>
+    </div>}
+
+    {step===3&&<div className="wiz-card">
+      <div className="wiz-title" style={{display:'flex',alignItems:'center',gap:10}}>
+        {I.eye} ตรวจสอบรายละเอียดก่อนส่ง
+      </div>
+
+      <div className="summary-card">
+        <div className="summary-title">{I.file} สรุปหนังสือ</div>
+        
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16,marginBottom:16}}>
+          <div>
+            <div style={{fontSize:13,color:'var(--t2)'}}>เลขที่</div>
+            <div style={{fontWeight:600}}>{form.docNumber || '-'}</div>
+          </div>
+          <div>
+            <div style={{fontSize:13,color:'var(--t2)'}}>ประเภท</div>
+            <div style={{fontWeight:600}}>{form.docTypes.join(', ')}</div>
+          </div>
+        </div>
+        <div style={{marginBottom:12}}>
+          <div style={{fontSize:13,color:'var(--t2)',marginBottom:4}}>เรื่อง</div>
+          <div style={{fontSize:16,fontWeight:700,color:'var(--p)'}}>{form.subject}</div>
+        </div>
+
+        <div style={{fontSize:13,color:'var(--t2)',marginBottom:8,marginTop:16}}>ผู้รับ และ วัตถุประสงค์</div>
+        {form.recipients.map(r => {
+          const purp = form.purposes[r] || "เพื่อทราบ";
+          const pc = PURPOSE_COLORS[purp] || {bg:'#f1f3f4',color:'var(--t2)'};
+          return (
+            <div className="summary-item" key={r}>
+              <div style={{width:32,height:32,borderRadius:'50%',background:pc.bg,color:pc.color,display:'flex',alignItems:'center',justifyContent:'center',fontWeight:700,fontSize:14,flexShrink:0}}>
+                {r[0].toUpperCase()}
+              </div>
+              <div style={{flex:1,fontWeight:600,fontSize:14}}>{r}</div>
+              <span className="summary-badge" style={{background:pc.bg,color:pc.color}}>{purp}</span>
+            </div>
+          );
+        })}
+      </div>
+
+      <div style={{background:'var(--os)',borderRadius:8,padding:14,fontSize:14,color:'var(--ok)',marginTop:16,fontWeight:500}}>
         ✓ ระบบจะส่งการแจ้งเตือนอัตโนมัติผ่าน Email ไปยังผู้รับจำนวน {form.recipients.length} ท่าน
       </div>
     </div>}
@@ -568,12 +870,30 @@ function CreateWizard({user,users,onClose,onCreated,showToast}){
       <div>{step>0&&<button className="ba" onClick={()=>setStep(step-1)}>{I.back} ย้อนกลับ</button>}</div>
       <div style={{display:"flex",gap:10}}>
         <button className="ba" onClick={onClose}>ยกเลิก</button>
-        {step<2?<button className="bn" onClick={()=>setStep(step+1)} disabled={step===1&&!form.subject.trim()}>ขั้นตอนถัดไป {I.chevR}</button>
-        :<button className="bn" onClick={handleSave} disabled={saving||form.recipients.length===0}>{saving?"กำลังบันทึก...":"ส่งเอกสาร"}</button>}
+        {step<3
+          ? <button className="bn" onClick={()=>setStep(step+1)} disabled={step===1&&!form.subject.trim()}>ขั้นตอนถัดไป {I.chevR}</button>
+          : <button className="bn btn-ack" onClick={()=>setShowConfirm(true)} disabled={saving||form.recipients.length===0}>
+              {I.send} ยืนยันส่งหนังสือ ({form.recipients.length} ท่าน)
+            </button>
+        }
       </div>
     </div>
+
+    <ConfirmModal
+      open={showConfirm}
+      onClose={()=>setShowConfirm(false)}
+      onConfirm={handleSave}
+      title="ยืนยันการส่งหนังสือ"
+      message={`คุณต้องการส่งหนังสือเรื่อง "${form.subject}" ไปยังผู้รับจำนวน ${form.recipients.length} ท่านใช่หรือไม่?`}
+      icon={I.send}
+      iconType="success"
+      confirmText="ส่งหนังสือ"
+      confirmStyle={{background:'var(--ok)'}}
+      loading={saving}
+    />
   </div>);
 }
+
 
 /* =================================================================
    MAIN APP
@@ -597,7 +917,10 @@ function App(){
   const[toast,sToast]=useState(null);
   const[sq,sSq]=useState("");
   
-  const [fwdMode, setFwdMode] = useState(null); // "forward" หรือ "reply"
+  const [fwdMode, setFwdMode] = useState(null);
+  const [recallModal, setRecallModal] = useState(null); // doc to recall
+  const [recalling, setRecalling] = useState(false);
+  const [recallReason, setRecallReason] = useState("");
 
   const tt=(m,t="ok")=>{sToast({m,t});setTimeout(()=>sToast(null),3000)};
 
@@ -617,6 +940,14 @@ function App(){
     if(!d.ReadBy) return false;
     const readStr = String(d.ReadBy);
     return readStr.includes(cu.username) || (cu.name && readStr.includes(cu.name));
+  };
+
+  const isDocRecalled = (d) => {
+    return d.Status === "ดึงคืน" || d.Status === "recalled";
+  };
+
+  const isDocSentByMe = (d) => {
+    return d.Sender === cu.username || d.Sender === cu.name;
   };
 
   const ack=async(d, callback)=>{
@@ -645,6 +976,29 @@ function App(){
     sPg("create");
   };
 
+  // ===== ดึงหนังสือคืน =====
+  const handleRecall = async () => {
+    if(!recallModal) return;
+    setRecalling(true);
+    try {
+      await apiCall({
+        action: "recallDocument",
+        rowIndex: recallModal.rowIndex,
+        subject: recallModal.Subject,
+        sender: cu.name || cu.username,
+        reason: recallReason
+      });
+      tt("ดึงหนังสือคืนสำเร็จ — ผู้รับจะไม่สามารถดำเนินการกับเอกสารนี้ได้อีก");
+      setRecallModal(null);
+      setRecallReason("");
+      fetchD();
+      sSel(null);
+    } catch {
+      tt("เกิดข้อผิดพลาดในการดึงหนังสือคืน", "err");
+    }
+    setRecalling(false);
+  };
+
   if(!cu) return null; 
 
   const canManageDocs = cu.role === "ผู้ดูแลระบบ" || cu.role === "สารบัญ";
@@ -656,13 +1010,17 @@ function App(){
     return toStr.includes(cu.username) || (cu.name && toStr.includes(cu.name));
   });
 
-  const ic = myInbox.filter(d => !isDocRead(d)).length;
+  const ic = myInbox.filter(d => !isDocRead(d) && !isDocRecalled(d)).length;
   const fD = myInbox.filter(d => {
     const q=sq.toLowerCase();
     return !q||(d.Subject||"").toLowerCase().includes(q)||(d.DocNumber||"").toLowerCase().includes(q);
   });
 
+  const myOutbox = docs.filter(d => d.Sender===cu.username || d.Sender===cu.name);
+
   const selIsRead = sel ? isDocRead(sel) : false;
+  const selIsRecalled = sel ? isDocRecalled(sel) : false;
+  const selIsMine = sel ? isDocSentByMe(sel) : false;
 
   return(<div className="app"><style>{CSS}</style>
     <header className="top">
@@ -689,9 +1047,23 @@ function App(){
         :sel?<div className="det">
           <div className="deth"><button className="detbk" onClick={()=>sSel(null)}>{I.back}</button><div><h2 style={{fontSize:22,color:'var(--p)'}}>{sel.Subject}</h2><div style={{color:'var(--t2)',fontSize:14}}>เลขที่: {sel.DocNumber||"-"}</div></div></div>
           <div className="detc">
+            
+            {/* แสดงแบนเนอร์ถ้าเอกสารถูกดึงคืน */}
+            {selIsRecalled && (
+              <div className="recall-banner">
+                {I.recall} เอกสารนี้ถูกดึงคืนโดยผู้ส่ง — ไม่สามารถดำเนินการต่อได้
+              </div>
+            )}
+
             <div style={{display:'flex',gap:10,marginBottom:20}}>
-              {selIsRead ? <div className="status-success">{I.check} รับทราบแล้ว</div> : <div className="status-wait">รอการรับทราบจากท่าน</div>}
+              {selIsRecalled 
+                ? <div className="status-recalled">{I.recall} ถูกดึงคืน</div>
+                : selIsRead 
+                  ? <div className="status-success">{I.check} รับทราบแล้ว</div> 
+                  : <div className="status-wait">รอการรับทราบจากท่าน</div>
+              }
             </div>
+
             <div className="detg">
               <div><div className="detfl">ผู้ส่ง</div><div className="detfp">{sel.Sender}</div></div>
               <div><div className="detfl">ลงวันที่</div><div className="detfp">{sel.Date}</div></div>
@@ -712,7 +1084,7 @@ function App(){
               <div className="detcn" dangerouslySetInnerHTML={{__html: sel.Content||'<span style="color:var(--t3)">ไม่มีเนื้อหา</span>'}} />
             </div>
             
-            {/* 🌟 เพิ่มส่วนแสดงประวัติการส่งต่อ/เกษียณหนังสือตรงนี้ 🌟 */}
+            {/* ประวัติการส่งต่อ/เกษียณหนังสือ */}
             <div style={{marginTop:25, paddingTop:20, borderTop:'1px solid var(--bd)'}}>
               <div className="detfl" style={{fontSize: 14, color: 'var(--p)', marginBottom: 8}}>{I.forward} ลำดับการรับ-ส่ง / เกษียณหนังสือ</div>
               <div className="routing-history">
@@ -722,11 +1094,21 @@ function App(){
 
             {sel.FileLink&&<div style={{marginTop:20}}><a href={sel.FileLink} target="_blank" className="ba bl" style={{width:'fit-content',textDecoration:'none'}}>{I.file} เปิดดูไฟล์แนบ</a></div>}
             
-            <div className="action-bar">
-               {!selIsRead && <button className="bn btn-ack" onClick={()=>ack(sel)}>{I.check} รับทราบ</button>}
-               <button className="bn btn-fwd" onClick={()=>handleForward(sel)}>{I.forward} {selIsRead?'ส่งต่อเอกสาร':'รับทราบและส่งต่อ'}</button>
-               <button className="bn btn-rep" onClick={()=>handleReply(sel)}>{I.reply} {selIsRead?'ตอบกลับ':'รับทราบและตอบกลับ'}</button>
-            </div>
+            {/* แถบปุ่มดำเนินการ */}
+            {!selIsRecalled && (
+              <div className="action-bar">
+                 {!selIsRead && <button className="bn btn-ack" onClick={()=>ack(sel)}>{I.check} รับทราบ</button>}
+                 <button className="bn btn-fwd" onClick={()=>handleForward(sel)}>{I.forward} {selIsRead?'ส่งต่อเอกสาร':'รับทราบและส่งต่อ'}</button>
+                 <button className="bn btn-rep" onClick={()=>handleReply(sel)}>{I.reply} {selIsRead?'ตอบกลับ':'รับทราบและตอบกลับ'}</button>
+                 
+                 {/* ปุ่มดึงหนังสือคืน — แสดงเฉพาะเอกสารที่ตัวเองส่ง */}
+                 {selIsMine && (
+                   <button className="bn btn-recall" onClick={()=>{setRecallReason("");setRecallModal(sel);}}>
+                     {I.recall} ดึงหนังสือคืน
+                   </button>
+                 )}
+              </div>
+            )}
 
           </div>
         </div>
@@ -744,14 +1126,22 @@ function App(){
             <thead><tr><th style={{width:'15%'}}>สถานะ</th><th style={{width:'20%'}}>เลขที่</th><th style={{width:'45%'}}>เรื่อง</th><th style={{width:'20%'}}>ผู้ส่ง</th></tr></thead>
             <tbody>{fD.map((d,i)=>{
               const isR = isDocRead(d);
-              return <tr key={i} onClick={()=>sSel(d)}>
-                <td>{isR?<div className="status-success">{I.check} ทราบแล้ว</div>:<div className="status-wait">รอรับทราบ</div>}</td>
+              const recalled = isDocRecalled(d);
+              return <tr key={i} onClick={()=>sSel(d)} style={recalled?{opacity:0.6}:{}}>
+                <td>
+                  {recalled
+                    ? <div className="status-recalled">{I.recall} ดึงคืน</div>
+                    : isR
+                      ? <div className="status-success">{I.check} ทราบแล้ว</div>
+                      : <div className="status-wait">รอรับทราบ</div>
+                  }
+                </td>
                 <td><div className="dn">{d.DocNumber||"-"}</div></td>
                 <td>
                    <div className="ds">{d.Subject}</div>
                    <div className="dm">
                       <span>{I.clock} {d.Date}</span>
-                      <span style={{color:'var(--dn)'}}>{I.pin} {getMyPurpose(d.Purpose, cu.name || cu.username)}</span>
+                      {!recalled && <span style={{color:'var(--dn)'}}>{I.pin} {getMyPurpose(d.Purpose, cu.name || cu.username)}</span>}
                    </div>
                 </td>
                 <td><div style={{fontWeight:500}}>{d.Sender?d.Sender.split('(')[0]:'-'}</div><div style={{fontSize:12,color:'var(--t2)'}}>{d.Sender&&d.Sender.includes('(')?'('+d.Sender.split('(')[1]:''}</div></td>
@@ -760,16 +1150,31 @@ function App(){
           </div>
         </div>
         
-        :pg==="outbox"?<div className="tc">
-          <div className="tch"><div className="tct">เอกสารส่งออก</div>{canManageDocs && <button className="bn" onClick={handleOpenCreate}>{I.plus} สร้างใหม่</button>}</div>
-          {docs.filter(d=>d.Sender===cu.username || d.Sender===cu.name).length>0?<table className="dt">
-          <thead><tr><th>เลขที่</th><th>เรื่อง</th><th>ผู้รับ</th><th>วันที่</th></tr></thead>
-          <tbody>{docs.filter(d=>d.Sender===cu.username || d.Sender===cu.name).map((d,i)=><tr key={i} onClick={()=>sSel(d)}>
-            <td><span className="dn">{d.DocNumber||"-"}</span></td>
-            <td><div className="ds">{d.Subject}</div></td>
-            <td style={{fontSize:13}}>{(d.To||"").split(',').length > 1 ? (d.To.split(',')[0] + ' และคนอื่นๆ') : d.To}</td>
-            <td>{d.Date}</td>
-          </tr>)}</tbody></table>:<div className="emp"><div className="emp-i">📤</div><div className="emp-t">ยังไม่มีประวัติการส่งออก</div></div>}
+        :pg==="outbox"?<div>
+          <div className="page-head">
+            <div><h2>เอกสารส่งออก</h2><p>หนังสือที่ท่านเป็นผู้ส่ง — สามารถดึงคืนได้ก่อนผู้รับรับทราบทั้งหมด</p></div>
+            {canManageDocs && <button className="bn" onClick={handleOpenCreate}>{I.plus} สร้างใหม่</button>}
+          </div>
+          <div className="tc">
+            <div className="tch"><div className="tct">รายการเอกสารส่งออก</div></div>
+            {myOutbox.length>0?<table className="dt">
+            <thead><tr><th style={{width:'12%'}}>สถานะ</th><th style={{width:'15%'}}>เลขที่</th><th style={{width:'35%'}}>เรื่อง</th><th style={{width:'20%'}}>ผู้รับ</th><th style={{width:'18%'}}>วันที่</th></tr></thead>
+            <tbody>{myOutbox.map((d,i)=>{
+              const recalled = isDocRecalled(d);
+              return <tr key={i} onClick={()=>sSel(d)} style={recalled?{opacity:0.6}:{}}>
+                <td>
+                  {recalled 
+                    ? <div className="status-recalled" style={{fontSize:12,padding:'4px 10px'}}>{I.recall} ดึงคืน</div>
+                    : <div className="status-success" style={{fontSize:12,padding:'4px 10px'}}>{I.send} ส่งแล้ว</div>
+                  }
+                </td>
+                <td><span className="dn">{d.DocNumber||"-"}</span></td>
+                <td><div className="ds">{d.Subject}</div></td>
+                <td style={{fontSize:13}}>{(d.To||"").split(',').length > 1 ? (d.To.split(',')[0] + ' +' + ((d.To.split(',').length)-1) + ' ท่าน') : d.To}</td>
+                <td style={{fontSize:13}}>{d.Date}</td>
+              </tr>
+            })}</tbody></table>:<div className="emp"><div className="emp-i">📤</div><div className="emp-t">ยังไม่มีประวัติการส่งออก</div></div>}
+          </div>
         </div>
         
         :pg==="search"?<div className="tc">
@@ -785,7 +1190,46 @@ function App(){
         :<div className="emp"><div className="emp-i">🚧</div><div className="emp-t" style={{color:'var(--p)',fontSize:20,marginBottom:10}}>ฟังก์ชันนี้กำลังอยู่ระหว่างการพัฒนา</div><p>ระบบจะเปิดให้ใช้งานในเร็วๆ นี้</p></div>}
       </main>
     </div>
-    {toast&&<div className={`toast toast-${toast.t}`}>{toast.t==="ok"?I.check:"⚠"} {toast.m}</div>}
+    {toast&&<div className={`toast toast-${toast.t}`}>{toast.t==="ok"?I.check:toast.t==="warn"?"⚠":"⚠"} {toast.m}</div>}
+
+    {/* ===== MODAL ดึงหนังสือคืน ===== */}
+    {recallModal && (
+      <div className="modal-overlay" onClick={()=>setRecallModal(null)}>
+        <div className="modal-box" onClick={e=>e.stopPropagation()}>
+          <div className="modal-head">
+            <div className="modal-icon danger">{I.recall}</div>
+            <div>
+              <div style={{fontSize:18,fontWeight:700,color:'var(--t)'}}>ดึงหนังสือคืน</div>
+              <div style={{fontSize:14,color:'var(--t2)',marginTop:4}}>เรื่อง: {recallModal.Subject}</div>
+            </div>
+          </div>
+          <div className="modal-body">
+            <p style={{marginBottom:16}}>
+              การดึงหนังสือคืนจะทำให้ผู้รับทุกท่านไม่สามารถดำเนินการกับเอกสารนี้ได้อีก และจะแสดงสถานะ "ดึงคืน" ในระบบ
+            </p>
+            <div style={{marginBottom:8}}>
+              <label style={{fontSize:14,fontWeight:600,color:'var(--t2)',display:'block',marginBottom:6}}>เหตุผลในการดึงคืน (ไม่บังคับ)</label>
+              <textarea 
+                className="fi" 
+                style={{minHeight:80,resize:'vertical'}} 
+                placeholder="ระบุเหตุผล เช่น ส่งผิดผู้รับ, ข้อมูลไม่ถูกต้อง, ยกเลิกหนังสือ..."
+                value={recallReason}
+                onChange={e=>setRecallReason(e.target.value)}
+              />
+            </div>
+            <div style={{background:'var(--ds)',borderRadius:8,padding:12,fontSize:13,color:'var(--dn)',fontWeight:500,display:'flex',alignItems:'center',gap:8}}>
+              {I.warn} การดึงคืนไม่สามารถยกเลิกได้ กรุณาตรวจสอบให้แน่ใจก่อนดำเนินการ
+            </div>
+          </div>
+          <div className="modal-foot">
+            <button className="ba" onClick={()=>setRecallModal(null)} disabled={recalling}>ยกเลิก</button>
+            <button className="bn btn-recall" onClick={handleRecall} disabled={recalling}>
+              {recalling ? "กำลังดำเนินการ..." : <>{I.recall} ยืนยันดึงคืน</>}
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
   </div>);
 }
 
