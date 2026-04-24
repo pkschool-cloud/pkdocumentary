@@ -3,187 +3,808 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>เข้าสู่ระบบ — ระบบจัดการเอกสารอิเล็กทรอนิกส์</title>
+<title>ระบบจัดการเอกสารอิเล็กทรอนิกส์ โรงเรียนป่าก้าง</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏫</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--f:'IBM Plex Sans Thai','DM Sans',sans-serif;--p:#3b82f6;--ph:#2563eb;--dn:#ef4444;--t:#1a2332;--t2:#5a6a7e;--t3:#94a3b8;--bd:#e5e9f0}
-body{height:100vh;font-family:var(--f);display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0c1222,#1e3a5f,#0c1222);background-size:200% 200%;animation:grad 12s ease infinite;overflow:hidden;position:relative}
-@keyframes grad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-body::before{content:'';position:absolute;top:-40%;right:-20%;width:600px;height:600px;background:radial-gradient(circle,rgba(59,130,246,.15),transparent 70%);border-radius:50%;pointer-events:none}
-body::after{content:'';position:absolute;bottom:-30%;left:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(245,158,11,.1),transparent 70%);border-radius:50%;pointer-events:none}
-
-.card{width:440px;max-width:92vw;background:rgba(255,255,255,.97);border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.15);padding:48px 40px 40px;position:relative;z-index:2;animation:fadeUp .6s ease;backdrop-filter:blur(20px)}
-.logo{display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:12px}
-.logo-box{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(59,130,246,.35);animation:float 4s ease-in-out infinite; background:#fff; overflow: hidden; border: 3px solid #fff;}
-.logo-box img {width: 100%; height: 100%; object-fit: cover;}
-.logo h1{font-size:26px;font-weight:700;color:var(--t);font-family:'DM Sans';letter-spacing:-.5px}
-.logo p{font-size:13px;color:var(--t2);margin-top:2px}
-.subtitle{text-align:center;color:var(--t3);font-size:14px;margin-bottom:32px}
-
-.field{margin-bottom:20px}
-.field label{display:block;font-size:13px;font-weight:600;color:var(--t2);margin-bottom:7px}
-.input-wrap{display:flex;align-items:center;border:1.5px solid var(--bd);border-radius:10px;background:#f8fafc;transition:all .25s;overflow:hidden}
-.input-wrap:focus-within{border-color:var(--p);background:#fff;box-shadow:0 0 0 3px rgba(59,130,246,.12)}
-.input-wrap.err{border-color:var(--dn);animation:shake .4s ease}
-.input-wrap.err:focus-within{box-shadow:0 0 0 3px rgba(239,68,68,.12)}
-.input-icon{padding:0 14px;color:var(--t3);display:flex;flex-shrink:0}
-.input-icon svg{width:20px;height:20px}
-.input-field{flex:1;border:none;background:none;padding:13px 0;font-size:15px;font-family:var(--f);outline:none;color:var(--t);min-width:0}
-.input-field::placeholder{color:var(--t3)}
-.eye-btn{padding:0 14px;background:none;border:none;cursor:pointer;color:var(--t3);display:flex;transition:color .2s}
-.eye-btn:hover{color:var(--t2)}
-.eye-btn svg{width:20px;height:20px}
-
-.error-msg{font-size:12px;color:var(--dn);margin-top:8px;display:none;align-items:center;gap:4px}
-.error-msg.show{display:flex}
-
-.login-btn{width:100%;padding:14px;border:none;border-radius:10px;font-size:16px;font-weight:600;font-family:var(--f);cursor:pointer;transition:all .25s;margin-top:8px;background:linear-gradient(135deg,var(--p),#1d4ed8);color:#fff;box-shadow:0 4px 16px rgba(59,130,246,.3);position:relative;overflow:hidden}
-.login-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(59,130,246,.4)}
-.login-btn:active:not(:disabled){transform:translateY(0)}
-.login-btn:disabled{opacity:.7;cursor:wait}
-.login-btn .spinner{display:none;width:20px;height:20px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;margin-right:8px}
-.login-btn.loading .spinner{display:inline-block}
-.login-btn.loading .btn-text{opacity:.8}
-
-.footer{text-align:center;margin-top:28px;font-size:12px;color:var(--t3)}
-@media(max-width:480px){.card{padding:36px 24px 28px}}
-</style>
+<style>*{margin:0;padding:0;box-sizing:border-box}html,body,#root{height:100%}</style>
 </head>
 <body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script type="text/babel">
+const{useState,useEffect,useCallback,useRef,useMemo}=React;
 
-<div class="card">
-  <div class="logo">
-    <div class="logo-box">
-      <img src="school logo.jpg" alt="Logo" onerror="this.style.display='none'">
+/* ═══════════════════════════════════════════
+   API
+═══════════════════════════════════════════ */
+const API="https://script.google.com/macros/s/AKfycbws4srbuR78gxskQJoTzWnnDQMDqjYVA3vz3Lt-6AVEU0yocqitiwlprCwu49lEOrc/exec";
+async function apiCall(p){
+  try{const q=new URLSearchParams(p).toString();const r=await fetch(`${API}?${q}`,{method:"GET",redirect:"follow"});return await r.json()}
+  catch{try{const r=await fetch(API,{method:"POST",redirect:"follow",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(p)});return await r.json()}catch(e){return{success:false,error:e.message}}}
+}
+
+/* ═══════════════════════════════════════════
+   SESSION — ถ้าไม่มี session ให้กลับ index.html
+═══════════════════════════════════════════ */
+function getSession(){
+  try{const s=sessionStorage.getItem("edoc_user");return s?JSON.parse(s):null}catch{return null}
+}
+
+/* ═══════════════════════════════════════════
+   ICONS (inline SVG components)
+═══════════════════════════════════════════ */
+const IC=({d,s=18,sw=1.8,...p})=><svg width={s} height={s} fill="none" stroke="currentColor" strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" {...p}><path d={d}/></svg>;
+const I={
+  inbox:<IC d="M22 12l-6 0-2 3-4 0-2-3-6 0M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/>,
+  send:<IC d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>,
+  folder:<IC d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>,
+  search:<IC d="M11 11m-8 0a8 8 0 1016 0 8 8 0 10-16 0M21 21l-4.35-4.35"/>,
+  chart:<IC d="M18 20V10M12 20V4M6 20v-6"/>,
+  plus:<IC d="M12 5v14M5 12h14"/>,
+  file:<IC d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6"/>,
+  back:<IC d="M19 12H5M12 19l-7-7 7-7"/>,
+  check:<IC d="M20 6L9 17l-5-5" sw={2.5}/>,
+  clock:<IC d="M12 12m-10 0a10 10 0 1020 0 10 10 0 10-20 0M12 6v6l4 2" s={14}/>,
+  bold:<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/></svg>,
+  italic:<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4z"/></svg>,
+  uline:<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17c3.31 0 6-2.69 6-6V3h-2.5v8c0 1.93-1.57 3.5-3.5 3.5S8.5 12.93 8.5 11V3H6v8c0 3.31 2.69 6 6 6zm-7 2v2h14v-2H5z"/></svg>,
+  chev:<IC d="M9 18l6-6-6-6" s={15} sw={2.5}/>,
+  pin:<svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z"/></svg>,
+  fwd:<IC d="M15 14l5-5-5-5M4 20v-7a4 4 0 014-4h12"/>,
+  reply:<IC d="M9 14l-5-5 5-5M20 20v-7a4 4 0 00-4-4H4"/>,
+  settings:<IC d="M12 12m-3 0a3 3 0 106 0 3 3 0 10-6 0M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.6V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>,
+  recall:<IC d="M1 4v6h6M3.51 15a9 9 0 102.13-9.36L1 10"/>,
+  x:<IC d="M18 6L6 18M6 6l12 12"/>,
+  warn:<IC d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01"/>,
+  users:<IC d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 7m-4 0a4 4 0 108 0 4 4 0 10-8 0M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>,
+  eye:<IC d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8zM12 12m-3 0a3 3 0 106 0 3 3 0 10-6 0" s={15}/>,
+  stamp:<IC d="M5 21h14M12 17V12M8 12h8l1-4H7l1 4zM12 5m-2 0a2 2 0 104 0 2 2 0 10-4 0"/>,
+  sign:<IC d="M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>,
+  upload:<IC d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>,
+  download:<IC d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>,
+  clip:<IC d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/>,
+  shield:<IC d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>,
+  key:<IC d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 010-7.778zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>,
+  route:<IC d="M18 18m-3 0a3 3 0 106 0 3 3 0 10-6 0M6 6m-3 0a3 3 0 106 0 3 3 0 10-6 0M13 6h3a2 2 0 012 2v7M6 9v12"/>,
+  list:<IC d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>,
+  bell:<IC d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/>,
+  logout:<IC d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/>,
+};
+
+/* ═══════════════════════════════════════════
+   CONSTANTS
+═══════════════════════════════════════════ */
+const PURPOSE_OPTIONS=["เพื่อทราบ","เพื่อทราบและถือปฏิบัติ","เพื่อพิจารณา","เพื่อพิจารณาเสนอ","เพื่ออนุมัติ","เพื่ออนุญาต","เพื่อดำเนินการต่อ","เพื่อพิจารณาและส่งต่อ","เพื่อลงนาม"];
+const PC={"เพื่อทราบ":"#3b82f6","เพื่อทราบและถือปฏิบัติ":"#0ea5e9","เพื่อพิจารณา":"#f59e0b","เพื่อพิจารณาเสนอ":"#ea580c","เพื่ออนุมัติ":"#ef4444","เพื่ออนุญาต":"#e11d48","เพื่อดำเนินการต่อ":"#22c55e","เพื่อพิจารณาและส่งต่อ":"#8b5cf6","เพื่อลงนาม":"#d97706"};
+
+/* ═══════════════════════════════════════════
+   CSS — Refined institutional design
+═══════════════════════════════════════════ */
+const CSS=`
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+:root{
+  --f:'IBM Plex Sans Thai','DM Sans',sans-serif;
+  --p:#1e3a5f;--pa:#3b82f6;--ps:#eff6ff;--ph:#1e40af;
+  --ok:#16a34a;--os:#dcfce7;--dn:#dc2626;--ds:#fef2f2;--ac:#d97706;--as:#fffbeb;
+  --bg:#f4f6f9;--sf:#fff;--t:#111827;--t2:#4b5563;--t3:#9ca3af;--bd:#e5e7eb;
+  --sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --sh2:0 4px 12px rgba(0,0,0,.07);
+  --r:10px;--tr:.22s cubic-bezier(.4,0,.2,1)
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body,html,#root{height:100%;font-family:var(--f);background:var(--bg);color:var(--t);overflow:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:#bfdbfe;color:#1e3a8a}
+
+/* === ANIMATIONS === */
+@keyframes enterUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes enterLeft{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+@keyframes enterScale{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes slideToast{from{opacity:0;transform:translateY(18px) scale(.95)}to{opacity:1;transform:none}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes ripple{to{transform:scale(2.5);opacity:0}}
+
+.anim-up{animation:enterUp .4s var(--tr) both}
+.anim-left{animation:enterLeft .35s var(--tr) both}
+.anim-scale{animation:enterScale .3s var(--tr) both}
+.anim-fade{animation:fadeIn .3s ease both}
+.d1{animation-delay:.04s}.d2{animation-delay:.08s}.d3{animation-delay:.12s}.d4{animation-delay:.16s}.d5{animation-delay:.2s}.d6{animation-delay:.24s}
+
+/* === INPUTS === */
+.fi{width:100%;padding:10px 14px;border:1.5px solid var(--bd);border-radius:8px;font-size:14px;font-family:var(--f);background:#fff;transition:var(--tr);outline:none;color:var(--t)}
+.fi:focus{border-color:var(--pa);box-shadow:0 0 0 3px rgba(59,130,246,.1)}
+.fi::placeholder{color:var(--t3)}
+select.fi{cursor:pointer;appearance:auto}
+textarea.fi{resize:vertical;min-height:64px;line-height:1.6}
+
+/* === LAYOUT === */
+.app{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+/* TOP BAR */
+.top{height:60px;background:var(--sf);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:20;position:relative}
+.top::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(59,130,246,.15),transparent)}
+.top-l{display:flex;align-items:center;gap:12px;cursor:pointer;transition:var(--tr)}
+.top-l:hover{opacity:.85}
+.logo-img{width:36px;height:36px;border-radius:10px;object-fit:cover;border:2px solid var(--bd);transition:var(--tr)}
+.top-l:hover .logo-img{border-color:var(--pa)}
+.top-title{font-size:15px;font-weight:700;color:var(--p);letter-spacing:-.3px}
+.top-sub{font-size:11px;color:var(--t3);font-weight:500}
+.top-r{display:flex;align-items:center;gap:14px}
+.u-chip{display:flex;align-items:center;gap:10px;padding:5px 14px 5px 5px;border-radius:24px;background:var(--ps);transition:var(--tr);cursor:default}
+.u-ava{width:30px;height:30px;border-radius:50%;background:var(--pa);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+.u-name{font-weight:600;font-size:13px;color:var(--p)}
+.u-role{font-size:10px;color:var(--t3);font-weight:500}
+.btn-out{display:flex;align-items:center;gap:5px;background:none;border:1px solid var(--bd);padding:6px 12px;border-radius:8px;color:var(--t2);font-size:12px;font-weight:500;cursor:pointer;transition:var(--tr);font-family:var(--f)}
+.btn-out:hover{background:#fef2f2;border-color:#fecaca;color:var(--dn)}
+
+.main-body{flex:1;display:flex;overflow:hidden}
+
+/* SIDEBAR */
+.sb{width:240px;background:var(--sf);border-right:1px solid var(--bd);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;transition:var(--tr)}
+.sb::-webkit-scrollbar{width:0}
+.sbn{padding:14px 10px;flex:1}
+.sbt{font-size:10px;text-transform:uppercase;color:var(--t3);font-weight:700;padding:10px 12px 6px;letter-spacing:.8px}
+.sbi{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;transition:var(--tr);font-size:13px;color:var(--t2);font-weight:500;margin-bottom:2px;position:relative;overflow:hidden}
+.sbi::before{content:'';position:absolute;inset:0;background:var(--pa);opacity:0;transition:opacity .2s;border-radius:8px}
+.sbi:hover{color:var(--p)}.sbi:hover::before{opacity:.05}
+.sbi.on{color:var(--pa);font-weight:600;background:var(--ps)}
+.sbi.on::before{opacity:0}
+.sbi svg,.sbi>span:first-child{position:relative;z-index:1;flex-shrink:0}
+.sbi>span:last-child{position:relative;z-index:1}
+.badge{margin-left:auto;font-size:10px;font-weight:700;background:var(--dn);color:#fff;padding:1px 7px;border-radius:10px;min-width:18px;text-align:center;position:relative;z-index:1}
+.badge-warn{background:var(--ac)}
+
+/* CONTENT */
+.mn{flex:1;overflow-y:auto;background:var(--bg);padding:24px 28px;scroll-behavior:smooth}
+.mn::-webkit-scrollbar{width:6px}.mn::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px}.mn::-webkit-scrollbar-thumb:hover{background:#9ca3af}
+.page-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px}
+.page-head h2{font-size:20px;font-weight:700;color:var(--t);letter-spacing:-.3px}
+.page-head p{color:var(--t2);font-size:12px;margin-top:2px;font-weight:400}
+
+/* BUTTONS */
+.bn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--pa);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:var(--tr);font-family:var(--f);position:relative;overflow:hidden}
+.bn:hover{background:var(--ph);transform:translateY(-1px);box-shadow:var(--sh2)}
+.bn:active{transform:translateY(0)}
+.bn:disabled{opacity:.5;cursor:default;transform:none!important;box-shadow:none!important}
+.ba{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--sf);color:var(--t2);border:1px solid var(--bd);border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;transition:var(--tr);font-family:var(--f)}
+.ba:hover{background:#f9fafb;border-color:#d1d5db;color:var(--t)}
+
+.btn-ok{background:var(--ok)}.btn-ok:hover{background:#15803d}
+.btn-dn{background:var(--dn)}.btn-dn:hover{background:#b91c1c}
+.btn-ac{background:var(--ac)}.btn-ac:hover{background:#b45309}
+.btn-t2{background:#475569}.btn-t2:hover{background:#334155}
+
+/* CARD / TABLE */
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.card-h{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--bd)}
+.card-t{font-size:14px;font-weight:700;color:var(--t);display:flex;align-items:center;gap:6px}
+.search-box{display:flex;align-items:center;gap:6px;background:var(--bg);border-radius:8px;padding:6px 12px;border:1.5px solid transparent;transition:var(--tr)}
+.search-box:focus-within{border-color:var(--pa);background:var(--sf);box-shadow:0 0 0 3px rgba(59,130,246,.08)}
+.search-box input{border:none;background:none;font-size:12px;font-family:var(--f);outline:none;width:160px;color:var(--t)}
+
+table.tb{width:100%;border-collapse:collapse;text-align:left}
+table.tb th{padding:10px 16px;font-size:11px;font-weight:700;color:var(--t3);background:#f9fafb;border-bottom:1px solid var(--bd);text-transform:uppercase;letter-spacing:.4px}
+table.tb td{padding:12px 16px;border-bottom:1px solid var(--bd);font-size:13px;vertical-align:middle}
+table.tb tbody tr{transition:background .15s;cursor:pointer}
+table.tb tbody tr:hover{background:#f9fafb}
+table.tb tbody tr:last-child td{border-bottom:none}
+
+/* STATUS PILLS */
+.pill{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:6px;font-size:11px;font-weight:600;white-space:nowrap;transition:var(--tr)}
+.pill-ok{background:var(--os);color:var(--ok)}
+.pill-wait{background:#fef3c7;color:var(--ac)}
+.pill-dn{background:var(--ds);color:var(--dn)}
+.pill-info{background:var(--ps);color:var(--pa)}
+.pill-sign{background:#fef9c3;color:#a16207}
+.pill-urg-d{background:#fee2e2;color:#dc2626}
+.pill-urg-dm{background:#ffedd5;color:#ea580c}
+.pill-conf{background:#fef3c7;color:#92400e}
+
+.doc-title{font-weight:600;color:var(--p);font-size:13px;margin-bottom:2px;transition:color .15s}
+tr:hover .doc-title{color:var(--pa)}
+.doc-meta{font-size:11px;color:var(--t3);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+
+.empty{text-align:center;padding:48px 20px;color:var(--t2)}
+.empty-icon{font-size:36px;margin-bottom:10px;opacity:.4}
+.empty-text{font-size:14px;font-weight:600}
+
+/* DETAIL VIEW */
+.det{animation:enterLeft .35s var(--tr) both}
+.det-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.det-back{width:34px;height:34px;border-radius:8px;border:1px solid var(--bd);background:var(--sf);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--tr);color:var(--t2)}
+.det-back:hover{background:var(--ps);color:var(--pa);border-color:var(--pa);transform:translateX(-2px)}
+.det-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:24px;box-shadow:var(--sh)}
+.det-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.det-label{font-size:11px;color:var(--t3);font-weight:600;margin-bottom:2px;text-transform:uppercase;letter-spacing:.3px}
+.det-val{font-size:13px;font-weight:500;color:var(--t)}
+.det-content{background:#f9fafb;border:1px solid var(--bd);border-radius:8px;padding:16px;line-height:1.7;font-size:13px;margin-top:6px}
+.det-section{margin-top:20px;padding-top:16px;border-top:1px solid var(--bd)}
+
+.action-bar{margin-top:20px;padding-top:16px;border-top:1px solid var(--bd);display:flex;gap:8px;flex-wrap:wrap}
+
+/* ROUTING HISTORY */
+.rt{background:var(--sf);border:1px solid var(--bd);border-radius:8px;margin-top:8px;overflow:hidden;transition:var(--tr)}
+.rt:hover{box-shadow:var(--sh)}
+.rt-head{background:#f9fafb;padding:8px 14px;border-bottom:1px solid var(--bd);font-size:12px;color:var(--t2);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.rt-type{color:#fff;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:700}
+.rt-body{padding:10px 14px;font-size:12px;line-height:1.6;color:var(--t2)}
+
+/* FILE LIST */
+.fl{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+.fl-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fafb;border:1px solid var(--bd);border-radius:8px;font-size:12px;transition:var(--tr)}
+.fl-item:hover{border-color:var(--pa);background:var(--ps)}
+.fl-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.fl-pdf{background:#fee2e2;color:#dc2626}.fl-doc{background:#dbeafe;color:#2563eb}.fl-img{background:#dcfce7;color:#16a34a}.fl-other{background:#f3f4f6;color:#6b7280}
+
+/* SIGNATURE */
+.sign-block{border:2px dashed var(--bd);border-radius:12px;padding:20px;text-align:center;margin-top:12px;transition:var(--tr)}
+.sign-block.done{border-color:var(--ok);border-style:solid;background:var(--os)}
+.sign-stamp{display:inline-block;border:3px solid;padding:10px 20px;border-radius:8px;font-weight:700;font-size:15px;transform:rotate(-4deg);opacity:.85}
+
+/* WIZARD */
+.wiz{animation:enterUp .4s var(--tr) both}
+.wiz-bar{display:flex;align-items:center;margin-bottom:16px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:10px 16px;gap:4px;flex-wrap:wrap;box-shadow:var(--sh)}
+.wiz-s{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:6px;font-size:12px;font-weight:500;color:var(--t3);cursor:pointer;transition:var(--tr)}
+.wiz-s.on{background:var(--ps);color:var(--pa);font-weight:600}
+.wiz-s.ok{color:var(--ok);font-weight:600}
+.wiz-n{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:2px solid var(--bd);transition:var(--tr)}
+.wiz-s.on .wiz-n{border-color:var(--pa);background:var(--pa);color:#fff}
+.wiz-s.ok .wiz-n{border-color:var(--ok);background:var(--os);color:var(--ok)}
+.wiz-c{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:22px;animation:enterUp .3s var(--tr) both;box-shadow:var(--sh)}
+.wiz-t{font-size:15px;font-weight:700;color:var(--t);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--bd);display:flex;align-items:center;gap:8px}
+.wiz-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fg{margin-bottom:10px}.fg.full{grid-column:1/-1}
+.fg>label{display:block;font-size:12px;font-weight:600;color:var(--t2);margin-bottom:5px}
+.fchk{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13px;cursor:pointer}
+.fchk input{width:16px;height:16px;accent-color:var(--pa)}
+.wiz-foot{display:flex;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid var(--bd)}
+
+/* EDITOR */
+.ed{border:1.5px solid var(--bd);border-radius:8px;overflow:hidden;background:var(--sf);transition:var(--tr)}
+.ed:focus-within{border-color:var(--pa);box-shadow:0 0 0 3px rgba(59,130,246,.08)}
+.ed-bar{display:flex;gap:2px;padding:5px 6px;background:#f9fafb;border-bottom:1px solid var(--bd)}
+.ed-btn{width:28px;height:28px;border:none;background:none;border-radius:5px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t2);transition:var(--tr)}
+.ed-btn:hover{background:var(--ps);color:var(--pa)}
+.ed-body{min-height:140px;padding:12px;font-size:13px;line-height:1.7;outline:none;font-family:var(--f);color:var(--t)}
+.ed-body:empty::before{content:attr(data-placeholder);color:var(--t3)}
+
+/* RECIPIENT */
+.rc-wrap{position:relative}
+.rc-dd{position:absolute;top:100%;left:0;right:0;background:var(--sf);border:1px solid var(--bd);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:50;max-height:180px;overflow-y:auto;animation:enterScale .15s var(--tr)}
+.rc-opt{padding:8px 12px;cursor:pointer;font-size:12px;transition:var(--tr);display:flex;align-items:center;gap:8px}
+.rc-opt:hover{background:var(--ps);color:var(--pa)}
+.rc-tag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:var(--ps);color:var(--pa);border-radius:12px;font-size:11px;font-weight:500;margin:2px;transition:var(--tr)}
+.rc-tag:hover{background:#dbeafe}
+.rc-tag button{background:none;border:none;color:var(--pa);cursor:pointer;font-size:12px;line-height:1}
+
+/* FWD RECIPIENT CARD */
+.frc{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f9fafb;border:1px solid var(--bd);border-radius:8px;margin-bottom:6px;transition:var(--tr)}
+.frc:hover{border-color:var(--pa);background:var(--ps)}
+.frc-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;transition:var(--tr)}
+.frc-sel{margin-left:auto;padding:6px 10px;border:1px solid var(--bd);border-radius:6px;font-size:12px;font-family:var(--f);background:var(--sf);cursor:pointer;outline:none;transition:var(--tr);min-width:160px}
+.frc-sel:focus{border-color:var(--pa);box-shadow:0 0 0 3px rgba(59,130,246,.08)}
+
+/* SUMMARY */
+.sum{background:linear-gradient(135deg,#eff6ff,#dbeafe);border:1px solid #bfdbfe;border-radius:10px;padding:18px;margin-top:12px}
+.sum-t{font-size:14px;font-weight:700;color:var(--p);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.sum-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(191,219,254,.5);font-size:12px}
+.sum-item:last-child{border-bottom:none}
+.sum-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;white-space:nowrap}
+
+/* UPLOAD ZONE */
+.upz{border:2px dashed var(--bd);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:var(--tr);background:#fafbfc}
+.upz:hover{border-color:var(--pa);background:var(--ps)}
+
+/* STAT CARDS */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.sc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:16px;box-shadow:var(--sh);transition:var(--tr)}
+.sc:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.sc-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.sc-num{font-size:24px;font-weight:700;color:var(--p)}
+.sc-lbl{font-size:11px;color:var(--t2);font-weight:500;margin-top:1px}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;padding:10px 18px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.15);z-index:9999;animation:slideToast .35s var(--tr);display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:#fff;max-width:380px}
+.toast-ok{background:var(--ok)}.toast-err{background:var(--dn)}.toast-warn{background:var(--ac)}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:9998;animation:fadeIn .15s;backdrop-filter:blur(4px)}
+.modal{background:var(--sf);border-radius:14px;width:95%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:enterScale .25s var(--tr);max-height:88vh;overflow-y:auto}
+.modal-h{padding:18px 22px 0;display:flex;align-items:flex-start;gap:12px}
+.modal-ic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.modal-b{padding:14px 22px}
+.modal-f{padding:10px 22px 18px;display:flex;justify-content:flex-end;gap:6px}
+
+/* TABS */
+.tabs{display:flex;gap:2px;margin-bottom:14px;border-bottom:2px solid var(--bd)}
+.tab{padding:7px 14px;font-size:12px;font-weight:500;color:var(--t2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:var(--tr);font-family:var(--f)}
+.tab:hover{color:var(--pa)}
+.tab.on{color:var(--pa);border-bottom-color:var(--pa);font-weight:700}
+
+.ldr{display:flex;align-items:center;justify-content:center;gap:6px;padding:28px;color:var(--t3);font-size:12px}
+.ldrs{width:18px;height:18px;border:2px solid var(--bd);border-top-color:var(--pa);border-radius:50%;animation:spin .6s linear infinite}
+
+.recall-banner{background:linear-gradient(135deg,#fef2f2,#fff1f2);border:1px solid #fecaca;border-radius:8px;padding:10px 16px;margin-bottom:14px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dn);font-weight:500}
+`;
+
+/* ═══════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════ */
+const getMyPurpose=(ps,me)=>{if(!ps)return"-";try{const p=JSON.parse(ps);return p[me]||"เพื่อทราบ"}catch{return ps}};
+const getAllPurposes=(ps)=>{if(!ps)return"-";try{const p=JSON.parse(ps);return Object.entries(p).map(([n,v])=>`${n} (${v})`).join(", ")}catch{return ps}};
+const fExt=(n)=>{const e=n.split('.').pop().toLowerCase();return['pdf'].includes(e)?'pdf':['doc','docx'].includes(e)?'doc':['jpg','jpeg','png','gif'].includes(e)?'img':'other'};
+const renderHist=(hs)=>{
+  if(!hs||hs==="[]")return<div style={{color:'var(--t3)',marginTop:6,fontSize:11}}>ยังไม่มีประวัติ</div>;
+  try{const h=JSON.parse(hs);return h.map((x,i)=><div className="rt" key={i}><div className="rt-head">
+    <span className="rt-type" style={{background:x.type==='recall'?'#dc2626':x.type==='sign'?'#d97706':'#3b82f6'}}>{x.type==='recall'?'ดึงคืน':x.type==='sign'?'ลงนาม':'ส่งต่อ'}</span>
+    {x.type==='recall'?<><b>{x.from}</b> ดึงคืน</>:x.type==='sign'?<><b>{x.from}</b> ลงนาม</>:<>จาก <b>{x.from}</b> ถึง <b>{(x.to||"").split(',').join(', ')}</b></>}
+    <span style={{marginLeft:'auto',fontSize:11,color:'var(--t3)'}}>{x.date}</span>
+  </div><div className="rt-body" dangerouslySetInnerHTML={{__html:x.comment||'<span style="color:var(--t3)">—</span>'}}/></div>)}catch{return null}
+};
+
+/* ═══════════════════════════════════════════
+   SHARED COMPONENTS
+═══════════════════════════════════════════ */
+function Editor({value,onChange,placeholder}){
+  const r=useRef(null);
+  useEffect(()=>{if(r.current&&value!==r.current.innerHTML)r.current.innerHTML=value||""},[value]);
+  const exec=(c,v)=>{document.execCommand(c,false,v);r.current?.focus();onChange?.(r.current.innerHTML)};
+  const h=()=>onChange?.(r.current?.innerHTML||"");
+  return <div className="ed"><div className="ed-bar">
+    <button type="button" className="ed-btn" onClick={()=>exec("bold")} title="ตัวหนา">{I.bold}</button>
+    <button type="button" className="ed-btn" onClick={()=>exec("italic")} title="ตัวเอียง">{I.italic}</button>
+    <button type="button" className="ed-btn" onClick={()=>exec("underline")} title="ขีดเส้นใต้">{I.uline}</button>
+  </div><div ref={r} className="ed-body" contentEditable suppressContentEditableWarning data-placeholder={placeholder||"ระบุรายละเอียด..."} onInput={h} onBlur={h}/></div>
+}
+
+function RecipInput({users,selected,onAdd,onRemove}){
+  const[q,sQ]=useState("");const[show,sS]=useState(false);
+  const f=(users||[]).filter(u=>{const s=`${u.FullName||u.Username} ${u.Position||''}`.toLowerCase();return s.includes(q.toLowerCase())&&!selected.includes(u.FullName||u.Username)});
+  return<div className="rc-wrap">
+    <div style={{display:"flex",flexWrap:"wrap",gap:2,marginBottom:selected.length?6:0}}>
+      {selected.map(s=><span key={s} className="rc-tag">{s}<button onClick={()=>onRemove(s)}>×</button></span>)}
     </div>
-    <div>
-      <h1>CMU e-Document</h1>
-      <p>โรงเรียนป่าก้าง</p>
-    </div>
+    <input className="fi" style={{marginBottom:0}} placeholder="พิมพ์ชื่อ/ตำแหน่ง..." value={q} onChange={e=>{sQ(e.target.value);sS(true)}} onFocus={()=>sS(true)} onBlur={()=>setTimeout(()=>sS(false),200)}/>
+    {show&&q&&f.length>0&&<div className="rc-dd">{f.map(u=><div key={u.Username} className="rc-opt" onMouseDown={e=>{e.preventDefault();onAdd(u.FullName||u.Username);sQ("");sS(false)}}>
+      <div style={{width:24,height:24,borderRadius:'50%',background:'var(--ps)',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--pa)',fontWeight:700,fontSize:11}}>{(u.FullName||u.Username)[0]}</div>
+      <div><div style={{fontWeight:600,fontSize:12}}>{u.FullName||u.Username}</div><div style={{fontSize:10,color:'var(--t3)'}}>{u.Position||u.Role}</div></div>
+      {u.CanSign&&<span style={{marginLeft:'auto',fontSize:9,background:'#fef9c3',color:'#a16207',padding:'1px 5px',borderRadius:4,fontWeight:600}}>ลงนามได้</span>}
+    </div>)}</div>}
   </div>
-  <div class="subtitle">ระบบจัดการเอกสารอิเล็กทรอนิกส์</div>
+}
 
-  <form id="loginForm" onsubmit="return handleLogin(event)">
-    <div class="field">
-      <label for="username">ชื่อผู้ใช้งาน</label>
-      <div class="input-wrap" id="userWrap">
-        <span class="input-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
-        <input class="input-field" id="username" type="text" placeholder="Username" autocomplete="username">
+function FileZone({files,onChange}){
+  const[drag,sD]=useState(false);const ref=useRef(null);
+  const add=(fl)=>{const a=Array.from(fl).map(f=>({name:f.name,size:f.size,id:Date.now()+Math.random()}));onChange([...(files||[]),...a])};
+  return<div>
+    <div className={`upz ${drag?'dragging':''}`} onClick={()=>ref.current?.click()}
+      onDragOver={e=>{e.preventDefault();sD(true)}} onDragLeave={()=>sD(false)} onDrop={e=>{e.preventDefault();sD(false);add(e.dataTransfer.files)}}>
+      <div style={{color:'var(--pa)',marginBottom:6}}>{I.upload}</div>
+      <div style={{fontSize:13,fontWeight:600,color:'var(--t)'}}>ลากไฟล์มาวางหรือคลิก</div>
+      <div style={{fontSize:11,color:'var(--t3)',marginTop:2}}>รองรับ .pdf .doc .docx .jpg .png .xls .xlsx</div>
+      <input ref={ref} type="file" multiple style={{display:'none'}} accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xls,.xlsx" onChange={e=>add(e.target.files)}/>
+    </div>
+    {files&&files.length>0&&<div className="fl" style={{marginTop:6}}>{files.map((f,i)=>{const ext=fExt(f.name);return<div className="fl-item" key={f.id||i}>
+      <div className={`fl-icon fl-${ext}`}>{ext.toUpperCase()}</div>
+      <div style={{flex:1}}><div style={{fontWeight:600,fontSize:12}}>{f.name}</div>{f.size&&<div style={{fontSize:10,color:'var(--t3)'}}>{(f.size/1024).toFixed(1)} KB</div>}</div>
+      <button style={{background:'none',border:'none',color:'var(--dn)',cursor:'pointer',padding:2}} onClick={()=>onChange(files.filter((_,j)=>j!==i))}>{I.x}</button>
+    </div>})}</div>}
+  </div>
+}
+
+function Modal({open,onClose,onOk,title,icon,iconBg,okText,okStyle,loading,children}){
+  if(!open)return null;
+  return<div className="modal-bg" onClick={onClose}><div className="modal" onClick={e=>e.stopPropagation()}>
+    <div className="modal-h"><div className="modal-ic" style={{background:iconBg||'var(--ps)',color:iconBg?'#fff':'var(--pa)'}}>{icon}</div><div><div style={{fontSize:15,fontWeight:700}}>{title}</div></div></div>
+    <div className="modal-b">{children}</div>
+    <div className="modal-f"><button className="ba" onClick={onClose} disabled={loading}>ยกเลิก</button><button className="bn" style={okStyle} onClick={onOk} disabled={loading}>{loading?"กำลังดำเนินการ...":okText}</button></div>
+  </div></div>
+}
+
+/* ═══════════════════════════════════════════
+   FORWARD / REPLY WIZARD
+═══════════════════════════════════════════ */
+function FwdWiz({user,users,doc,onClose,onDone,tt,isReply}){
+  const[step,sS]=useState(0);
+  const[form,sF]=useState({recipients:isReply?[doc.Sender]:[],purposes:isReply?{[doc.Sender]:"เพื่อทราบ"}:{},comment:""});
+  const[saving,setSaving]=useState(false);const[confirm,sC]=useState(false);
+  const u=(k,v)=>sF(f=>({...f,[k]:v}));
+  const steps=["เลือกผู้รับ","วัตถุประสงค์","ยืนยัน"];
+  const save=async()=>{setSaving(true);try{await apiCall({action:"forwardDocument",rowIndex:doc.rowIndex,subject:doc.Subject,sender:user.username,to:form.recipients.join(","),purpose:JSON.stringify(form.purposes),comment:form.comment});tt("เกษียณและส่งต่อสำเร็จ");onDone()}catch{tt("เกิดข้อผิดพลาด","err")}setSaving(false);sC(false)};
+
+  return<div className="wiz">
+    <div className="page-head" style={{marginBottom:10}}><div><h2 style={{fontSize:18}}>{isReply?"ตอบกลับ":"เกษียณและส่งต่อ"}</h2><p>เรื่อง: {doc.Subject}</p></div></div>
+    <div className="wiz-bar">{steps.map((s,i)=><React.Fragment key={i}><div className={`wiz-s ${i===step?"on":""} ${i<step?"ok":""}`} onClick={()=>{if(i<step)sS(i)}}><div className="wiz-n">{i<step?"✓":i+1}</div><span>{s}</span></div>{i<steps.length-1&&<span style={{color:'var(--bd)'}}>{I.chev}</span>}</React.Fragment>)}</div>
+    
+    {step===0&&<div className="wiz-c"><div className="wiz-t">{I.users} เลือกผู้รับ</div>
+      <RecipInput users={users} selected={form.recipients} onAdd={x=>{if(!form.recipients.includes(x)){u("recipients",[...form.recipients,x]);u("purposes",{...form.purposes,[x]:"เพื่อทราบ"})}}} onRemove={x=>{u("recipients",form.recipients.filter(r=>r!==x));const p={...form.purposes};delete p[x];u("purposes",p)}}/>
+    </div>}
+    
+    {step===1&&<div className="wiz-c"><div className="wiz-t">{I.stamp} กำหนดวัตถุประสงค์</div>
+      {form.recipients.map(r=>{const p=form.purposes[r]||"เพื่อทราบ";return<div className="frc" key={r}><div className="frc-av" style={{background:PC[p]+'18',color:PC[p]}}>{r[0]}</div><div><div style={{fontWeight:600,fontSize:12}}>{r}</div></div><select className="frc-sel" value={p} onChange={e=>u("purposes",{...form.purposes,[r]:e.target.value})}>{PURPOSE_OPTIONS.map(o=><option key={o}>{o}</option>)}</select></div>})}
+      <div className="fg full" style={{marginTop:12}}><label>ข้อความเกษียณ</label><Editor value={form.comment} onChange={v=>u("comment",v)} placeholder="ความเห็น คำสั่งการ..."/></div>
+    </div>}
+    
+    {step===2&&<div className="wiz-c"><div className="wiz-t">{I.eye} ตรวจสอบ</div>
+      <div className="sum"><div className="sum-t">{I.fwd} สรุปการส่ง</div>
+        <div style={{marginBottom:8}}><div style={{fontSize:11,color:'var(--t2)'}}>เรื่อง</div><div style={{fontSize:14,fontWeight:700,color:'var(--p)'}}>{doc.Subject}</div></div>
+        {form.recipients.map(r=>{const p=form.purposes[r]||"เพื่อทราบ";return<div className="sum-item" key={r}><div style={{width:22,height:22,borderRadius:'50%',background:PC[p]+'18',color:PC[p],display:'flex',alignItems:'center',justifyContent:'center',fontWeight:700,fontSize:10}}>{r[0]}</div><div style={{flex:1,fontWeight:600}}>{r}</div><span className="sum-badge" style={{background:PC[p]+'18',color:PC[p]}}>{p}</span></div>})}
+      </div>
+    </div>}
+    
+    <div className="wiz-foot"><div>{step>0&&<button className="ba" onClick={()=>sS(step-1)}>{I.back} ย้อนกลับ</button>}</div>
+      <div style={{display:'flex',gap:6}}><button className="ba" onClick={onClose}>ยกเลิก</button>
+        {step<2?<button className="bn" onClick={()=>sS(step+1)} disabled={!form.recipients.length}>ถัดไป {I.chev}</button>
+        :<button className="bn btn-ok" onClick={()=>sC(true)} disabled={saving||!form.recipients.length}>{I.send} ยืนยันส่ง</button>}
       </div>
     </div>
+    <Modal open={confirm} onClose={()=>sC(false)} onOk={save} title="ยืนยันส่งเอกสาร" icon={I.send} iconBg="var(--ok)" okText="ส่งเลย" okStyle={{background:'var(--ok)'}} loading={saving}>
+      <p style={{fontSize:13,color:'var(--t2)'}}>ส่ง "{doc.Subject}" ไปยัง {form.recipients.length} ท่าน?</p>
+    </Modal>
+  </div>
+}
 
-    <div class="field">
-      <label for="password">รหัสผ่าน</label>
-      <div class="input-wrap" id="passWrap">
-        <span class="input-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
-        <input class="input-field" id="password" type="password" placeholder="Password" autocomplete="current-password">
-        <button type="button" class="eye-btn" onclick="togglePassword()">
-          <svg id="eyeIcon" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        </button>
+/* ═══════════════════════════════════════════
+   CREATE WIZARD (5 steps)
+═══════════════════════════════════════════ */
+function CreateWiz({user,users,onClose,onDone,tt}){
+  const[step,sS]=useState(0);
+  const[form,sF]=useState({docTypes:["หนังสือภายใน"],urgency:"ปกติ",conf:"ปกติ",track:false,keywords:"",year:"2569",docNum:"",subject:"",toField:"",ref:"",content:"",footnote:"",recipients:[],purposes:{},files:[],needSign:false,signBy:""});
+  const[saving,setSaving]=useState(false);const[confirm,sC]=useState(false);
+  const u=(k,v)=>sF(f=>({...f,[k]:v}));
+  const tog=t=>u("docTypes",form.docTypes.includes(t)?form.docTypes.filter(x=>x!==t):[...form.docTypes,t]);
+  const signers=users.filter(x=>x.CanSign);
+  const steps=["ตั้งค่า","รายละเอียด","ไฟล์แนบ","ผู้รับ","ตรวจสอบ"];
+
+  const save=async()=>{setSaving(true);try{
+    const d=new Date();const td=`${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()+543}`;
+    await apiCall({action:"createDocument",id:Date.now(),status:form.needSign?"รอลงนาม":"ส่งต่อ",docNumber:form.docNum,subject:form.subject,sender:user.username,date:td,purpose:JSON.stringify(form.purposes),to:form.recipients.join(","),content:form.content,type:form.docTypes.join(","),urgency:form.urgency,confidentiality:form.conf,signBy:form.signBy,signStatus:form.needSign?"รอลงนาม":"",files:form.files.map(f=>f.name).join(",")});
+    tt(form.needSign?"สร้างหนังสือสำเร็จ — ส่งรอลงนาม":"ส่งหนังสือสำเร็จ");onDone();
+  }catch{tt("เกิดข้อผิดพลาด","err")}setSaving(false);sC(false)};
+
+  return<div className="wiz">
+    <div className="page-head" style={{marginBottom:10}}><div><h2 style={{fontSize:18}}>สร้างหนังสือใหม่</h2><p>ระบบสร้างและส่งหนังสือราชการอิเล็กทรอนิกส์</p></div></div>
+    <div className="wiz-bar">{steps.map((s,i)=><React.Fragment key={i}><div className={`wiz-s ${i===step?"on":""} ${i<step?"ok":""}`} onClick={()=>{if(i<step)sS(i)}}><div className="wiz-n">{i<step?"✓":i+1}</div><span>{s}</span></div>{i<steps.length-1&&<span style={{color:'var(--bd)'}}>{I.chev}</span>}</React.Fragment>)}</div>
+    
+    {step===0&&<div className="wiz-c"><div className="wiz-t">ตั้งค่ารูปแบบหนังสือ</div><div className="wiz-row">
+      <div className="fg full"><label>แบบหนังสือ *</label>{["หนังสือภายใน","แบบหนังสือบันทึกเสนองาน","แบบหนังสือนำส่ง","คำสั่ง/ประกาศ"].map(t=><label key={t} className="fchk"><input type="checkbox" checked={form.docTypes.includes(t)} onChange={()=>tog(t)}/>{t}</label>)}</div>
+      <div className="fg"><label>ชั้นความเร็ว</label><select className="fi" value={form.urgency} onChange={e=>u("urgency",e.target.value)}><option>ปกติ</option><option>ด่วน</option><option>ด่วนมาก</option><option>ด่วนที่สุด</option></select></div>
+      <div className="fg"><label>ชั้นความลับ</label><select className="fi" value={form.conf} onChange={e=>u("conf",e.target.value)}><option>ปกติ</option><option>ลับ</option><option>ลับมาก</option><option>ลับมากที่สุด</option></select></div>
+      <div className="fg"><label><input type="checkbox" checked={form.track} onChange={e=>u("track",e.target.checked)} style={{marginRight:6,accentColor:'var(--pa)'}}/>ติดตามเอกสาร</label></div>
+      <div className="fg"><label>ปี พ.ศ.</label><select className="fi" value={form.year} onChange={e=>u("year",e.target.value)}><option>2569</option><option>2568</option></select></div>
+      <div className="fg full"><label>Keyword (ถ้ามี)</label><input className="fi" placeholder="คั่นด้วยช่องว่าง" value={form.keywords} onChange={e=>u("keywords",e.target.value)}/></div>
+    </div></div>}
+
+    {step===1&&<div className="wiz-c"><div className="wiz-t">รายละเอียดหนังสือ</div><div className="wiz-row">
+      <div className="fg"><label>ส่วนงาน</label><input className="fi" value="โรงเรียนป่าก้าง" readOnly style={{background:'#f9fafb'}}/></div>
+      <div className="fg"><label>ที่ (เลขที่หนังสือ)</label><input className="fi" placeholder="ศธ 04285.01/xxx" value={form.docNum} onChange={e=>u("docNum",e.target.value)}/></div>
+      <div className="fg full"><label>เรื่อง *</label><input className="fi" placeholder="ระบุหัวข้อเรื่อง" value={form.subject} onChange={e=>u("subject",e.target.value)}/></div>
+      <div className="fg full"><label>เรียน</label><input className="fi" placeholder="ระบุผู้รับตามเอกสาร" value={form.toField} onChange={e=>u("toField",e.target.value)}/></div>
+      <div className="fg full"><label>อ้างถึง (ถ้ามี)</label><input className="fi" placeholder="เอกสารอ้างถึง" value={form.ref} onChange={e=>u("ref",e.target.value)}/></div>
+    </div>
+    <div className="fg full" style={{marginTop:8}}><label>เนื้อหา</label><Editor value={form.content} onChange={v=>u("content",v)} placeholder="ระบุรายละเอียดเนื้อหา..."/></div>
+    <div className="fg full" style={{marginTop:8}}><label>ส่วนท้าย (ถ้ามี)</label><Editor value={form.footnote} onChange={v=>u("footnote",v)} placeholder="หมายเหตุ..."/></div>
+    <div style={{background:'var(--as)',border:'1px solid #fef3c7',borderRadius:8,padding:12,marginTop:12}}>
+      <label className="fchk" style={{marginBottom:form.needSign?8:0}}><input type="checkbox" checked={form.needSign} onChange={e=>u("needSign",e.target.checked)}/><span style={{fontWeight:600,color:'#92400e'}}>{I.sign} ต้องการให้ผู้มีอำนาจลงนาม</span></label>
+      {form.needSign&&<div><select className="fi" value={form.signBy} onChange={e=>u("signBy",e.target.value)}><option value="">-- เลือกผู้ลงนาม --</option>{signers.map(s=><option key={s.Username} value={s.FullName}>{s.FullName} ({s.SignTitle})</option>)}</select><div style={{fontSize:11,color:'var(--t3)',marginTop:2}}>หนังสือจะถูกส่งไปรอลงนามก่อน</div></div>}
+    </div></div>}
+
+    {step===2&&<div className="wiz-c"><div className="wiz-t">{I.clip} ไฟล์แนบ</div><p style={{fontSize:12,color:'var(--t2)',marginBottom:12}}>อัปโหลดไฟล์ที่เกี่ยวข้อง</p><FileZone files={form.files} onChange={f=>u("files",f)}/></div>}
+
+    {step===3&&<div className="wiz-c"><div className="wiz-t">{I.users} ผู้รับ + วัตถุประสงค์</div>
+      <div className="fg full"><label>ค้นหาและเลือกผู้รับ</label><RecipInput users={users} selected={form.recipients} onAdd={x=>{if(!form.recipients.includes(x)){u("recipients",[...form.recipients,x]);u("purposes",{...form.purposes,[x]:"เพื่อทราบ"})}}} onRemove={x=>{u("recipients",form.recipients.filter(r=>r!==x));const p={...form.purposes};delete p[x];u("purposes",p)}}/></div>
+      {form.recipients.length>0&&<div className="fg full" style={{marginTop:8}}><label>วัตถุประสงค์</label>{form.recipients.map(r=>{const p=form.purposes[r]||"เพื่อทราบ";return<div className="frc" key={r}><div className="frc-av" style={{background:PC[p]+'18',color:PC[p]}}>{r[0]}</div><div style={{fontWeight:600,fontSize:12}}>{r}</div><select className="frc-sel" value={p} onChange={e=>u("purposes",{...form.purposes,[r]:e.target.value})}>{PURPOSE_OPTIONS.map(o=><option key={o}>{o}</option>)}</select></div>})}</div>}
+    </div>}
+
+    {step===4&&<div className="wiz-c"><div className="wiz-t">{I.eye} ตรวจสอบก่อนส่ง</div>
+      <div className="sum"><div className="sum-t">{I.file} สรุปหนังสือ</div>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8,marginBottom:10,fontSize:12}}>
+          <div><span style={{color:'var(--t3)'}}>เลขที่</span><br/><b>{form.docNum||'-'}</b></div>
+          <div><span style={{color:'var(--t3)'}}>ประเภท</span><br/><b>{form.docTypes.join(', ')}</b></div>
+          <div><span style={{color:'var(--t3)'}}>ความเร็ว</span><br/><span className="pill pill-wait">{form.urgency}</span></div>
+        </div>
+        <div style={{marginBottom:8}}><span style={{fontSize:11,color:'var(--t3)'}}>เรื่อง</span><div style={{fontSize:14,fontWeight:700,color:'var(--p)'}}>{form.subject}</div></div>
+        {form.needSign&&form.signBy&&<div style={{background:'#fef9c3',borderRadius:6,padding:8,fontSize:12,color:'#92400e',fontWeight:500,marginBottom:8}}>{I.sign} ลงนามโดย: {form.signBy}</div>}
+        {form.files.length>0&&<div style={{marginBottom:8}}><span style={{fontSize:11,color:'var(--t3)'}}>ไฟล์แนบ ({form.files.length})</span><div style={{display:'flex',flexWrap:'wrap',gap:4,marginTop:2}}>{form.files.map((f,i)=><span key={i} className="pill pill-info">{I.clip} {f.name}</span>)}</div></div>}
+        <div style={{fontSize:11,color:'var(--t3)',marginTop:8}}>ผู้รับ</div>
+        {form.recipients.map(r=>{const p=form.purposes[r]||"เพื่อทราบ";return<div className="sum-item" key={r}><div style={{width:20,height:20,borderRadius:'50%',background:PC[p]+'18',color:PC[p],display:'flex',alignItems:'center',justifyContent:'center',fontWeight:700,fontSize:9}}>{r[0]}</div><div style={{flex:1,fontWeight:600}}>{r}</div><span className="sum-badge" style={{background:PC[p]+'18',color:PC[p]}}>{p}</span></div>})}
+      </div>
+    </div>}
+
+    <div className="wiz-foot"><div>{step>0&&<button className="ba" onClick={()=>sS(step-1)}>{I.back} ย้อนกลับ</button>}</div>
+      <div style={{display:'flex',gap:6}}><button className="ba" onClick={onClose}>ยกเลิก</button>
+        {step<4?<button className="bn" onClick={()=>sS(step+1)} disabled={step===1&&!form.subject.trim()}>ถัดไป {I.chev}</button>
+        :<button className="bn btn-ok" onClick={()=>sC(true)} disabled={saving||!form.recipients.length}>{I.send} {form.needSign?"ส่งรอลงนาม":"ส่งหนังสือ"}</button>}
       </div>
     </div>
-
-    <div class="error-msg" id="errorMsg">⚠ <span id="errorText"></span></div>
-
-    <button class="login-btn" type="submit" id="loginBtn">
-      <span class="spinner"></span>
-      <span class="btn-text">เข้าสู่ระบบ</span>
-    </button>
-  </form>
-
-  <div class="footer">ระบบสารบรรณอิเล็กทรอนิกส์</div>
-</div>
-
-<script>
-// ★ อัปเดตลิงก์ API ล่าสุดแล้ว ★
-const API = "https://script.google.com/macros/s/AKfycbws4srbuR78gxskQJoTzWnnDQMDqjYVA3vz3Lt-6AVEU0yocqitiwlprCwu49lEOrc/exec";
-
-if (sessionStorage.getItem("edoc_user")) {
-  window.location.href = "dashboard.html";
+    <Modal open={confirm} onClose={()=>sC(false)} onOk={save} title="ยืนยันส่งหนังสือ" icon={form.needSign?I.sign:I.send} iconBg={form.needSign?"var(--ac)":"var(--ok)"} okText={form.needSign?"ส่งรอลงนาม":"ส่งเลย"} okStyle={{background:form.needSign?'var(--ac)':'var(--ok)'}} loading={saving}>
+      <p style={{fontSize:13,color:'var(--t2)'}}>ส่ง "{form.subject}" ไปยัง {form.recipients.length} ท่าน{form.needSign?` (ผ่านการลงนามจาก ${form.signBy})`:''}</p>
+    </Modal>
+  </div>
 }
 
-function togglePassword() {
-  const inp = document.getElementById("password");
-  const icon = document.getElementById("eyeIcon");
-  if (inp.type === "password") {
-    inp.type = "text";
-    icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
-  } else {
-    inp.type = "password";
-    icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
-  }
+/* ═══════════════════════════════════════════
+   MAIN APP
+═══════════════════════════════════════════ */
+function App(){
+  const session=getSession();
+  
+  // ★ ถ้าไม่มี session → กลับ index.html ★
+  useEffect(()=>{if(!session)window.location.href="index.html"},[]);
+  
+  const[pg,sPg]=useState("inbox");
+  const[docs,sDocs]=useState([]);
+  const[users,sUsers]=useState([]);
+  const[ld,sLd]=useState(true);
+  const[sel,sSel]=useState(null);
+  const[toast,sToast]=useState(null);
+  const[sq,sSq]=useState("");
+  const[fwdMode,sFwd]=useState(null);
+  const[recallModal,sRM]=useState(null);
+  const[recallReason,sRR]=useState("");
+
+  const cu=session;
+  const tt=(m,t="ok")=>{sToast({m,t});setTimeout(()=>sToast(null),3500)};
+  const nav=(p)=>{sPg(p);sSel(null);sFwd(null);sSq("")};
+
+  // Fetch data
+  const fetchD=useCallback(async()=>{if(!cu)return;sLd(true);
+    const r=await apiCall({action:"getDocuments",username:cu.username});
+    if(r?.success)sDocs(r.data||[]);sLd(false)
+  },[cu]);
+  const fetchU=useCallback(async()=>{if(!cu)return;
+    const r=await apiCall({action:"getUsers"});
+    if(r?.success)sUsers(r.data||[])
+  },[cu]);
+  useEffect(()=>{fetchD();fetchU()},[fetchD,fetchU]);
+
+  if(!cu)return null;
+  const curInfo=users.find(u=>u.Username===cu.username||u.FullName===cu.username);
+  const canManage=["ผู้ดูแลระบบ","สารบรรณ","ผู้อำนวยการ","รองผู้อำนวยการ"].includes(cu.role);
+  const canSign=curInfo?.CanSign||false;
+  const displayName=curInfo?.FullName||cu.username;
+
+  const isRead=d=>{if(!d.ReadBy)return false;const r=String(d.ReadBy);return r.includes(cu.username)||(displayName&&r.includes(displayName))};
+  const isRecalled=d=>d.Status==="ดึงคืน";
+  const isMine=d=>d.Sender===cu.username||d.Sender===displayName;
+
+  const myInbox=docs.filter(d=>{if(!d.To)return false;const t=String(d.To);return t.includes(cu.username)||(displayName&&t.includes(displayName))});
+  const unread=myInbox.filter(d=>!isRead(d)&&!isRecalled(d)).length;
+  const pendingSign=docs.filter(d=>d.SignStatus==="รอลงนาม"&&((d.SignBy||"")===(displayName)||(d.signBy||"")===(displayName))).length;
+  const filtered=myInbox.filter(d=>{const q=sq.toLowerCase();return!q||(d.Subject||"").toLowerCase().includes(q)||(d.DocNumber||"").toLowerCase().includes(q)});
+  const myOutbox=docs.filter(d=>isMine(d));
+
+  const ack=(d,cb)=>{if(isRead(d)){cb?.();return}const nb=d.ReadBy?(d.ReadBy+","+displayName):displayName;const up=docs.map(x=>x.id===d.id||x.rowIndex===d.rowIndex?{...x,ReadBy:nb}:x);sDocs(up);if(sel)sSel({...d,ReadBy:nb});
+    apiCall({action:"acknowledge",rowIndex:d.rowIndex,subject:d.Subject,userName:displayName}).catch(()=>{});
+    tt("รับทราบแล้ว");cb?.()};
+
+  const handleRecall=()=>{if(!recallModal)return;
+    const td=`${new Date().getDate()}/${new Date().getMonth()+1}/${new Date().getFullYear()+543}`;
+    const h=recallModal.RoutingHistory?JSON.parse(recallModal.RoutingHistory):[];
+    h.push({type:"recall",from:displayName,to:recallModal.To,date:td,comment:recallReason||"ดึงคืน"});
+    const up=docs.map(d=>(d.id===recallModal.id||d.rowIndex===recallModal.rowIndex)?{...d,Status:"ดึงคืน",RoutingHistory:JSON.stringify(h)}:d);
+    sDocs(up);apiCall({action:"recallDocument",rowIndex:recallModal.rowIndex,subject:recallModal.Subject,sender:displayName,reason:recallReason}).catch(()=>{});
+    tt("ดึงหนังสือคืนสำเร็จ");sRM(null);sRR("");sSel(null)};
+
+  const logout=()=>{sessionStorage.removeItem("edoc_user");window.location.href="index.html"};
+
+  const sr=sel?isRead(sel):false;const sR=sel?isRecalled(sel):false;const sM=sel?isMine(sel):false;
+
+  return<div className="app"><style>{CSS}</style>
+    {/* TOP BAR */}
+    <header className="top">
+      <div className="top-l" onClick={()=>nav("inbox")}>
+        <img src="school logo.jpg" className="logo-img" onError={e=>{e.target.style.display='none'}}/>
+        <div><div className="top-title">e-Document</div><div className="top-sub">โรงเรียนป่าก้าง</div></div>
+      </div>
+      <div className="top-r">
+        {pendingSign>0&&canSign&&<button className="ba" style={{fontSize:11,padding:'5px 10px',background:'#fffbeb',borderColor:'#fde68a',color:'#92400e'}} onClick={()=>nav("signing")}>{I.sign} รอลงนาม <b>{pendingSign}</b></button>}
+        <div className="u-chip"><div className="u-ava">{displayName[0]}</div><div><div className="u-name">{displayName}</div><div className="u-role">{curInfo?.Position||cu.role}</div></div></div>
+        <button className="btn-out" onClick={logout}>{I.logout} ออก</button>
+      </div>
+    </header>
+
+    <div className="main-body">
+      {/* SIDEBAR */}
+      <aside className="sb">
+        <div className="sbn">
+          <div className="sbt">เอกสาร</div>
+          <div className={`sbi ${pg==="inbox"?"on":""}`} onClick={()=>nav("inbox")}><span>{I.inbox}</span><span>เอกสารเข้า</span>{unread>0&&<span className="badge">{unread}</span>}</div>
+          <div className={`sbi ${pg==="outbox"?"on":""}`} onClick={()=>nav("outbox")}><span>{I.send}</span><span>เอกสารส่งออก</span></div>
+          {canSign&&<div className={`sbi ${pg==="signing"?"on":""}`} onClick={()=>nav("signing")}><span>{I.sign}</span><span>รอลงนาม</span>{pendingSign>0&&<span className="badge badge-warn">{pendingSign}</span>}</div>}
+          
+          <div className="sbt" style={{marginTop:10}}>ระบบงาน</div>
+          <div className={`sbi ${pg==="search"?"on":""}`} onClick={()=>nav("search")}><span>{I.search}</span><span>ค้นหา</span></div>
+          <div className={`sbi ${pg==="folder"?"on":""}`} onClick={()=>nav("folder")}><span>{I.folder}</span><span>แฟ้มส่วนตัว</span></div>
+          
+          {canManage&&<><div className="sbt" style={{marginTop:10}}>การจัดการ</div>
+            <div className={`sbi ${pg==="stats"?"on":""}`} onClick={()=>nav("stats")}><span>{I.chart}</span><span>สถิติ</span></div>
+            <div className={`sbi ${pg==="all"?"on":""}`} onClick={()=>nav("all")}><span>{I.list}</span><span>เอกสารทั้งหมด</span></div>
+            <div className={`sbi ${pg==="settings"?"on":""}`} onClick={()=>nav("settings")}><span>{I.settings}</span><span>จัดการระบบ</span></div>
+          </>}
+        </div>
+      </aside>
+
+      {/* MAIN CONTENT */}
+      <main className="mn">
+        {/* FORWARD/REPLY */}
+        {fwdMode&&sel?<FwdWiz user={cu} users={users} doc={sel} isReply={fwdMode==="reply"} onClose={()=>sFwd(null)} onDone={()=>{sFwd(null);sSel(null);fetchD()}} tt={tt}/>
+
+        /* DETAIL VIEW */
+        :sel?<div className="det">
+          <div className="det-head"><button className="det-back" onClick={()=>sSel(null)}>{I.back}</button><div><h2 style={{fontSize:18,color:'var(--p)'}}>{sel.Subject}</h2><div style={{color:'var(--t3)',fontSize:12}}>เลขที่: {sel.DocNumber||"-"}</div></div></div>
+          <div className="det-card">
+            {sR&&<div className="recall-banner">{I.recall} เอกสารถูกดึงคืน</div>}
+            <div style={{display:'flex',gap:6,marginBottom:14,flexWrap:'wrap'}}>
+              {sR?<span className="pill pill-dn">{I.recall} ดึงคืน</span>:sel.SignStatus==="ลงนามแล้ว"?<span className="pill pill-ok">{I.check} ลงนามแล้ว</span>:sel.SignStatus==="รอลงนาม"?<span className="pill pill-sign">{I.sign} รอลงนาม</span>:sr?<span className="pill pill-ok">{I.check} รับทราบแล้ว</span>:<span className="pill pill-wait">รอรับทราบ</span>}
+              {sel.Urgency&&sel.Urgency!=="ปกติ"&&<span className={`pill ${sel.Urgency==="ด่วนที่สุด"||sel.Urgency==="ด่วนมาก"?"pill-dn":"pill-wait"}`}>{sel.Urgency}</span>}
+              {sel.Confidentiality&&sel.Confidentiality!=="ปกติ"&&<span className="pill pill-conf">{I.shield} {sel.Confidentiality}</span>}
+            </div>
+            <div className="det-grid">
+              <div><div className="det-label">ผู้ส่ง</div><div className="det-val">{sel.Sender}</div></div>
+              <div><div className="det-label">วันที่</div><div className="det-val">{sel.Date}</div></div>
+              <div><div className="det-label">วัตถุประสงค์</div><div className="det-val" style={{fontSize:12,color:'var(--dn)'}}>{getAllPurposes(sel.Purpose)}</div></div>
+              <div><div className="det-label">รับทราบแล้ว</div><div className="det-val" style={{fontSize:11,color:'var(--t3)'}}>{sel.ReadBy||'ยังไม่มี'}</div></div>
+            </div>
+            <div className="det-section"><div className="det-label">เนื้อหา</div><div className="det-content" dangerouslySetInnerHTML={{__html:sel.Content||'ไม่มี'}}/></div>
+            {sel.Files&&sel.Files.length>0&&typeof sel.Files==='object'&&<div className="det-section"><div className="det-label">ไฟล์แนบ ({sel.Files.length})</div><div className="fl">{sel.Files.map((f,i)=>{const ext=fExt(f);return<div className="fl-item" key={i}><div className={`fl-icon fl-${ext}`}>{ext.toUpperCase()}</div><div style={{flex:1,fontWeight:600,fontSize:12}}>{f}</div><button className="ba" style={{padding:'4px 8px',fontSize:11}}>{I.eye} ดู</button></div>})}</div></div>}
+            {sel.SignedBy&&<div className="det-section"><div className="det-label">การลงนาม</div><div className="sign-block done"><div className="sign-stamp" style={{color:'var(--ok)',borderColor:'var(--ok)'}}>ลงนามแล้ว</div><div style={{marginTop:10,fontSize:13}}><div style={{fontWeight:700,color:'var(--ok)'}}>{sel.SignedBy}</div><div style={{color:'var(--t2)',fontSize:12}}>{sel.SignTitle}</div><div style={{fontSize:11,color:'var(--t3)',marginTop:2}}>เมื่อ {sel.SignDate}</div></div></div></div>}
+            <div className="det-section"><div className="det-label">{I.route} ลำดับรับ-ส่ง</div>{renderHist(sel.RoutingHistory)}</div>
+            {!sR&&<div className="action-bar">
+              {!sr&&<button className="bn btn-ok" onClick={()=>ack(sel)}>{I.check} รับทราบ</button>}
+              <button className="bn" onClick={()=>{ack(sel,()=>sFwd("forward"))}}>{I.fwd} {sr?'ส่งต่อ':'รับทราบ+ส่งต่อ'}</button>
+              <button className="bn btn-t2" onClick={()=>{ack(sel,()=>sFwd("reply"))}}>{I.reply} {sr?'ตอบกลับ':'รับทราบ+ตอบกลับ'}</button>
+              {sM&&<button className="bn btn-dn" onClick={()=>{sRR("");sRM(sel)}}>{I.recall} ดึงคืน</button>}
+            </div>}
+          </div>
+        </div>
+
+        /* CREATE */
+        :pg==="create"?<CreateWiz user={cu} users={users} onClose={()=>sPg("inbox")} onDone={()=>{sPg("inbox");fetchD()}} tt={tt}/>
+
+        /* INBOX */
+        :pg==="inbox"?<div className="anim-up">
+          <div className="page-head"><div><h2>เอกสารเข้า</h2><p>เอกสารที่ส่งถึงท่าน</p></div>
+            {canManage&&<button className="bn" onClick={()=>{sFwd(null);sSel(null);sPg("create")}}>{I.plus} สร้างหนังสือ</button>}
+          </div>
+          <div className="card anim-up d1"><div className="card-h"><div className="card-t">{I.inbox} ขาเข้า ({filtered.length})</div><div className="search-box">{I.search}<input placeholder="ค้นหา..." value={sq} onChange={e=>sSq(e.target.value)}/></div></div>
+            {ld?<div className="ldr"><div className="ldrs"/>กำลังโหลด...</div>
+            :filtered.length>0?<table className="tb"><thead><tr><th style={{width:'10%'}}>สถานะ</th><th style={{width:'12%'}}>เลขที่</th><th style={{width:'42%'}}>เรื่อง</th><th style={{width:'14%'}}>ผู้ส่ง</th><th style={{width:'8%'}}>แนบ</th><th style={{width:'14%'}}>ลงนาม</th></tr></thead>
+              <tbody>{filtered.map((d,i)=>{const r=isRead(d);const rc=isRecalled(d);return<tr key={d.id||i} onClick={()=>sSel(d)} style={rc?{opacity:.45}:{}} className={`anim-up d${Math.min(i+1,6)}`}>
+                <td>{rc?<span className="pill pill-dn">ดึงคืน</span>:r?<span className="pill pill-ok">ทราบแล้ว</span>:<span className="pill pill-wait">รอรับทราบ</span>}</td>
+                <td style={{fontWeight:600,fontSize:12}}>{d.DocNumber||"-"}</td>
+                <td><div className="doc-title">{d.Subject}</div><div className="doc-meta">
+                  <span>{I.clock} {d.Date}</span>
+                  {d.Urgency&&d.Urgency!=="ปกติ"&&<span className={`pill ${d.Urgency.includes("สุด")||d.Urgency.includes("มาก")?"pill-dn":"pill-wait"}`} style={{fontSize:9,padding:'1px 5px'}}>{d.Urgency}</span>}
+                  {!rc&&<span style={{color:PC[getMyPurpose(d.Purpose,displayName)]||'var(--t3)',fontSize:10,fontWeight:600}}>{I.pin} {getMyPurpose(d.Purpose,displayName)}</span>}
+                </div></td>
+                <td style={{fontSize:12}}>{d.Sender?.split('(')[0]||'-'}</td>
+                <td>{d.Files&&typeof d.Files==='object'&&d.Files.length>0?<span style={{color:'var(--pa)',fontSize:11}}>{I.clip} {d.Files.length}</span>:'-'}</td>
+                <td>{d.SignStatus==="ลงนามแล้ว"?<span className="pill pill-ok" style={{fontSize:9}}>✓ ลงนาม</span>:d.SignStatus==="รอลงนาม"?<span className="pill pill-sign" style={{fontSize:9}}>รอลงนาม</span>:<span style={{color:'var(--t3)',fontSize:10}}>-</span>}</td>
+              </tr>})}</tbody></table>
+            :<div className="empty"><div className="empty-icon">📭</div><div className="empty-text">ไม่มีเอกสารเข้า</div></div>}
+          </div>
+        </div>
+
+        /* OUTBOX */
+        :pg==="outbox"?<div className="anim-up">
+          <div className="page-head"><div><h2>เอกสารส่งออก</h2><p>หนังสือที่ท่านส่ง</p></div>{canManage&&<button className="bn" onClick={()=>sPg("create")}>{I.plus} สร้างใหม่</button>}</div>
+          <div className="card anim-up d1"><div className="card-h"><div className="card-t">{I.send} ส่งออก ({myOutbox.length})</div></div>
+            {myOutbox.length>0?<table className="tb"><thead><tr><th>สถานะ</th><th>เลขที่</th><th>เรื่อง</th><th>ผู้รับ</th><th>วันที่</th></tr></thead>
+              <tbody>{myOutbox.map((d,i)=>{const rc=isRecalled(d);return<tr key={d.id||i} onClick={()=>sSel(d)} style={rc?{opacity:.45}:{}} className={`anim-up d${Math.min(i+1,6)}`}>
+                <td>{rc?<span className="pill pill-dn">ดึงคืน</span>:d.SignStatus==="ลงนามแล้ว"?<span className="pill pill-ok">ลงนามแล้ว</span>:d.SignStatus==="รอลงนาม"?<span className="pill pill-sign">รอลงนาม</span>:<span className="pill pill-info">ส่งแล้ว</span>}</td>
+                <td style={{fontWeight:600,fontSize:12}}>{d.DocNumber||"-"}</td>
+                <td><div className="doc-title">{d.Subject}</div></td>
+                <td style={{fontSize:11}}>{(d.To||"").split(',').length>1?d.To.split(',')[0]+' +'+(d.To.split(',').length-1):d.To}</td>
+                <td style={{fontSize:11}}>{d.Date}</td>
+              </tr>})}</tbody></table>
+            :<div className="empty"><div className="empty-icon">📤</div><div className="empty-text">ไม่มีเอกสารส่งออก</div></div>}
+          </div>
+        </div>
+
+        /* SEARCH */
+        :pg==="search"?<div className="anim-up">
+          <div className="page-head"><div><h2>ค้นหาเอกสาร</h2></div></div>
+          <div className="card"><div style={{padding:14}}><div className="search-box" style={{background:'#fff',border:'1px solid var(--bd)'}}>
+            {I.search}<input placeholder="พิมพ์ค้นหา เลขที่ / เรื่อง / ผู้ส่ง..." value={sq} onChange={e=>sSq(e.target.value)} style={{fontSize:13,width:'100%'}}/></div></div>
+            {sq.trim()?<table className="tb"><thead><tr><th>เลขที่</th><th>เรื่อง</th><th>ผู้ส่ง</th><th>วันที่</th></tr></thead>
+              <tbody>{docs.filter(d=>{const q=sq.toLowerCase();return(d.Subject||"").toLowerCase().includes(q)||(d.DocNumber||"").toLowerCase().includes(q)||(d.Sender||"").toLowerCase().includes(q)}).map((d,i)=><tr key={i} onClick={()=>sSel(d)} className={`anim-up d${Math.min(i+1,6)}`}>
+                <td style={{fontWeight:600,fontSize:12}}>{d.DocNumber||"-"}</td>
+                <td><div className="doc-title">{d.Subject}</div></td>
+                <td style={{fontSize:12}}>{d.Sender}</td>
+                <td style={{fontSize:12}}>{d.Date}</td>
+              </tr>)}</tbody></table>
+            :<div className="empty"><div className="empty-icon">🔍</div><div className="empty-text">พิมพ์เพื่อค้นหา</div></div>}
+          </div>
+        </div>
+
+        /* STATS */
+        :pg==="stats"?<div className="anim-up">
+          <div className="page-head"><div><h2>สถิติเอกสาร</h2><p>ภาพรวมระบบ</p></div></div>
+          <div className="sg">
+            {[{icon:I.file,bg:'var(--ps)',color:'var(--pa)',num:docs.length,label:'เอกสารทั้งหมด'},
+              {icon:I.check,bg:'var(--os)',color:'var(--ok)',num:docs.filter(d=>d.SignStatus==="ลงนามแล้ว").length,label:'ลงนามแล้ว'},
+              {icon:I.sign,bg:'#fef9c3',color:'#d97706',num:docs.filter(d=>d.SignStatus==="รอลงนาม").length,label:'รอลงนาม'},
+              {icon:I.bell,bg:'var(--ds)',color:'var(--dn)',num:docs.filter(d=>!d.ReadBy).length,label:'ยังไม่อ่าน'}
+            ].map((s,i)=><div className={`sc anim-up d${i+1}`} key={i}><div className="sc-icon" style={{background:s.bg,color:s.color}}>{s.icon}</div><div className="sc-num" style={{color:s.color}}>{s.num}</div><div className="sc-lbl">{s.label}</div></div>)}
+          </div>
+          <div className="card anim-up d5"><div className="card-h"><div className="card-t">ประเภทเอกสาร</div></div>
+            <table className="tb"><thead><tr><th>ประเภท</th><th>จำนวน</th><th>สัดส่วน</th></tr></thead>
+              <tbody>{Object.entries(docs.reduce((a,d)=>{const t=d.Type||"อื่นๆ";a[t]=(a[t]||0)+1;return a},{})).map(([k,v],i)=><tr key={k} className={`anim-up d${Math.min(i+1,6)}`}>
+                <td style={{fontWeight:600}}>{k}</td><td>{v} ฉบับ</td>
+                <td><div style={{background:'var(--ps)',borderRadius:20,height:6,width:180,overflow:'hidden'}}><div style={{background:'var(--pa)',height:'100%',width:`${(v/Math.max(docs.length,1))*100}%`,borderRadius:20,transition:'width .6s var(--tr)'}}/></div></td>
+              </tr>)}</tbody></table>
+          </div>
+        </div>
+
+        /* ALL DOCS */
+        :pg==="all"?<div className="anim-up">
+          <div className="page-head"><div><h2>เอกสารทั้งหมด</h2><p>สำหรับสารบรรณ/ผู้บริหาร</p></div></div>
+          <div className="card"><div className="card-h"><div className="card-t">{docs.length} ฉบับ</div><div className="search-box">{I.search}<input placeholder="ค้นหา..." value={sq} onChange={e=>sSq(e.target.value)}/></div></div>
+            <table className="tb"><thead><tr><th>สถานะ</th><th>เลขที่</th><th>เรื่อง</th><th>ผู้ส่ง</th><th>ผู้รับ</th></tr></thead>
+              <tbody>{docs.filter(d=>{const q=sq.toLowerCase();return!q||(d.Subject||"").toLowerCase().includes(q)||(d.DocNumber||"").toLowerCase().includes(q)}).map((d,i)=><tr key={i} onClick={()=>sSel(d)} className={`anim-up d${Math.min(i+1,6)}`}>
+                <td>{d.Status==="ดึงคืน"?<span className="pill pill-dn">ดึงคืน</span>:<span className="pill pill-info">{d.Status||"ส่งแล้ว"}</span>}</td>
+                <td style={{fontWeight:600,fontSize:11}}>{d.DocNumber||"-"}</td>
+                <td><div className="doc-title" style={{fontSize:12}}>{d.Subject}</div><div style={{fontSize:10,color:'var(--t3)'}}>{d.Date}</div></td>
+                <td style={{fontSize:11}}>{d.Sender}</td>
+                <td style={{fontSize:10,color:'var(--t2)'}}>{(d.To||"").substring(0,25)}{(d.To||"").length>25?'...':''}</td>
+              </tr>)}</tbody></table>
+          </div>
+        </div>
+
+        /* SETTINGS */
+        :pg==="settings"?<div className="anim-up">
+          <div className="page-head"><div><h2>จัดการระบบ</h2><p>ผู้ใช้งาน สิทธิ์ ผู้ลงนาม</p></div></div>
+          <div className="card anim-up d1"><div className="card-h"><div className="card-t">ผู้ใช้งาน ({users.length})</div><button className="bn" style={{fontSize:12,padding:'5px 12px'}}>{I.plus} เพิ่ม</button></div>
+            <table className="tb"><thead><tr><th>ชื่อ-สกุล</th><th>ตำแหน่ง</th><th>บทบาท</th><th>ลงนาม</th></tr></thead>
+              <tbody>{users.map((u,i)=><tr key={u.Username} className={`anim-up d${Math.min(i+1,6)}`}>
+                <td style={{fontWeight:600}}>{u.FullName}</td>
+                <td style={{fontSize:12}}>{u.Position}</td>
+                <td><span className="pill pill-info">{u.Role}</span></td>
+                <td>{u.CanSign?<span className="pill pill-sign">{I.sign} ลงนามได้</span>:<span style={{fontSize:11,color:'var(--t3)'}}>-</span>}</td>
+              </tr>)}</tbody></table>
+          </div>
+        </div>
+
+        /* SIGNING */
+        :pg==="signing"?<div className="anim-up">
+          <div className="page-head"><div><h2>รอลงนาม</h2><p>เอกสารที่รอการลงนามจากท่าน</p></div></div>
+          {(()=>{const my=docs.filter(d=>d.SignStatus==="รอลงนาม"&&((d.SignBy||"")===(displayName)||(d.signBy||"")===(displayName)));
+            return my.length>0?<div className="card anim-up d1"><div className="card-h"><div className="card-t">{I.sign} รอลงนาม ({my.length})</div></div>
+              <table className="tb"><thead><tr><th>ความเร็ว</th><th>เลขที่</th><th>เรื่อง</th><th>ผู้ส่ง</th><th>วันที่</th></tr></thead>
+                <tbody>{my.map((d,i)=><tr key={i} onClick={()=>sSel(d)} className={`anim-up d${Math.min(i+1,6)}`}>
+                  <td><span className={`pill ${d.Urgency!=="ปกติ"?"pill-dn":"pill-wait"}`}>{d.Urgency||"ปกติ"}</span></td>
+                  <td style={{fontWeight:600,fontSize:12}}>{d.DocNumber||"-"}</td>
+                  <td><div className="doc-title">{d.Subject}</div></td>
+                  <td style={{fontSize:12}}>{d.Sender}</td>
+                  <td style={{fontSize:12}}>{d.Date}</td>
+                </tr>)}</tbody></table>
+            </div>:<div className="card anim-up d1"><div className="empty"><div className="empty-icon">✅</div><div className="empty-text">ไม่มีเอกสารรอลงนาม</div></div></div>
+          })()}
+        </div>
+
+        :<div className="empty anim-up"><div className="empty-icon">🚧</div><div className="empty-text" style={{color:'var(--p)'}}>กำลังพัฒนา</div><p style={{fontSize:12,color:'var(--t2)',marginTop:4}}>เร็วๆ นี้</p></div>}
+      </main>
+    </div>
+
+    {/* TOAST */}
+    {toast&&<div className={`toast toast-${toast.t}`}>{toast.t==="ok"?I.check:"⚠"} {toast.m}</div>}
+
+    {/* RECALL MODAL */}
+    <Modal open={!!recallModal} onClose={()=>sRM(null)} onOk={handleRecall} title="ดึงหนังสือคืน" icon={I.recall} iconBg="var(--dn)" okText="ยืนยันดึงคืน" okStyle={{background:'var(--dn)'}}>
+      <p style={{fontSize:13,color:'var(--t2)',marginBottom:10}}>ผู้รับจะไม่สามารถดำเนินการต่อได้</p>
+      <label style={{fontSize:12,fontWeight:600,color:'var(--t2)',display:'block',marginBottom:4}}>เหตุผล (ไม่บังคับ)</label>
+      <textarea className="fi" placeholder="เช่น ส่งผิด, ข้อมูลไม่ถูกต้อง..." value={recallReason} onChange={e=>sRR(e.target.value)}/>
+    </Modal>
+  </div>
 }
 
-function showError(msg) {
-  const el = document.getElementById("errorMsg");
-  document.getElementById("errorText").textContent = msg;
-  el.classList.add("show");
-  document.getElementById("userWrap").classList.add("err");
-  document.getElementById("passWrap").classList.add("err");
-  setTimeout(() => {
-    document.getElementById("userWrap").classList.remove("err");
-    document.getElementById("passWrap").classList.remove("err");
-  }, 400);
-}
-
-function clearError() {
-  document.getElementById("errorMsg").classList.remove("show");
-  document.getElementById("userWrap").classList.remove("err");
-  document.getElementById("passWrap").classList.remove("err");
-}
-
-async function handleLogin(e) {
-  e.preventDefault();
-  const user = document.getElementById("username").value.trim();
-  const pass = document.getElementById("password").value.trim();
-
-  if (!user || !pass) {
-    showError("กรุณากรอกชื่อผู้ใช้และรหัสผ่าน");
-    return false;
-  }
-
-  const btn = document.getElementById("loginBtn");
-  btn.classList.add("loading");
-  btn.disabled = true;
-  clearError();
-
-  try {
-    const qs = new URLSearchParams({ action: "login", username: user, password: pass }).toString();
-    let res;
-    try {
-      const r = await fetch(API + "?" + qs, { method: "GET", redirect: "follow" });
-      res = await r.json();
-    } catch {
-      const r = await fetch(API, { method: "POST", redirect: "follow", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ action: "login", username: user, password: pass }) });
-      res = await r.json();
-    }
-
-    if (res && res.success) {
-      sessionStorage.setItem("edoc_user", JSON.stringify({
-        username: res.name || res.username || user,
-        role: res.role || "ครูทั่วไป"
-      }));
-      window.location.href = "dashboard.html";
-    } else {
-      showError(res?.error || "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
-    }
-  } catch (err) {
-    showError("ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้");
-  }
-
-  btn.classList.remove("loading");
-  btn.disabled = false;
-  return false;
-}
-
-document.getElementById("username").addEventListener("input", clearError);
-document.getElementById("password").addEventListener("input", clearError);
+// ===== BOOT =====
+const root=ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App/>);
 </script>
 </body>
 </html>
